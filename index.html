@@ -207,6 +207,7 @@
       .stepname{overflow-wrap:anywhere}
     }
 </style>
+  <link rel="stylesheet" href="./ui-redesign.css">
 </head>
 <body>
 <div class="page">
@@ -316,6 +317,25 @@
       <div class="controls"><button type="button" class="btn" id="backToFlow">← 返回影片生成引導</button><button type="button" class="btn" id="newProject">＋ 開始新的作品</button></div>
     </section>
   </main>
+  <aside class="design-rail" aria-label="創作進度與使用提示">
+    <section class="rail-card rail-dark">
+      <div class="rail-top"><span class="rail-overline">PROJECT OVERVIEW</span><span class="rail-tag">DEMO</span></div>
+      <h2>創作進度</h2>
+      <div class="rail-step-name" id="railStepName">01 · 釐清想法</div>
+      <div class="rail-progress-track" aria-hidden="true"><div id="railProgress" class="rail-progress-fill"></div></div>
+      <div class="rail-counter"><span>已規劃片段</span><strong id="railSceneCount">0</strong></div>
+    </section>
+    <section class="rail-card rail-light">
+      <span class="rail-spark" aria-hidden="true">✦</span>
+      <h3>創意，不必一次到位。</h3>
+      <p id="railTip">先選最接近的方向。故事、人物與畫面都能在產生提示詞前調整。</p>
+    </section>
+    <section class="rail-card rail-lime">
+      <h3>完成後，一起串成影片。</h3>
+      <p>這裡幫你想清楚；Motion Creator Studio 負責最後的剪輯與輸出。</p>
+      <a class="rail-link" href="https://bkj888.github.io/motion-creator-studio/" target="_blank" rel="noopener noreferrer">剪輯工作室 <span aria-hidden="true">↗</span></a>
+    </section>
+  </aside>
   <footer class="footer"><div>不需登入本工具 · 想法與提示詞儲存在目前瀏覽器 · 與 GPT 對話需至 ChatGPT 頁面 · 影片檔不會上傳到本工具</div><div><a href="https://support.google.com/flow/answer/16353334" target="_blank" rel="noopener noreferrer">Google Flow 官方教學 ↗</a> · <a href="https://bkj888.github.io/motion-creator-studio/" target="_blank" rel="noopener noreferrer">Motion Creator Studio ↗</a></div></footer>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -501,7 +521,16 @@ ${safe(state.ideaSeed,1400)}
   $('fixMissing').addEventListener('click',jumpToMissing);
   function renderResult(){previewSaved=false;showPhase('result');$('questionCounter').textContent='完成選擇';$('progressbar').style.width='100%';$('detailsText').value=state.detail||'';$('soundChoice').value=state.sound||'ambient';$('dialogueText').value=state.dialogue||'';$('dialogueField').hidden=state.sound!=='dialogue';$('shotFocusField').hidden=false;$('shotFocus').value=state.shotFocus||'';$('moodChoice').value=state.answers.mood||'warm';$('cameraChoice').value=state.answers.camera||'fixed';updatePrompt();updateCompletionStatus();}
   function updatePrompt(){let p=currentPrompt();$('promptEnglish').textContent=p.en;$('promptChinese').textContent=p.zh;persist()}
-  function switchStep(to){if(to>1&&!state.scenes.length){toast('請先完成並儲存至少一個影片片段');return}step=to;[1,2,3].forEach(n=>{$('panel'+n).hidden=n!==to;const tab=document.querySelector(`[data-step="${n}"]`);tab.classList.toggle('current',n===to);tab.classList.toggle('done',state.scenes.length>0&&n<to);tab.classList.toggle('available',n===1||!!state.scenes.length);tab.setAttribute('aria-current',n===to?'step':'false');});if(to===2)renderFlow();if(to===3)renderClipSummary();window.scrollTo({top:0,behavior:'smooth'});}
+  function updateDesignRail(){
+    const names=['','01 · 釐清想法','02 · 生成影片','03 · 完成作品'];
+    const hints=['','先選最接近的方向。故事、人物與畫面都能在產生提示詞前調整。','提示詞已整理好，複製到 Google Flow 或 Kling 生成並下載。','將下載的片段匯入剪輯工作室，排好順序並輸出影片。'];
+    const name=$('railStepName'),count=$('railSceneCount'),progress=$('railProgress'),tip=$('railTip');
+    if(name)name.textContent=names[step];
+    if(count)count.textContent=String(state.scenes.length);
+    if(progress)progress.style.width=(step/3*100)+'%';
+    if(tip)tip.textContent=hints[step];
+  }
+  function switchStep(to){if(to>1&&!state.scenes.length){toast('請先完成並儲存至少一個影片片段');return}step=to;[1,2,3].forEach(n=>{$('panel'+n).hidden=n!==to;const tab=document.querySelector(`[data-step="${n}"]`);tab.classList.toggle('current',n===to);tab.classList.toggle('done',state.scenes.length>0&&n<to);tab.classList.toggle('available',n===1||!!state.scenes.length);tab.setAttribute('aria-current',n===to?'step':'false');});if(to===2)renderFlow();if(to===3)renderClipSummary();window.scrollTo({top:0,behavior:'smooth'});updateDesignRail();}
   async function copyText(t,message='已複製提示詞！'){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t)}else{const area=document.createElement('textarea');area.value=t;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('Copy failed')}toast(message)}catch(e){toast('複製未成功，可以直接選取文字複製')}}
   function downloadText(filename,content){const blob=new Blob([content],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
   function createScene(){if(previewSaved)return;const missing=missingRequired();if(missing.length){updateCompletionStatus();toast('請先確認提示詞下方的缺少設定');$('resultError').scrollIntoView({behavior:'smooth',block:'center'});return}previewSaved=true;const p=currentPrompt();state.scenes.push({id:Date.now().toString(36)+'-'+Math.floor(Math.random()*1e6).toString(36),summary:p.summary,title:p.title,ratio:p.ratio,time:p.time,en:p.en,zh:p.zh,downloaded:false});persist();toast('影片片段已儲存');switchStep(2)}
