@@ -176,8 +176,8 @@
     <div class="top-actions"><span class="tagline">不會寫提示詞，也能開始創作</span><a class="text-link" target="_blank" rel="noopener noreferrer" href="https://bkj888.github.io/motion-creator-studio/">剪輯工作室 ↗</a></div>
   </header>
   <section class="hero">
-    <div><div class="eyebrow"><span class="small-dot"></span> FROM IDEA TO VIDEO · 3 STEPS</div><h1>從一個想法，<br><span>開始你的創作。</span></h1><p>先想清楚想說的故事，再用簡單問題、風格參考圖與 GPT 協作整理畫面和鏡頭。等構思完整後，再轉換成 AI 影片提示詞，前往生成平台與剪輯工作室完成作品。</p></div>
-    <div class="hero-note"><div class="mini">START SIMPLE · 輕鬆上手</div><strong>先釐清想法，再建立畫面</strong><p>從創作概念開始，用 6 道問題與風格圖片整理想法；必要時也能透過 GPT 訪談，將模糊故事逐漸具體化。</p><span class="pill">✓ 不必懂專業術語</span></div>
+    <div><div class="eyebrow"><span class="small-dot"></span> FROM IDEA TO VIDEO · 3 STEPS</div><h1>從一個想法，<br><span>開始你的創作。</span></h1><p>先把零碎想法整理成畫面：沒方向就用簡單問答，已有方向就讓 GPT 先提出草案，搭配圖片選擇風格。等構思完整後，再轉換成 AI 影片提示詞，前往生成平台與剪輯工作室完成作品。</p></div>
+    <div class="hero-note"><div class="mini">START SIMPLE · 輕鬆上手</div><strong>先釐清想法，再建立畫面</strong><p>沒想法時用簡單問答起步；已有方向時由 GPT 先整理草案，再用圖片確認風格。</p><span class="pill">✓ 不必懂專業術語</span></div>
   </section>
   <nav class="stepnav" aria-label="影片創作三步驟">
     <button type="button" class="stepbtn current" data-step="1"><span class="stepbadge">1</span><span><span class="stepname">釐清想法與畫面</span><span class="stepsub">問答＋看圖＋GPT</span></span></button>
@@ -193,13 +193,13 @@
         <h2 class="sectiontitle" style="margin:9px 0 5px">你目前對這支影片有多少想法？</h2>
         <p class="hint">有一兩個畫面就夠了，不用先想好完整故事。</p>
         <div class="entry-options">
-          <button type="button" class="entry-choice" id="chooseAssist"><span class="entry-emoji">💭</span><b>我有一些方向，還不太完整</b><small>先自由描述，再利用 GPT 的提問釐清人物、情節和氛圍，最後再做提示詞。</small></button>
+          <button type="button" class="entry-choice" id="chooseAssist"><span class="entry-emoji">💭</span><b>我有一些方向，還不太完整</b><small>先自由描述，由 GPT 主動提出一版可修改的創作方案，再確認畫風與比例。</small></button>
           <button type="button" class="entry-choice" id="chooseGuided"><span class="entry-emoji">🧭</span><b>我完全沒有想法</b><small>直接用簡單選擇題找方向。不需要先學習提示詞術語。</small></button>
         </div>
         <p class="idea-disclaimer">此工具不會自動連動你的 ChatGPT 帳號。需要與 GPT 討論時，會協助複製專屬指令並開啟 ChatGPT；內容由你決定是否貼回。</p>
       </div>
       <div id="ideaView" hidden>
-        <div class="idea-steps"><span>① 說出零碎想法</span><span>② 與 GPT 對話整理</span><span>③ 帶入選擇題</span></div>
+        <div class="idea-steps"><span>① 說出零碎想法</span><span>② GPT 先提出構思草案</span><span>③ 選畫風後產生提示詞</span></div>
         <div class="idea-layout">
           <div class="idea-card">
             <div class="assistant-label">MY IDEA · 自由描述</div>
@@ -216,12 +216,12 @@
             <p class="idea-note">💡 就算只填上面的自由描述，也能使用。下面的 AI 協作不是必填。</p>
           </div>
           <div class="idea-card soft">
-            <div class="assistant-label">CHATGPT · AI 導演訪談</div>
-            <h3>讓 GPT 問你真正需要的問題</h3>
-            <p>這段指令會請 ChatGPT 每次只問一個好懂的問題，最多五輪；不會擅自替你決定所有劇情。</p>
+            <div class="assistant-label">CHATGPT · AI 創作整理</div>
+            <h3>讓 GPT 先幫你完成一版草案</h3>
+            <p>GPT 會先根據已有想法整理故事與鏡頭草案；不是反覆發選擇題。只有關鍵資訊真的不足時，才會問至多一個問題。</p>
             <div class="idea-copy" id="ideaGPTPreview" aria-label="ChatGPT 協作指令預覽"></div>
-            <div class="compact-controls" style="margin-top:14px"><button type="button" class="btn btn-primary btn-small" id="copyGPTInstruction">① 複製 GPT 訪談指令</button><a class="btn btn-small" id="openChatGPT" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">② 開啟 ChatGPT ↗</a></div>
-            <p class="idea-disclaimer">在 ChatGPT 中貼上剛複製的內容，回答它的問題；討論完成後，請複製 GPT 的最終故事整理稿，再貼到下方。<strong>本頁沒有直接呼叫 GPT API，也不會收取 API 費用。</strong></p>
+            <div class="compact-controls" style="margin-top:14px"><button type="button" class="btn btn-primary btn-small" id="copyGPTInstruction">① 複製 GPT 創作指令</button><a class="btn btn-small" id="openChatGPT" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">② 開啟 ChatGPT ↗</a></div>
+            <p class="idea-disclaimer">在 ChatGPT 貼上指令，它會先產出可修改的草案。覺得方向接近就複製貼回；想修改，再用自己的話告訴 GPT。<strong>本頁沒有直接呼叫 GPT API，也不會收取 API 費用。</strong></p>
           </div>
         </div>
         <div class="idea-card" style="margin-top:19px">
@@ -230,7 +230,7 @@
           <p>這是提示詞最重要的依據。請貼上 GPT 整理的故事，或直接自己修改。不用透過 GPT 也可以繼續。</p>
           <div class="field"><label for="ideaRefined">完成版故事描述（可自行修改）</label><textarea class="input textarea" id="ideaRefined" rows="5" maxlength="5000" placeholder="把 GPT 的故事整理稿貼在這裡；沒有也可以保持空白，直接用上方的初步想法繼續。"></textarea></div>
           <div class="idea-status" id="ideaStatus" role="status">目前還沒有貼入整理稿，可以先使用初步想法。</div>
-          <div class="controls"><button type="button" class="btn btn-plain" id="backToEntry">← 更換開始方式</button><button type="button" class="btn btn-primary" id="ideaToQuestions">帶著我的想法，進入選擇題 →</button></div>
+          <div class="controls"><button type="button" class="btn btn-plain" id="backToEntry">← 更換開始方式</button><button type="button" class="btn btn-primary" id="ideaToQuestions">確認視覺風格與比例 →</button></div>
         </div>
       </div>
       <div id="questionView" hidden>
@@ -241,7 +241,7 @@
       </div>
       <div class="result" id="resultView">
         <div class="idea-review" id="resultIdeaReview" hidden><strong style="font-size:12px;color:#4967a2">📝 這段影片會參考你釐清的故事</strong><p id="resultIdeaText"></p><button type="button" class="btn btn-plain btn-small" id="editResultIdea">修改故事內容</button></div>
-        <div class="result-header"><span class="result-icon">✨</span><div><h2>你的影片提示詞準備好了！</h2><p>右側可補充細節。這份英文提示詞可帶到 Google Flow 或 Kling 測試。</p></div></div>
+        <div class="result-header"><span class="result-icon">✨</span><div><h2>你的影片提示詞準備好了！</h2><p>右側可補充細節。將這份提示詞帶到 Google Flow 或 Kling 測試。若故事只用中文輸入，英文欄仍可能包含中文；可先透過 GPT 補上英文畫面描述。</p></div></div>
         <div class="result-content">
           <div><div class="prompt-card"><div class="prompt-title"><b>英文影片提示詞</b><span>Google Flow／Kling 通用版本</span></div><pre class="prompt-box en-prompt" id="promptEnglish" aria-live="polite"></pre><div class="btn-wrap" style="margin-top:13px"><button class="btn btn-primary btn-small" id="copyEnglish" type="button">複製英文提示詞</button><button class="btn btn-small" id="downloadPrompt" type="button">下載文字檔</button></div></div>
             <details class="translation"><summary>想看看中文版本？展開預覽</summary><pre class="prompt-box" id="promptChinese"></pre><div style="margin-top:9px"><button class="btn btn-small" id="copyChinese" type="button">複製中文版</button></div></details></div>
@@ -320,11 +320,38 @@
   function activeIdea(){const seed=(state.ideaSeed||'').trim(), refined=(state.ideaRefined||'').trim();return (refined||seed).slice(0,5000)}
   function parseIdeaEnglish(s){let match=s.match(/【英文(?:鏡頭|畫面)描述】\s*([\s\S]*?)(?=【[^】]+】|$)/);return match?match[1].trim():''}
   function renderIdeaReviews(){const text=activeIdea();for(const [id,textId] of [['ideaReview','ideaReviewText'],['resultIdeaReview','resultIdeaText']]){$(id).hidden=!(state.ideaMode==='assisted'&&text);$(textId).textContent=text||'';}}
-  function makeGPTBrief(){const safe=(s,max)=>String(s||'').trim().slice(0,max)||'尚不清楚';return `你是一位溫和、擅長引導初學者的 AI 影片導演與分鏡顧問。請用繁體中文與我對話，協助我將零碎想法整理成可製作的 AI 影片故事。我不懂提示詞或鏡頭術語。\n\n【我目前的想法】\n${safe(state.ideaSeed,1400)}\n\n【想釐清的部分】${state.ideaFocus}\n【希望觀眾是】${safe(state.ideaAudience,120)}\n【看完的感受】${safe(state.ideaGoal,120)}\n\n【你的工作方式】\n1. 先簡短整理你理解的已知資訊，指出真正缺少的關鍵，不要無端改掉我的創意。\n2. 每次只問我一個問題，提供2～4個白話選項，並允許我自由回答或選「交給你建議」。最多問5輪；內容已足夠時可提早結束。\n3. 優先協助釐清故事目的、主角、場景、關鍵動作、情緒和結尾；不要一次問滿全部問題。\n4. 若我有描述人物、時代、場景等細節，須保留，不要改成制式設定。區分「我已確定」與「你建議補足」的內容，不要捏造必然性。\n5. 如果影片包含多個事件或場景，拆成數個適合各自獨立生成的短片段，每片段盡量一個主要動作；優先考慮穩定、容易生成的鏡頭。\n6. 討論完成後，請以以下固定格式輸出，方便我貼回影片創作網站：\n【中文故事摘要】（120～250字；清楚描述故事與視覺重點）\n【英文畫面描述】（用英文描述視覺與主要事件；不得自行新增未確認的劇情）\n【鏡頭建議】（依序列出每段的主角、場景、動作和建議時長）\n【已確定的設定】\n【尚可自由調整的部分】\n\n請先根據我的想法，問我第一個最有幫助的問題。`}
+  function makeGPTBrief(){const safe=(s,max)=>String(s||'').trim().slice(0,max)||'尚不清楚';return `你是一位能主動把初步想法轉成具體畫面的 AI 影片創意導演。請用繁體中文協助沒有影片製作經驗的使用者。這位使用者已經有部分方向，不需要再做一次選擇題。你的目標是讓他更快看見一個可以修改的創作方案，而不是收集所有資訊。
+
+【使用者已有的想法】
+${safe(state.ideaSeed,1400)}
+
+【希望優先補強】${state.ideaFocus}
+【預計觀眾】${safe(state.ideaAudience,120)}
+【希望觀眾看完的感受】${safe(state.ideaGoal,120)}
+
+【重要規則】
+1. 你的第一則回覆直接給出具體、可拍攝的故事提案。不要先丟問題、不要給選擇題，也不要先詢問完整背景。
+2. 將使用者已說明的內容視為「已確認」，保留原意；不明確的地方可主動補上合理的創意建議，但清楚標示「建議，可調整」，不能冒充使用者已決定。
+3. 如果有兩種都合理的故事呈現方式，可在完整提案之後補充最多 2 個短的替代方向，不要讓使用者必須先做選擇才能前進。
+4. 只有當某個未知資訊會讓故事走向截然相反、而你無法給出合宜的預設時，才在草案最後問最多 1 個白話問題；若可先用假設完成草案就不要問。往後也不要陷入連續追問模式。
+5. 不要列出一連串『你想要哪一種』的問卷。鼓勵使用者只需回覆「採用這版」或「把某一段改成……」。
+6. 構思故事時考慮 AI 影片的實際限制：一個短片段以一個主要動作為主、多場景拆開、避免太複雜的運鏡，並注意角色與風格連貫。
+7. 讓使用者不必懂提示詞、鏡頭術語。用日常語言呈現創意，提供可以直接帶回影片創作網站的內容。
+
+【第一則回覆請直接使用下列格式】
+【我理解的重點】用 1～2 句重述已有內容。
+【中文故事摘要】120～250 字，提供一版完整且具體的故事構思，不是問題清單。
+【英文畫面描述】用英文描述完整構思與主要視覺，保留原本已確定的元素；未確定的部分不要冒充已確定。
+【鏡頭建議】依序列出片段、主角、場景、主要動作與建議長度；一個片段只做一個主要動作。
+【已確定的設定】只列使用者真的說明過的事項。
+【建議、可調整的部分】簡短列出為使構思更完整而補上的細節。
+【下一步】告訴使用者：可以「直接採用」或「指出想修改的地方」。只有必要時附最多一題關鍵問題。
+
+現在就先給出一版可以拿來修改的提案，不要先提問。`}
   function renderGPTPreview(){ $('ideaGPTPreview').textContent=makeGPTBrief().slice(0,480)+'\n……（完整指令請點「複製」）'; const status=$('ideaStatus');const r=(state.ideaRefined||'').trim(),s=(state.ideaSeed||'').trim();status.textContent=r?'✓ 已貼入故事整理稿。後續提示詞會優先使用這份內容。':s?'已有初步想法，可以先去 ChatGPT 深化，也可以直接繼續。':'請至少寫下一些關鍵字，才能協助保留你的想法。';status.classList.toggle('ready',!!(r||s));}
   function renderIdea(){showPhase('idea');$('ideaSeed').value=state.ideaSeed||'';$('ideaRefined').value=state.ideaRefined||'';$('ideaAudience').value=state.ideaAudience||'';$('ideaGoal').value=state.ideaGoal||'';document.querySelectorAll('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.focus===state.ideaFocus)));renderGPTPreview();}
   function renderEntry(){showPhase('entry');$('sceneNumber').textContent=`STEP 01 · 第 ${state.scenes.length+1} 個片段`;}
-  $('chooseGuided').addEventListener('click',()=>{state.ideaMode='guided';persist();renderQuestion()});
+  $('chooseGuided').addEventListener('click',()=>{state.ideaMode='guided';state.questionIndex=0;persist();renderQuestion()});
   $('chooseAssist').addEventListener('click',()=>{state.ideaMode='assisted';persist();renderIdea()});
   $('backToEntry').addEventListener('click',renderEntry);
   $('backToIdea').addEventListener('click',renderIdea);
@@ -335,22 +362,44 @@
   }
   $('copyGPTInstruction').addEventListener('click',()=>{if(!(state.ideaSeed||'').trim()){toast('先寫下至少一點想法，GPT 才能幫你整理');$('ideaSeed').focus();return}copyText(makeGPTBrief(),'已複製訪談指令，請到 ChatGPT 貼上使用')});
   $('openChatGPT').addEventListener('click',e=>{if(!(state.ideaSeed||'').trim()){e.preventDefault();toast('先描述一點想法，再開啟 ChatGPT');$('ideaSeed').focus();return}});
-  $('ideaToQuestions').addEventListener('click',()=>{if(!activeIdea()){toast('先寫下一點你有的想法即可');$('ideaSeed').focus();return}state.ideaMode='assisted';persist();renderQuestion()});
+  $('ideaToQuestions').addEventListener('click',()=>{if(!activeIdea()){toast('先寫下一點你有的想法即可');$('ideaSeed').focus();return}state.ideaMode='assisted';state.questionIndex=4;persist();renderQuestion()});
   function renderQuestion(){showPhase('questions');const index=state.questionIndex,key=keys[index],question=key==='action'?{title:'主角會做什麼事情？',hint:'建議只選一個明確動作，短片比較容易生成成功。'}:content[key];
-    $('questionView').hidden=false;$('resultView').classList.remove('active');$('questionCounter').textContent=`第 ${index+1} / ${keys.length} 題`;$('progressbar').style.width=`${(index+1)/keys.length*100}%`;
+    $('questionView').hidden=false;$('resultView').classList.remove('active');$('questionCounter').textContent=state.ideaMode==='assisted'?`視覺確認 ${index-3} / 2`:`第 ${index+1} / ${keys.length} 題`;$('progressbar').style.width=state.ideaMode==='assisted'?`${(index-3)/2*100}%`:`${(index+1)/keys.length*100}%`;
     $('sceneNumber').textContent=`STEP 01 · 第 ${state.scenes.length+1} 個片段`;$('questionTitle').textContent=question.title;$('questionHint').textContent=question.hint;
     $('choices').classList.toggle('style-gallery',key==='style');
     $('choices').replaceChildren();for(const item of optionsFor(key)){const button=document.createElement('button');button.type='button';button.className='choice'+(key==='style'?' style-card':'')+(state.answers[key]===item.id?' selected':'');button.setAttribute('aria-pressed',state.answers[key]===item.id?'true':'false');button.setAttribute('aria-label',item.label+'，'+item.sub);button.innerHTML=key==='style'?`<img src="${styleThumbs[item.id]}" alt="相同雨天街景的${escapeHTML(item.label)}範例圖" loading="lazy"><span class="style-caption"><span><span class="ct">${escapeHTML(item.label)}</span><span class="cd">${escapeHTML(item.sub)}</span></span></span><span class="check" aria-hidden="true">✓</span>`:`<span class="emoji">${item.emoji}</span><span><span class="ct">${escapeHTML(item.label)}</span><span class="cd">${escapeHTML(item.sub)}</span></span><span class="check" aria-hidden="true">✓</span>`;button.addEventListener('click',()=>{if(key==='subject'&&state.answers.subject!==item.id){delete state.answers.action;delete state.answers.actionCustom;}state.answers[key]=item.id;persist();renderQuestion();});$('choices').append(button)}
     $('extraFields').replaceChildren();if(key==='style'){const note=document.createElement('p');note.className='help';note.textContent='這些圖片只幫你選擇畫風，不會變成影片主角，也不會自動傳送到生成平台。';$('extraFields').append(note);}if((key==='subject'||key==='setting'||key==='action')&&state.answers[key]==='custom'){
       const field=document.createElement('div');field.className='field';let label={subject:'你想拍的主角是什麼？',setting:'請描述畫面所在的地方',action:'主角會做什麼？'}[key];field.innerHTML=`<label for="customAnswer">${label}</label><input class="input" id="customAnswer" maxlength="140" placeholder="${key==='action'?'例如：開門後向朋友微笑':key==='setting'?'例如：傍晚的海邊木棧道':'例如：一隻戴紅色圍巾的小白貓'}"><p class="help">可以用中文輸入，提示詞也會保留你的描述。</p>`;$('extraFields').append(field);$('customAnswer').value=state.answers[key+'Custom']||'';$('customAnswer').addEventListener('input',e=>{state.answers[key+'Custom']=e.target.value;persist()});}
     if(key==='format'){const div=document.createElement('div');div.className='inline-settings';div.innerHTML='<label for="duration">單段片長</label><select class="input" id="duration"><option value="4">4 秒</option><option value="6">6 秒</option><option value="8">8 秒</option><option value="10">10 秒</option></select>';$('extraFields').append(div);$('duration').value=state.answers.duration||'6';$('duration').addEventListener('change',e=>{state.answers.duration=e.target.value;persist()});}
-    $('validation').hidden=true;$('prevQuestion').disabled=index===0;$('nextQuestion').textContent=index===keys.length-1?'產生我的提示詞 ✨':'下一題 →';
+    $('validation').hidden=true;$('prevQuestion').disabled=index===0&&state.ideaMode!=='assisted';$('prevQuestion').textContent=state.ideaMode==='assisted'&&index===4?'← 修改我的想法':'← 上一題';$('nextQuestion').textContent=index===keys.length-1?'產生我的提示詞 ✨':'下一題 →';
   }
   function isValid(){const key=keys[state.questionIndex],v=state.answers[key];if(!v){$('validation').textContent='先選擇一個最接近的答案就可以囉。';$('validation').hidden=false;return false}if(v==='custom'&&!(state.answers[key+'Custom']||'').trim()){$('validation').textContent='先寫下你的想法，再繼續下一題。';$('validation').hidden=false;$('customAnswer')?.focus();return false}return true}
   const labels={ambient:['natural ambient sounds appropriate to the environment, no spoken dialogue','搭配符合場景的自然環境音，沒有對白'],silent:['no sound, silent video','無聲影片'],music:['soft background music that matches the mood, no spoken dialogue','搭配符合氣氛的柔和背景音樂，沒有對白'],dialogue:['clear natural spoken dialogue','自然、清楚的人物對話']};
   function buildPrompt(answers,detail,sound,dialogue,idea,shotFocus){const get=(key)=>getOption(key,answers[key],answers)||{label:'自訂',en:''};const subject=answers.subject==='custom'?(answers.subjectCustom||'自訂主角'):get('subject').en;const setting=answers.setting==='custom'?(answers.settingCustom||'自訂場景'):get('setting').en;const action=answers.action==='custom'?(answers.actionCustom||'呈現自然動作'):get('action').en;const time=Number(answers.duration)||6;const ratio=answers.format==='portrait'?'9:16':'16:9';const cnRatio=answers.format==='portrait'?'直式 9:16':'橫式 16:9';const style=get('style'),mood=getOption('mood',answers.mood)||content.mood.items.find(x=>x.id==='warm'),camera=getOption('camera',answers.camera)||content.camera.items.find(x=>x.id==='fixed'),purpose=get('purpose');
     const audio=labels[sound]||labels.ambient;const speech=sound==='dialogue'&&dialogue.trim()?` The character says exactly: “${dialogue.trim()}”.`:(sound==='dialogue'?' If anyone speaks, make the dialogue brief and natural.':'');
     const story=(idea||'').trim(), engStory=parseIdeaEnglish(story);
+    if(story){
+      const en=[`Create one coherent ${time}-second ${ratio} AI video shot.`,
+      `Creator's story / intent (priority: preserve the creator's own details): ${engStory||story}`,
+      shotFocus&&shotFocus.trim()?`This particular clip should show ONLY: ${shotFocus.trim()}`:'If the brief contains multiple scenes, select one clear cinematic beat for this single clip; do not compress the entire story into a few seconds.',
+      `Visual style: ${style.en}.`,
+      `Lighting and emotional treatment: ${mood.en}.`,
+      `Camera: ${camera.en}. Stable framing, continuous natural movement.`,
+      `Audio: ${audio[0]}.${speech}`,
+      detail.trim()?`Additional user notes: ${detail.trim()}`:'',
+      `Avoid invented characters, locations and story changes. Keep the visual identity consistent across clips. No unintended captions or words.`].filter(Boolean).join('\n\n');
+      const zh=[`生成一段連續的 ${time} 秒${cnRatio}影片。`,
+      `使用者已確認／整理的故事構思（優先尊重）：${story}`,
+      shotFocus&&shotFocus.trim()?`這一片段只拍：${shotFocus.trim()}。`:'如果故事含多幕，這一片段只呈現一個主要動作，不要把所有場景塞進短影片。',
+      `視覺風格：${style.label}。`,
+      `情緒與光線：${mood.label}。`,
+      `運鏡：${camera.label}，畫面穩定、動作自然。`,
+      `聲音：${audio[1]}。${sound==='dialogue'&&dialogue.trim()?'對白：「'+dialogue.trim()+'」。':''}`,
+      detail.trim()?`補充說明：${detail.trim()}。`:'',
+      `不要擅自加入額外角色、場景或劇情。每段畫面需維持角色與風格一致；文字與字幕可留待剪輯階段處理。`].filter(Boolean).join('\n\n');
+      return {en,zh,summary:`我的故事 · ${style.label} · ${cnRatio} · ${time}秒`,ratio,time,title:'我的影片構思'};
+    }
+
     const en=[`Create one continuous ${time}-second ${ratio} video.`,story?`Project story / creative intention (highest priority, must not contradict; do not force the entire multi-scene story into this single shot): ${engStory||story}.`:'',`Creative purpose: ${purpose.en}.`,shotFocus&&shotFocus.trim()?`Specific shot to generate NOW (primary action; only show this one beat): ${shotFocus.trim()}.`:'',`Main subject (only if consistent with the story): ${subject}.`,`Setting (only if consistent with the story): ${setting}.`,`Main action for this clip (only if consistent with the story): ${action}.`,`Visual style: ${style.en}.`,`Lighting and emotion: ${mood.en}.`,`Camera direction: ${camera.en}. Keep the subject clearly framed, with smooth, stable camera movement.`,`Audio: ${audio[0]}.${speech}`,detail.trim()?`Additional visual details (preserve the meaning of the following description): ${detail.trim()}.`:'',`Keep the main subject and visual style consistent throughout. One coherent shot with a clear beginning and end, natural movement, no abrupt scene changes. When a project story contains multiple beats, only show the chosen main action in this clip. Avoid random captions or floating text; add precise titles later in the editor.`].filter(Boolean).join('\n\n');
     const zh=[`生成一段連續、完整的 ${time} 秒${cnRatio}影片。`,story?`已整理的故事方向（優先保留，但不要要求這一小段演完全部劇情）：${story}。`:'',`影片用途：${purpose.label}。`,shotFocus&&shotFocus.trim()?`本段指定鏡頭（這一小段只拍這個重點）：${shotFocus.trim()}。`:'',`畫面主角：${answers.subject==='custom'?answers.subjectCustom:get('subject').label}。`,`場景地點：${answers.setting==='custom'?answers.settingCustom:get('setting').label}。`,`主要動作：${answers.action==='custom'?answers.actionCustom:get('action').label}。`,`視覺風格：${style.label}。`,`畫面氣氛：${mood.label}。`,`攝影方式：${camera.label}。主體清楚，運鏡平穩。`,`聲音：${audio[1]}。${sound==='dialogue'&&dialogue.trim()?'對白：「'+dialogue.trim()+'」。':''}`,detail.trim()?`額外細節：${detail.trim()}。`:'',`整段保持主角與視覺風格一致、動作自然、單一連貫鏡頭，不要突然切換場景。請避免自動生成不準確的字幕或標題，文字可在剪輯階段加入。`].filter(Boolean).join('\n\n');
     return {en,zh,summary:`${get('purpose').label} · ${get('style').label} · ${cnRatio} · ${time}秒`,ratio,time,title:answers.subject==='custom'?(answers.subjectCustom||'自訂主角'):get('subject').label};
@@ -369,8 +418,8 @@
   document.querySelectorAll('[data-platform]').forEach(btn=>btn.addEventListener('click',()=>{state.platform=btn.dataset.platform;persist();renderPlatform()}));
 
   $('nextQuestion').addEventListener('click',()=>{if(!isValid())return;if(state.questionIndex<keys.length-1){state.questionIndex++;persist();renderQuestion()}else{renderResult()}});
-  $('prevQuestion').addEventListener('click',()=>{if(state.questionIndex){state.questionIndex--;persist();renderQuestion()}});
-  $('restartQuestions').addEventListener('click',()=>{state.questionIndex=0;persist();renderQuestion()});
+  $('prevQuestion').addEventListener('click',()=>{if(state.ideaMode==='assisted'&&state.questionIndex<=4){renderIdea();return}if(state.questionIndex){state.questionIndex--;persist();renderQuestion()}});
+  $('restartQuestions').addEventListener('click',()=>{state.questionIndex=state.ideaMode==='assisted'?4:0;persist();renderQuestion()});
   $('shotFocus').addEventListener('input',e=>{state.shotFocus=e.target.value;updatePrompt()});$('detailsText').addEventListener('input',e=>{state.detail=e.target.value;updatePrompt()});$('soundChoice').addEventListener('change',e=>{state.sound=e.target.value;$('dialogueField').hidden=e.target.value!=='dialogue';updatePrompt()});$('dialogueText').addEventListener('input',e=>{state.dialogue=e.target.value;updatePrompt()});
   for(const [id,key] of [['moodChoice','mood'],['cameraChoice','camera']]){$(id).addEventListener('change',e=>{state.answers[key]=e.target.value;updatePrompt()});}
   $('copyEnglish').addEventListener('click',()=>copyText(currentPrompt().en));$('copyChinese').addEventListener('click',()=>copyText(currentPrompt().zh));$('downloadPrompt').addEventListener('click',()=>{const p=currentPrompt();downloadText('AI影片提示詞.txt','【英文提示詞 / Flow 或 Kling】\n\n'+p.en+'\n\n【中文參考】\n\n'+p.zh)});
