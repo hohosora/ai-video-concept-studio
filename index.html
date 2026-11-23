@@ -167,7 +167,15 @@
     @media(max-width:850px){.question-layout{grid-template-columns:1fr}.question-layout .sidebar{display:none}}
     @media(max-width:630px){.style-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.platform-grid{grid-template-columns:1fr}.studio-steps{grid-template-columns:1fr 1fr}.studio-primary{padding:20px}.style-card .style-caption{padding:9px}}
     @media(max-width:400px){.style-card .ct{font-size:12px}.studio-steps{grid-template-columns:1fr}}
-  </style>
+  
+    /* v0.3: explain what is complete and show missing fields explicitly. */
+    .completion-notice,.completion-warning{padding:13px 16px;margin-top:18px;border-radius:12px;font-size:14px;line-height:1.7}
+    .completion-notice{background:#eaf2ea;border:1px solid #c4dbca;color:#365e48}
+    .completion-warning{background:#fff4ed;border:1px solid #edceb9;color:#874f31}
+    .result-actions{margin-top:12px}
+    .result-actions .btn-primary{min-height:46px}
+    @media(max-width:600px){.result-actions .btn-primary{width:100%}}
+</style>
 </head>
 <body>
 <div class="page">
@@ -245,9 +253,11 @@
         <div class="result-content">
           <div><div class="prompt-card"><div class="prompt-title"><b>英文影片提示詞</b><span>Google Flow／Kling 通用版本</span></div><pre class="prompt-box en-prompt" id="promptEnglish" aria-live="polite"></pre><div class="btn-wrap" style="margin-top:13px"><button class="btn btn-primary btn-small" id="copyEnglish" type="button">複製英文提示詞</button><button class="btn btn-small" id="downloadPrompt" type="button">下載文字檔</button></div></div>
             <details class="translation"><summary>想看看中文版本？展開預覽</summary><pre class="prompt-box" id="promptChinese"></pre><div style="margin-top:9px"><button class="btn btn-small" id="copyChinese" type="button">複製中文版</button></div></details></div>
-          <div class="result-settings"><h3>讓這個鏡頭更精準</h3><div class="field" id="shotFocusField" hidden><label for="shotFocus">這一段只拍故事中的哪一幕？（建議填寫）</label><textarea id="shotFocus" class="input textarea" maxlength="600" placeholder="例如：主角剛走出辦公大樓，看見手機裡的邀請訊息，停下腳步露出微笑。"></textarea><p class="help">若故事包含多個場景，建議每個生成片段只指定一個重要動作。</p></div><div class="field"><label for="detailsText">希望畫面出現什麼特別細節？</label><textarea id="detailsText" class="input textarea" placeholder="例如：主角穿著黃色外套，手裡拿著邀請卡。" maxlength="400"></textarea></div><details class="more-settings"><summary>更多調整：氣氛、鏡頭（可略過）</summary><div class="field"><label for="moodChoice">畫面氣氛</label><select class="input" id="moodChoice"><option value="warm">溫暖療癒</option><option value="happy">明亮活潑</option><option value="calm">安靜放鬆</option><option value="mystery">神秘懸疑</option><option value="epic">震撼壯觀</option></select></div><div class="field"><label for="cameraChoice">鏡頭怎麼移動</label><select class="input" id="cameraChoice"><option value="fixed">鏡頭固定（新手推薦）</option><option value="push">緩緩推近主角</option><option value="follow">跟拍主角</option><option value="orbit">輕輕環繞主角</option></select></div></details><div class="field"><label for="soundChoice">希望有什麼聲音？</label><select id="soundChoice" class="input"><option value="ambient">自然環境音</option><option value="silent">不需要聲音</option><option value="music">柔和背景音樂</option><option value="dialogue">人物說一句話</option></select></div><div class="field" id="dialogueField" hidden><label for="dialogueText">想讓人物說什麼？（簡短一句）</label><input id="dialogueText" class="input" maxlength="100" placeholder="例如：今天下班後，一起來吧！"></div><p class="help">文字及聲音生成效果依 Google Flow 所選模型而異。正確的活動文字建議後製再加入。</p></div>
+          <div class="result-settings"><h3>想再調整鏡頭嗎？（全部選填）</h3><div class="field" id="shotFocusField" hidden><label for="shotFocus">這一段只拍故事中的哪一幕？（選填）</label><textarea id="shotFocus" class="input textarea" maxlength="600" placeholder="例如：主角剛走出辦公大樓，看見手機裡的邀請訊息，停下腳步露出微笑。"></textarea><p class="help">若故事包含多個場景，建議每個生成片段只指定一個重要動作。</p></div><div class="field"><label for="detailsText">希望畫面出現什麼特別細節？</label><textarea id="detailsText" class="input textarea" placeholder="例如：主角穿著黃色外套，手裡拿著邀請卡。" maxlength="400"></textarea></div><details class="more-settings"><summary>更多調整：氣氛、鏡頭（可略過）</summary><div class="field"><label for="moodChoice">畫面氣氛</label><select class="input" id="moodChoice"><option value="warm">溫暖療癒</option><option value="happy">明亮活潑</option><option value="calm">安靜放鬆</option><option value="mystery">神秘懸疑</option><option value="epic">震撼壯觀</option></select></div><div class="field"><label for="cameraChoice">鏡頭怎麼移動</label><select class="input" id="cameraChoice"><option value="fixed">鏡頭固定（新手推薦）</option><option value="push">緩緩推近主角</option><option value="follow">跟拍主角</option><option value="orbit">輕輕環繞主角</option></select></div></details><div class="field"><label for="soundChoice">希望有什麼聲音？</label><select id="soundChoice" class="input"><option value="ambient">自然環境音</option><option value="silent">不需要聲音</option><option value="music">柔和背景音樂</option><option value="dialogue">人物說一句話</option></select></div><div class="field" id="dialogueField" hidden><label for="dialogueText">想讓人物說什麼？（簡短一句）</label><input id="dialogueText" class="input" maxlength="100" placeholder="例如：今天下班後，一起來吧！"></div><p class="help">文字及聲音生成效果依 Google Flow 所選模型而異。正確的活動文字建議後製再加入。</p></div>
         </div>
-        <div class="result-actions"><button type="button" class="btn btn-primary" id="saveScene">✓ 儲存這段，進入下一步</button><button type="button" class="btn" id="restartQuestions">← 返回修改選擇</button></div>
+        <div class="completion-notice" id="resultCompletion" role="status" aria-live="polite">✓ 必要設定已完成。右側細節皆可略過，現在就能進入第二步。</div>
+        <div class="completion-warning" id="resultError" role="alert" hidden></div>
+        <div class="result-actions"><button type="button" class="btn btn-primary" id="saveScene">繼續第 2 步：生成影片 →</button><button type="button" class="btn" id="fixMissing" hidden>補上缺少的設定 →</button><button type="button" class="btn" id="restartQuestions">← 返回修改選擇</button></div>
       </div>
     </section>
     <section class="panel" id="panel2" aria-labelledby="title2" hidden>
@@ -405,12 +415,49 @@ ${safe(state.ideaSeed,1400)}
     return {en,zh,summary:`${get('purpose').label} · ${get('style').label} · ${cnRatio} · ${time}秒`,ratio,time,title:answers.subject==='custom'?(answers.subjectCustom||'自訂主角'):get('subject').label};
   }
   function currentPrompt(){return buildPrompt(state.answers,state.detail||'',state.sound||'ambient',state.dialogue||'',state.ideaMode==='assisted'?activeIdea():'',state.shotFocus||'')}
-  function renderResult(){previewSaved=false;showPhase('result');$('questionCounter').textContent='完成選擇';$('progressbar').style.width='100%';$('detailsText').value=state.detail||'';$('soundChoice').value=state.sound||'ambient';$('dialogueText').value=state.dialogue||'';$('dialogueField').hidden=state.sound!=='dialogue';$('shotFocusField').hidden=false;$('shotFocus').value=state.shotFocus||'';$('moodChoice').value=state.answers.mood||'warm';$('cameraChoice').value=state.answers.camera||'fixed';updatePrompt();}
+
+  // The assisted path intentionally skips four beginner questions.
+  function missingRequired(){
+    const missing=[];
+    if(state.ideaMode==='assisted'){
+      if(!activeIdea())missing.push({key:'idea',label:'故事想法'});
+      for(const key of ['style','format'])if(!state.answers[key])missing.push({key,label:content[key].title});
+    }else{
+      for(const key of keys){
+        const val=state.answers[key];
+        if(!val)missing.push({key,label:key==='action'?'主角動作':content[key].title});
+        else if(val==='custom'&&!(state.answers[key+'Custom']||'').trim())missing.push({key,label:(key==='subject'?'主角':key==='setting'?'場景':'動作')+'的自訂描述'});
+      }
+    }
+    return missing;
+  }
+  function updateCompletionStatus(){
+    const missing=missingRequired();
+    $('resultCompletion').hidden=missing.length>0;
+    $('resultError').hidden=!missing.length;
+    $('fixMissing').hidden=!missing.length;
+    if(missing.length){
+      $('resultError').textContent='尚缺少：'+missing.map(x=>x.label).join('、')+'。補上後就能繼續，不必重新開始。';
+    }else{
+      $('resultCompletion').textContent=state.ideaMode==='assisted'?'✓ 已有故事、畫面風格與影片比例。右側全是選填，現在可以直接進入第 2 步。':'✓ 六題必要設定已完成。右側全是選填，現在可以直接進入第 2 步。';
+    }
+  }
+  function jumpToMissing(){
+    const missing=missingRequired();
+    if(!missing.length)return;
+    const key=missing[0].key;
+    if(key==='idea'){renderIdea();$('ideaSeed').focus();return;}
+    state.questionIndex=keys.indexOf(key);persist();renderQuestion();
+    $('validation').textContent='請先完成「'+missing[0].label+'」，再返回提示詞頁。';
+    $('validation').hidden=false;
+  }
+  $('fixMissing').addEventListener('click',jumpToMissing);
+  function renderResult(){previewSaved=false;showPhase('result');$('questionCounter').textContent='完成選擇';$('progressbar').style.width='100%';$('detailsText').value=state.detail||'';$('soundChoice').value=state.sound||'ambient';$('dialogueText').value=state.dialogue||'';$('dialogueField').hidden=state.sound!=='dialogue';$('shotFocusField').hidden=false;$('shotFocus').value=state.shotFocus||'';$('moodChoice').value=state.answers.mood||'warm';$('cameraChoice').value=state.answers.camera||'fixed';updatePrompt();updateCompletionStatus();}
   function updatePrompt(){let p=currentPrompt();$('promptEnglish').textContent=p.en;$('promptChinese').textContent=p.zh;persist()}
   function switchStep(to){if(to>1&&!state.scenes.length){toast('請先完成並儲存至少一個影片片段');return}step=to;[1,2,3].forEach(n=>{$('panel'+n).hidden=n!==to;const tab=document.querySelector(`[data-step="${n}"]`);tab.classList.toggle('current',n===to);tab.classList.toggle('done',state.scenes.length>0&&n<to);tab.classList.toggle('available',n===1||!!state.scenes.length);tab.setAttribute('aria-current',n===to?'step':'false');});if(to===2)renderFlow();if(to===3)renderClipSummary();window.scrollTo({top:0,behavior:'smooth'});}
   async function copyText(t,message='已複製提示詞！'){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t)}else{const area=document.createElement('textarea');area.value=t;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('Copy failed')}toast(message)}catch(e){toast('複製未成功，可以直接選取文字複製')}}
   function downloadText(filename,content){const blob=new Blob([content],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-  function createScene(){if(!keys.every(k=>state.answers[k])){toast('請先完成所有題目');return}const p=currentPrompt();state.scenes.push({id:Date.now().toString(36)+'-'+Math.floor(Math.random()*1e6).toString(36),summary:p.summary,title:p.title,ratio:p.ratio,time:p.time,en:p.en,zh:p.zh,downloaded:false});persist();toast('影片片段已儲存');switchStep(2)}
+  function createScene(){if(previewSaved)return;const missing=missingRequired();if(missing.length){updateCompletionStatus();toast('請先確認提示詞下方的缺少設定');$('resultError').scrollIntoView({behavior:'smooth',block:'center'});return}previewSaved=true;const p=currentPrompt();state.scenes.push({id:Date.now().toString(36)+'-'+Math.floor(Math.random()*1e6).toString(36),summary:p.summary,title:p.title,ratio:p.ratio,time:p.time,en:p.en,zh:p.zh,downloaded:false});persist();toast('影片片段已儲存');switchStep(2)}
   function renderFlow(){renderPlatform();const list=$('sceneList');list.replaceChildren();$('clipCount').textContent=`${state.scenes.length} 個片段`;state.scenes.forEach((scene,i)=>{const card=document.createElement('article');card.className='scene-card';const done=scene.downloaded;card.innerHTML=`<div class="scene-top"><div><div class="scene-index">CLIP ${String(i+1).padStart(2,'0')}</div><h3>${escapeHTML(scene.title)}的影片片段</h3><p>${escapeHTML(scene.summary)}</p></div><span style="font-size:12px;font-weight:800;color:${done?'#168b71':'#7c8ca3'}">${done?'✓ 已下載':'待生成'}</span></div><div class="btn-wrap"><button type="button" class="btn btn-primary btn-small" data-copy="${i}">複製英文提示詞</button><button type="button" class="btn btn-small ${done?'btn-green':''}" data-check="${i}">${done?'✓ 已下載（可取消）':'標記：已下載影片'}</button><button type="button" class="btn btn-plain btn-small" data-delete="${i}">移除此段</button></div><details><summary>展開查看這段的英文提示詞</summary><pre>${escapeHTML(scene.en)}</pre></details>`;
       card.querySelector('[data-copy]').addEventListener('click',()=>copyText(scene.en));card.querySelector('[data-check]').addEventListener('click',()=>{scene.downloaded=!scene.downloaded;persist();renderFlow()});card.querySelector('[data-delete]').addEventListener('click',()=>{if(!confirm(`確定移除第 ${i+1} 個片段嗎？`))return;state.scenes.splice(i,1);persist();if(state.scenes.length)renderFlow();else{switchStep(1);renderQuestion()}});list.append(card)});}
   function renderClipSummary(){const total=state.scenes.length;const ready=state.scenes.filter(s=>s.downloaded).length;$('clipSummary').textContent=`你已規劃 ${total} 個片段，其中 ${ready} 個標記為已下載。請直接在剪輯工作室選擇下載的影片檔案；這裡的標記不代表已傳送檔案。`;}
