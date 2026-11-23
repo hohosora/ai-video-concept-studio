@@ -180,7 +180,7 @@
 <body>
 <div class="page">
   <header class="topbar">
-    <a class="brand" href="#" id="homeLink" aria-label="回到影片創作起點"><span class="brand-icon">▶</span><span>AI 影片創作構思工作室</span></a>
+    <a class="brand" href="#" id="homeLink" aria-label="返回首頁，保留目前填寫內容" title="返回首頁（保留已填內容）"><span class="brand-icon">▶</span><span>AI 影片創作構思工作室</span></a>
     <div class="top-actions"><span class="tagline">不會寫提示詞，也能開始創作</span><a class="text-link" target="_blank" rel="noopener noreferrer" href="https://bkj888.github.io/motion-creator-studio/">剪輯工作室 ↗</a></div>
   </header>
   <section class="hero">
@@ -473,7 +473,7 @@ ${safe(state.ideaSeed,1400)}
   $('saveScene').addEventListener('click',createScene);$('addScene').addEventListener('click',()=>{state.questionIndex=0;state.detail='';state.dialogue='';state.shotFocus='';persist();switchStep(1);renderResult();toast('已保留主角與風格。直接描述下一段鏡頭，或返回修改選擇題。')});
   $('toStep3').addEventListener('click',()=>{if(state.scenes.every(x=>!x.downloaded)){toast('提醒：請先從生成平台下載影片，再前往剪輯工作室')}switchStep(3)});$('backToFlow').addEventListener('click',()=>switchStep(2));
   $('newProject').addEventListener('click',()=>{if(!confirm('要清除目前儲存的片段與答案，重新開始嗎？'))return;state={...initial,scenes:[],answers:{}};persist();switchStep(1);renderEntry();toast('已開始全新作品')});
-  document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.step);switchStep(n);if(n===1){if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry()}}));$('homeLink').addEventListener('click',e=>{e.preventDefault();switchStep(1);if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry()});
+  document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.step);switchStep(n);if(n===1){if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry()}}));$('homeLink').addEventListener('click',e=>{e.preventDefault();switchStep(1);renderEntry()});
   switchStep(1);if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry();
 })();
 </script>
