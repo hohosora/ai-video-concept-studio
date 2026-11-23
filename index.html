@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#e9ebe5">
+  <meta name="theme-color" content="#dcdfd6">
   <meta name="description" content="把創作者的影片構思 know-how 變成新手友善的互動工具：故事釐清、視覺風格參考、分鏡提示詞，銜接 Google Flow、Kling 與剪輯工作室。">
   <title>AI Video Concept Studio｜AI 影片創作構思工作室</title>
   <style>
@@ -28,12 +28,12 @@
     /* V2.1 — 雲霧鼠尾草配色。低亮度、低彩度，保留清晰的文字對比。 */
     :root {
       color-scheme: light;
-      --canvas:#e9ebe5;
-      --surface:#f5f4ee;
-      --surface-raised:#faf9f4;
-      --surface-muted:#eef0e9;
-      --surface-active:#e1ece6;
-      --border:#d9e0d8;
+      --canvas:#dcdfd6;
+      --surface:#edebe3;
+      --surface-raised:#f2f0e8;
+      --surface-muted:#e4e7de;
+      --surface-active:#dce8dd;
+      --border:#cbd4c9;
       --border-strong:#adc7b9;
       --ink:#2d3d3b;
       --ink-muted:#63736d;
@@ -48,8 +48,8 @@
     body {
       color:var(--ink);
       background:
-        radial-gradient(ellipse 75% 40% at 7% 1%,#eff0e8 0%,transparent 80%),
-        linear-gradient(180deg,#e9ebe5 0%,#e6e9e3 100%);
+        radial-gradient(ellipse 75% 40% at 7% 1%,#e5e6de 0%,transparent 80%),
+        linear-gradient(180deg,#dcdfd6 0%,#d4d8d0 100%);
       min-height:100vh;
     }
     ::selection{background:#cadfd3;color:#293e38}
@@ -60,15 +60,15 @@
     .small-dot{background:#91ada1}
     .hero h1 span{color:#598176}
     .hero p,.hero-note .mini,.hero-note p{color:var(--ink-muted)}
-    .hero-note{background:#f3f3ec;border-color:var(--border);box-shadow:0 8px 24px #52635908}
+    .hero-note{background:#ecebe3;border-color:var(--border);box-shadow:0 8px 24px #52635908}
     .hero-note .pill{background:#dfece4;color:#376955}
     .stepbtn{background:var(--surface);border-color:var(--border);color:#596d64}
-    .stepbtn.current{background:#e5eee7;border-color:#91b1a3;color:#315d52;box-shadow:0 4px 14px #3f66530d}
+    .stepbtn.current{background:#dfe9df;border-color:#91b1a3;color:#315d52;box-shadow:0 4px 14px #3f66530d}
     .stepbtn.available:not(.current):hover{background:#eff2ec;border-color:#9db8ac}
     .stepbadge{background:#e6eae3;color:#62786c}
     .stepbtn.current .stepbadge{background:var(--accent);color:#fbfaf6}
     .stepbtn.done .stepbadge{background:#dceae1;color:#41785f}
-    .workspace{background:#f6f5ef;border-color:#d7dfd5;box-shadow:0 14px 38px #55665e10}
+    .workspace{background:#eeece5;border-color:#cbd5ca;box-shadow:0 14px 38px #55665e10}
     .smalllabel,.hint,.help,.result p,.result .prompt-title span,.card-note,
     .sidebar p,.scene-card p,.roadmap li,.studioheader p,.upload-card p,
     .file-row span,.instruction li,.idea-card p,.idea-disclaimer,
@@ -81,12 +81,12 @@
     .choice .emoji{background:#ecede6}
     .choice.selected .emoji{background:#d0e2d6}
     .choice .check{color:#407665}
-    .sidebar,.roadmap{background:#edefe8;border-color:#dce3d9}
+    .sidebar,.roadmap{background:#e5e9df;border-color:#ced8cb}
     .sidebar .circle{background:#dfe9df}
     .minicheck{color:#607870}
     .minicheck b{color:#42745f}
     .controls{border-color:#dee3da}
-    .btn{background:#f8f7f1;color:#435b55;border-color:#d2ddd3;box-shadow:none}
+    .btn{background:#f1f0e9;color:#435b55;border-color:#cbd7c9;box-shadow:none}
     .btn:hover:not(:disabled){background:#edf2eb;border-color:#9bb7a8}
     .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 11px #3e675a1c}
     .btn-primary:hover:not(:disabled){background:var(--accent-hover);color:#fff;border-color:var(--accent-hover)}
@@ -94,23 +94,23 @@
     .btn-plain:hover:not(:disabled){background:#e9eee7;border-color:transparent}
     .btn-green{background:#e1ede4;color:#356e56;border-color:#b7d2be}
     .field label{color:#556e63}
-    .input{background:#fbfaf6;border-color:#cfdad0;color:var(--ink)}
+    .input{background:#f7f5ee;border-color:#c5d3c5;color:var(--ink)}
     .input::placeholder{color:#87938a;opacity:1}
     .input:hover{border-color:#abc2b4}
     .input:focus{border-color:#699583;box-shadow:0 0 0 3px #83a89424}
     .result-icon{background:#dcebe1}
-    .prompt-card{background:#eff1ea;border-color:#d9e1d6}
-    .prompt-box{background:#f9f8f2;border-color:#dbe2d9;color:#354943}
-    .result-settings{background:#f7f6f0;border-color:#dce3d9}
+    .prompt-card{background:#e7eae2;border-color:#cbd7c9}
+    .prompt-box{background:#f2f0e9;border-color:#cbd7cb;color:#354943}
+    .result-settings{background:#efede6;border-color:#cbd6ca}
     .translation summary{color:#466d60}
     .info-banner{background:#e9efe8;border-color:#cbdcd0;color:#4c6d61}
     .info-banner strong{color:#355d51}
-    .scene-card,.upload-card,.idea-card{background:#f8f7f1;border-color:#d9e1d7}
+    .scene-card,.upload-card,.idea-card{background:#f0eee7;border-color:#cbd5ca}
     .scene-card pre{background:#eef0e9;color:#374c43}
     .scene-card details{color:#64776d}
     .scene-top>span{color:#61766e !important}
     .roadmap li b,.instruction b{color:#344d43}
-    .studioheader{background:#e7eee6}
+    .studioheader{background:#e0e9de}
     .file-picker{background:#f0f1e9;border-color:#a7c2b3}
     .file-picker input::file-selector-button{font:inherit;font-size:calc(14px * var(--readability-scale));border:1px solid #9bb8a8;border-radius:8px;padding:8px 12px;background:#e1eae1;color:#385f52;cursor:pointer;margin-right:12px}
     .file-picker input::file-selector-button:hover{background:#d5e5d9}
@@ -120,7 +120,7 @@
     .footer a{color:#4d7163}
     .toast{background:#344f46;color:#fff;box-shadow:0 8px 22px #354f4630}
     .entry-choice{border-color:#d5e0d6}
-    .idea-card.soft{background:#ecf0e9}
+    .idea-card.soft{background:#e3e9df}
     .idea-chip{background:#f8f7f2;border-color:#cfdbd0;color:#556f62}
     .idea-chip:hover{background:#eff3ec;border-color:#a6c0ac}
     .idea-chip[aria-pressed="true"]{background:#dfece2;border-color:#7ea38d;color:#356553}
@@ -134,7 +134,7 @@
     :where(button,a,input,textarea,select,summary):focus-visible {outline:2px solid #527d6d;outline-offset:3px}
     @media(max-width:540px){
       .workspace{box-shadow:0 6px 22px #55665e0d}
-      .entry-choice{background:#f8f7f1}
+      .entry-choice{background:#f0eee7}
     }
 
     /* V3：首頁聚焦三步，風格參考圖採同場景對照，手機維持單手選擇。 */
@@ -185,7 +185,7 @@
     .input,.textarea,select{font-size:calc(16px * var(--readability-scale));line-height:1.65}
     .stepname,.choice .ct,.style-card .ct{line-height:1.5}
     .choice .cd,.style-card .cd{line-height:1.65}
-    .font-controls{display:flex;align-items:center;gap:5px;padding:4px;background:#eff1e9;border:1px solid var(--border);border-radius:12px;white-space:nowrap}
+    .font-controls{display:flex;align-items:center;gap:5px;padding:4px;background:#e5e9e0;border:1px solid var(--border);border-radius:12px;white-space:nowrap}
     .font-controls-label{font-size:calc(14px * var(--readability-scale));color:var(--ink-muted);margin:0 5px;font-weight:750}
     .font-controls button{font-size:calc(14px * var(--readability-scale));font-weight:800;background:transparent;border:1px solid transparent;border-radius:8px;color:#4b665d;padding:7px 10px;min-height:37px}
     .font-controls button[aria-pressed="true"]{background:#dbe9de;border-color:#91b1a0;color:#2b5847}
