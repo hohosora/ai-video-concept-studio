@@ -1420,3 +1420,15 @@ body{background:#e9ebe6!important;color:var(--night)!important}
     padding:12px 0;
   }
 }
+
+
+/* ENTRY SECOND ARROW CONTRAST FIX v0.9.2 */
+/* Earlier tactile rules force a lime background-image on both arrows.
+   Give the second arrow its own dark gradient and bright glyph for readable contrast. */
+.entry-options .entry-choice:nth-child(2)::after{
+  background-color:#1c251b!important;
+  background-image:linear-gradient(155deg,#35402f 0%,#182118 100%)!important;
+  color:#e6ff7b!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);
+  border:1px solid #495742;
+}
