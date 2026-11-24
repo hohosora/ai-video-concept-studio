@@ -392,6 +392,8 @@
   const keys=['purpose','subject','setting','action','style','format'];
   const initial={scenes:[],answers:{},detail:'',sound:'ambient',dialogue:'',questionIndex:0,shotFocus:'',platform:'flow',ideaMode:'',ideaSeed:'',ideaRefined:'',ideaAudience:'',ideaGoal:'',ideaFocus:'故事發展與轉折',projectCompleted:false};
   let state={...initial};let step=1;let previewSaved=false;let toastTimer;
+  // Avoid browser scroll restoration dropping a fresh page load into the middle of the workflow.
+  try{if('scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}
   try{const saved=JSON.parse(localStorage.getItem(STORE)||'null');if(saved&&Array.isArray(saved.scenes)){state={...initial,...saved,answers:saved.answers||{},questionIndex:Math.min(5,Math.max(0,saved.questionIndex||0))};}}catch(e){ /* Private mode may block storage */ }
   const persist=()=>{try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){ /* still functional */ }};
   const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -608,7 +610,10 @@ ${safe(state.ideaSeed,1400)}
   $('retryStep1').addEventListener('click',()=>{if(state.ideaMode==='assisted'){switchStep(1);renderIdea();}else{state.ideaMode='guided';state.questionIndex=0;persist();switchStep(1);renderQuestion();}});$('backToFlow').addEventListener('click',()=>switchStep(2));
   $('newProject').addEventListener('click',()=>{if(!confirm('要清除目前儲存的片段與答案，重新開始嗎？'))return;state={...initial,scenes:[],answers:{},projectCompleted:false};persist();switchStep(1);renderEntry();toast('已開始全新作品')});
   document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.step);switchStep(n);if(n===1){if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry()}}));$('homeLink').addEventListener('click',e=>{e.preventDefault();switchStep(1);renderEntry()});
-  switchStep(1);if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry();
+  // Always open on the welcome screen; saved answers and clips remain available when the user chooses a path.
+  switchStep(1);
+  renderEntry();
+  window.scrollTo(0,0);
 })();
 </script>
 </body>
