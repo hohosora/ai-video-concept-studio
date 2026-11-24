@@ -858,3 +858,43 @@ body{background:#e9ebe6!important;color:var(--night)!important}
 @media(prefers-reduced-motion:reduce){
   .progress-overview .rail-progress-fill{transition:none!important}
 }
+
+
+/* DESKTOP ALIGNMENT REFINEMENT v0.6.3 — equal width, equal height, centered reminder */
+/* Scope strictly to the two-column desktop layout; tablet/mobile CSS remains untouched. */
+@media(min-width:1021px){
+  /* Workflow panel uses the same full grid-row width as the hero/title above it. */
+  .stepnav{
+    width:100%!important;
+    max-width:none!important;
+    margin:0!important;
+  }
+  /* Stretch the two peers in the main grid row to the same natural row height. */
+  .workspace,
+  .design-rail{
+    align-self:stretch!important;
+  }
+  .design-rail{
+    display:flex!important;
+    flex-direction:column!important;
+    height:100%;
+  }
+  .design-rail .rail-lime{
+    flex:1 1 auto!important;
+    height:100%!important;
+    min-height:0!important;
+  }
+  /* Center both reminder title and its explanatory text. */
+  .bottom-tip{
+    justify-content:center!important;
+    text-align:center!important;
+  }
+  .bottom-tip h3{
+    text-align:center!important;
+  }
+  .bottom-tip p{
+    flex:0 0 100%!important;
+    width:100%;
+    text-align:center!important;
+  }
+}
