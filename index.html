@@ -211,7 +211,7 @@
       .stepname{overflow-wrap:anywhere}
     }
 </style>
-  <link rel="stylesheet" href="./ui-redesign.css?v=0.9.2">
+  <link rel="stylesheet" href="./ui-redesign.css?v=1.0">
 </head>
 <body>
 <div class="page">
@@ -517,7 +517,7 @@
     const field=$('ideaSeed');
     if(field)field.placeholder=ideaFocusExamples[state.ideaFocus]||ideaFocusExamples['故事發展與轉折'];
   }
-  function renderIdea(){showPhase('idea');$('ideaSeed').value=state.ideaSeed||'';$('ideaRefined').value=state.ideaRefined||'';$('ideaAudience').value=state.ideaAudience||'';$('ideaGoal').value=state.ideaGoal||'';document.querySelectorAll('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.focus===state.ideaFocus)));updateIdeaExample();renderGPTPreview();}
+  function renderIdea(){showPhase('idea');$('ideaSeed').value=state.ideaSeed||'';$('ideaRefined').value=state.ideaRefined||'';$('gptReplyInput').value=state.gptReplyRaw||'';$('ideaAudience').value=state.ideaAudience||'';$('ideaGoal').value=state.ideaGoal||'';document.querySelectorAll('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.focus===state.ideaFocus)));updateIdeaExample();renderGPTPreview();renderExtractedPreview();}
   function renderEntry(){showPhase('entry');$('sceneNumber').textContent=`STEP 01 · 第 ${state.scenes.length+1} 個片段`;}
 
   // Accessibility: remember the reader's preferred text size.
@@ -542,9 +542,29 @@
   $('editResultIdea').addEventListener('click',renderIdea);
   document.querySelectorAll('[data-focus]').forEach(b=>b.addEventListener('click',()=>{state.ideaFocus=b.dataset.focus;persist();document.querySelectorAll('[data-focus]').forEach(chip=>chip.setAttribute('aria-pressed',String(chip.dataset.focus===state.ideaFocus)));updateIdeaExample();renderGPTPreview()}));
   for(const [id,key] of [['ideaSeed','ideaSeed'],['ideaAudience','ideaAudience'],['ideaGoal','ideaGoal'],['ideaRefined','ideaRefined']]){
-    $(id).addEventListener('input',e=>{state[key]=e.target.value;persist();renderGPTPreview()});
+    $(id).addEventListener('input',e=>{
+      state[key]=e.target.value;persist();renderGPTPreview();
+      if(id==='ideaRefined')renderExtractedPreview();
+    });
   }
-  $('copyGPTInstruction').addEventListener('click',()=>{if(!(state.ideaSeed||'').trim()){toast('先寫下至少一點想法，GPT 才能幫你整理');$('ideaSeed').focus();return}copyText(makeGPTBrief(),'已複製訪談指令，請到 ChatGPT 貼上使用')});
+  // Paste a complete GPT answer; preserve the original separately for re-checking.
+  $('gptReplyInput').addEventListener('input',e=>{
+    state.gptReplyRaw=e.target.value;
+    if(state.gptReplyRaw.trim()){
+      const parsed=parseGPTReply(state.gptReplyRaw);
+      state.ideaRefined=parsed.content;
+      $('ideaRefined').value=parsed.content;
+      const notice=parsed.matched?
+        (parsed.english?'✓ 已自動擷取故事與英文描述，請確認下方摘要。':'✓ 已擷取故事；英文描述可自行補上。'):
+        '找不到固定標記，已保留文字。請展開下方「修改整理內容」確認。';
+      renderExtractedPreview(notice+(parsed.truncated?' 貼回內容較長，部分文字已截取，請檢查。':''));
+    }else{
+      // Clearing pasted text never erases previously edited story content.
+      renderExtractedPreview();
+    }
+    persist();renderGPTPreview();
+  });
+  $('copyGPTInstruction').addEventListener('click',()=>{if(!(state.ideaSeed||'').trim()){toast('先寫下至少一點想法，GPT 才能幫你整理');$('ideaSeed').focus();return}copyText(makeGPTBrief(),'已複製 GPT 指令，貼到 ChatGPT 即可')});
   $('openChatGPT').addEventListener('click',e=>{if(!(state.ideaSeed||'').trim()){e.preventDefault();toast('先描述一點想法，再開啟 ChatGPT');$('ideaSeed').focus();return}});
   $('ideaToQuestions').addEventListener('click',()=>{if(!activeIdea()){toast('先寫下一點你有的想法即可');$('ideaSeed').focus();return}state.ideaMode='assisted';state.questionIndex=4;persist();renderQuestion()});
   function renderQuestion(){showPhase('questions');const index=state.questionIndex,key=keys[index],question=key==='action'?{title:'主角會做什麼事情？',hint:'建議只選一個明確動作，短片比較容易生成成功。'}:content[key];
@@ -561,7 +581,7 @@
   const labels={ambient:['natural ambient sounds appropriate to the environment, no spoken dialogue','搭配符合場景的自然環境音，沒有對白'],silent:['no sound, silent video','無聲影片'],music:['soft background music that matches the mood, no spoken dialogue','搭配符合氣氛的柔和背景音樂，沒有對白'],dialogue:['clear natural spoken dialogue','自然、清楚的人物對話']};
   function buildPrompt(answers,detail,sound,dialogue,idea,shotFocus){const get=(key)=>getOption(key,answers[key],answers)||{label:'自訂',en:''};const subject=answers.subject==='custom'?(answers.subjectCustom||'自訂主角'):get('subject').en;const setting=answers.setting==='custom'?(answers.settingCustom||'自訂場景'):get('setting').en;const action=answers.action==='custom'?(answers.actionCustom||'呈現自然動作'):get('action').en;const time=Number(answers.duration)||6;const ratio=answers.format==='portrait'?'9:16':'16:9';const cnRatio=answers.format==='portrait'?'直式 9:16':'橫式 16:9';const style=get('style'),mood=getOption('mood',answers.mood)||content.mood.items.find(x=>x.id==='warm'),camera=getOption('camera',answers.camera)||content.camera.items.find(x=>x.id==='fixed'),purpose=get('purpose');
     const audio=labels[sound]||labels.ambient;const speech=sound==='dialogue'&&dialogue.trim()?` The character says exactly: “${dialogue.trim()}”.`:(sound==='dialogue'?' If anyone speaks, make the dialogue brief and natural.':'');
-    const story=(idea||'').trim(), engStory=parseIdeaEnglish(story);
+    const sourceStory=(idea||'').trim(),story=parseIdeaChinese(sourceStory),engStory=parseIdeaEnglish(sourceStory);
     if(story){
       const en=[`Create one coherent ${time}-second ${ratio} AI video shot.`,
       `Creator's story / intent (priority: preserve the creator's own details): ${engStory||story}`,
@@ -636,7 +656,7 @@
   function renderCreativeSummary(){
     const grid=$('creativeSummaryGrid');
     if(!grid)return;
-    const story=activeIdea().replace(/\s+/g,' ').trim();
+    const story=parseIdeaChinese(activeIdea()).replace(/\s+/g,' ').trim();
     const storyShort=story.length>104?story.slice(0,104)+'…':story;
     const assisted=state.ideaMode==='assisted'&&Boolean(story);
     const items=assisted?[
