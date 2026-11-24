@@ -211,7 +211,7 @@
       .stepname{overflow-wrap:anywhere}
     }
 </style>
-  <link rel="stylesheet" href="./ui-redesign.css?v=1.1">
+  <link rel="stylesheet" href="./ui-redesign.css?v=1.2">
 </head>
 <body>
 <div class="page">
@@ -344,7 +344,20 @@
         <div class="btn-wrap" style="margin-top:17px"><button type="button" class="btn" id="addScene">＋ 我還想做下一個鏡頭</button><button type="button" class="btn btn-primary" id="toStep3">已下載影片，前往 STEP 03 →</button></div>
         <p class="clip-next-hint" id="clipNextHint">請在生成平台下載至少一段影片，並在上方標記已下載，才能進入第三步。</p>
       </div>
-        <aside class="roadmap"><div class="blockhead" id="platformTitle">在 Google Flow 怎麼做？</div><details class="platform-instructions"><summary>查看 4 步操作教學</summary><ol id="platformInstructions"><li><b>登入並建立專案</b>進入 Flow。</li><li><b>貼上提示詞</b>複製左側提示詞。</li><li><b>生成影片</b>選好模型與比例。</li><li><b>下載影片</b>將檔案存到裝置。</li></ol></details><a class="btn btn-primary" id="platformLink" target="_blank" rel="noopener noreferrer" href="https://flow.google.com/">前往 Google Flow ↗</a><p class="card-note">影片生成與下載都在所選平台進行。</p></aside>
+        <aside class="roadmap"><div class="blockhead" id="platformTitle">在 Google Flow 怎麼做？</div>
+          <div class="platform-paste-guide" id="platformPasteGuide">
+            <strong class="platform-paste-title" id="platformPasteTitle">📍 英文提示詞要貼在哪裡？</strong>
+            <p class="platform-paste-message" id="platformPasteMessage">打開 Google Flow 的<strong>專案</strong>，找到能輸入畫面描述的<strong>文字輸入框（Prompt）</strong>，把剛複製的英文提示詞貼在那裡。</p>
+            <div class="platform-paste-location" id="platformPasteLocation" aria-label="提示詞貼上位置示意">
+              <span class="platform-paste-location-caption" id="platformPasteLocationCaption">Flow 專案內 · 輸入畫面描述的地方</span>
+              <div class="platform-paste-placeholder" id="platformPastePlaceholder"><span aria-hidden="true">✍️</span><strong>← 英文提示詞貼這裡</strong></div>
+              <small id="platformPasteLocationNote">示意位置，實際介面可能因版本不同而調整。</small>
+            </div>
+            <p class="platform-paste-tip" id="platformPasteTip">⚠️ 如果看到的是圖片生成，請在輸入框的模型／模式選單中改選 <strong>Video（影片）</strong>，再按 Generate。不要貼到專案名稱或搜尋欄。</p>
+          </div>
+          <details class="platform-instructions" open><summary id="platformInstructionSummary">跟著這 4 步操作</summary><ol id="platformInstructions"><li><b>開啟 Flow 專案</b>按「+ New project」建立專案，或開啟已有專案。</li><li><b>找到專案裡的提示輸入框</b>把本網站複製的英文提示詞貼到 Prompt 文字輸入框，不是搜尋欄。</li><li><b>選 Video 並生成</b>在模型／模式選單改選 Video，確認比例、片長，再按 Generate。</li><li><b>下載完成的影片</b>在生成影片的更多選單中選擇 Download。</li></ol></details>
+          <a class="btn btn-primary" id="platformLink" target="_blank" rel="noopener noreferrer" href="https://flow.google.com/">前往 Google Flow ↗</a>
+          <p class="card-note" id="platformFootnote">先在本頁的片段卡片按「複製英文提示詞」，再開啟 Flow 貼上。本站不會自動把文字送到 Flow。</p></aside>
       </div>
     </section>
     <section class="panel" id="panel3" aria-labelledby="title3" hidden>
@@ -751,7 +764,48 @@
     $('clipNextHint').textContent=ready>0?'已標記下載的片段可進入 STEP 03；請確認影片檔已實際儲存在你的裝置中。':'請在生成平台下載至少一段影片，並在上方標記已下載，才能進入第三步。';state.scenes.forEach((scene,i)=>{const card=document.createElement('article');card.className='scene-card';const done=scene.downloaded;card.innerHTML=`<div class="scene-top"><div><div class="scene-index">CLIP ${String(i+1).padStart(2,'0')} · 文字提示詞</div><h3>${escapeHTML(scene.title)}的影片提示詞</h3><p>${escapeHTML(scene.summary)}</p></div><span class="clip-stage ${done?'is-downloaded':''}">${done?'✓ 已標記下載':'尚未標記下載'}</span></div><div class="btn-wrap"><button type="button" class="btn btn-primary btn-small" data-copy="${i}">複製英文提示詞</button><button type="button" class="btn btn-small ${done?'btn-green':''}" data-check="${i}">${done?'✓ 已標記下載（可取消）':'我已在平台下載影片'}</button><button type="button" class="btn btn-plain btn-small" data-delete="${i}">移除此段</button></div><details><summary>展開查看這段的英文提示詞</summary><pre>${escapeHTML(scene.en)}</pre></details>`;
       card.querySelector('[data-copy]').addEventListener('click',()=>copyText(scene.en));card.querySelector('[data-check]').addEventListener('click',()=>{scene.downloaded=!scene.downloaded;state.projectCompleted=false;persist();renderFlow()});card.querySelector('[data-delete]').addEventListener('click',()=>{if(!confirm(`確定移除第 ${i+1} 個片段嗎？`))return;state.scenes.splice(i,1);state.projectCompleted=false;persist();if(state.scenes.length)renderFlow();else{switchStep(1);if(state.ideaMode==='assisted')renderIdea();else renderEntry()}});list.append(card)});updateDesignRail();}
   function renderClipSummary(){const total=state.scenes.length;const ready=state.scenes.filter(s=>s.downloaded).length;$('clipSummary').textContent=`你已儲存 ${total} 份影片提示詞，其中 ${ready} 段標記為已下載。請在剪輯工作室匯入裝置中實際下載的影片；本站的標記不代表影片已傳送。`;}
-  function renderPlatform(){const which=state.platform==='kling'?'kling':'flow';document.querySelectorAll('[data-platform]').forEach(b=>{const selected=b.dataset.platform===which;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected))});const kling=which==='kling';$('platformTitle').textContent=kling?'在 Kling 怎麼做？':'在 Google Flow 怎麼做？';$('platformLink').textContent=kling?'前往 Kling AI ↗':'前往 Google Flow ↗';$('platformLink').href=kling?'https://kling.ai/app/ai-video':'https://flow.google.com/';const steps=kling?[['登入 Kling AI','進入影片生成頁面並選擇文字生成影片。'],['貼上本頁提供的提示詞','從左邊片段列表複製英文版本。'],['選擇模型與比例','依平台提供的長度與設定生成影片。'],['下載完成的影片','確認生成結果，將片段下載到自己的裝置。']]:[['登入並建立專案','進入 Google Flow 的影片生成畫面。'],['複製提示詞並貼上','從左邊選一段影片提示詞。'],['選擇影片設定並生成','依影片比例與目標秒數選擇支援的設定。'],['下載影片到自己的裝置','完成後在影片的更多選單選 Download。']];$('platformInstructions').replaceChildren();for(const [head,detail] of steps){const li=document.createElement('li');const b=document.createElement('b');b.textContent=head;li.append(b,document.createTextNode(detail));$('platformInstructions').append(li)}}
+  function renderPlatform(){
+    const which=state.platform==='kling'?'kling':'flow';
+    document.querySelectorAll('[data-platform]').forEach(button=>{
+      const selected=button.dataset.platform===which;
+      button.classList.toggle('selected',selected);
+      button.setAttribute('aria-pressed',String(selected));
+    });
+    const kling=which==='kling';
+    $('platformTitle').textContent=kling?'在 Kling 怎麼做？':'在 Google Flow 怎麼做？';
+    $('platformLink').textContent=kling?'前往 Kling AI ↗':'前往 Google Flow ↗';
+    $('platformLink').href=kling?'https://kling.ai/app/ai-video':'https://flow.google.com/';
+    $('platformPasteTitle').textContent=kling?'📍 英文提示詞貼在 Kling 哪裡？':'📍 英文提示詞要貼在哪裡？';
+    $('platformPasteMessage').innerHTML=kling?
+      '進入 Kling AI 的<strong>AI Videos／影片生成</strong>頁面，選擇<strong>文字生成影片</strong>，在提示詞文字輸入框貼上英文提示詞。':
+      '進入 Google Flow，先<strong>開啟或新增專案</strong>，在專案內找到<strong>文字提示輸入框（Prompt）</strong>，把英文提示詞貼在這個框內。';
+    $('platformPasteLocationCaption').textContent=kling?'Kling 影片生成頁 · 文字輸入區':'Flow 專案內 · 影片畫面描述輸入區';
+    $('platformPastePlaceholder').querySelector('strong').textContent='← 英文提示詞貼這裡';
+    $('platformPasteLocationNote').textContent='位置示意，實際介面名稱或排列可能因版本不同而調整。';
+    $('platformPasteTip').innerHTML=kling?
+      '⚠️ 找不到輸入框時，先確認目前在<strong>影片生成／文字生成影片</strong>，而不是圖片生成或作品管理頁面。':
+      '⚠️ Google Flow 可能預設為圖片生成：請在提示輸入框的<strong>模型／模式選單</strong>改選 <strong>Video（影片）</strong>，確認比例與秒數後按 <strong>Generate</strong>。<strong>不要貼到搜尋欄或專案名稱。</strong>';
+    $('platformInstructionSummary').textContent='跟著這 4 步操作';
+    $('platformFootnote').textContent='請先在本頁的片段卡片按「複製英文提示詞」，再前往所選平台貼上。本站不會自動把提示詞送到外部平台。';
+    const steps=kling?[
+      ['打開 Kling 的影片生成頁','登入後開啟 AI Videos，選「文字生成影片」模式。'],
+      ['找到影片提示詞輸入框','在畫面描述用的 Prompt 輸入欄貼上本頁複製的英文提示詞。'],
+      ['選模型、比例並生成','依原先的影片比例與秒數選擇平台可用的設定，再按生成。'],
+      ['下載影片','生成完成後，在 Kling 下載影片到裝置。']
+    ]:[
+      ['開啟或新增 Flow 專案','登入 Flow，點「+ New project」建立新專案，或開啟現有專案。'],
+      ['找到專案裡的文字提示輸入框','在可輸入畫面描述的 Prompt 欄位，貼上本頁片段卡片複製的英文提示詞；不是專案名稱或上方搜尋欄。'],
+      ['切換為 Video 並生成','在提示框的模型／模式選單改選 Video（影片），再確認比例、片長、模型等設定，按 Generate。'],
+      ['下載影片到自己的裝置','生成完成，在該影片的更多選單（⋯）選 Download／下載。']
+    ];
+    $('platformInstructions').replaceChildren();
+    for(const [heading,detail] of steps){
+      const li=document.createElement('li'),strong=document.createElement('b');
+      strong.textContent=heading;
+      li.append(strong,document.createTextNode(detail));
+      $('platformInstructions').append(li);
+    }
+  }
   document.querySelectorAll('[data-platform]').forEach(btn=>btn.addEventListener('click',()=>{state.platform=btn.dataset.platform;persist();renderPlatform()}));
 
   $('nextQuestion').addEventListener('click',()=>{if(!isValid())return;if(state.questionIndex<keys.length-1){state.questionIndex++;persist();renderQuestion()}else{renderResult()}});
