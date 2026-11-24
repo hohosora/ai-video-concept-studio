@@ -303,23 +303,25 @@ body{background:#e9ebe6!important;color:var(--night)!important}
              border-color 195ms ease !important;
 }
 @media(hover:hover) and (pointer:fine) {
-  :where(.entry-choice,.choice,.platform-option,.idea-chip):hover:not(:active) {
-    transform:scale(1.015) !important;
+  .entry-choice:hover:not(:active),.choice:hover:not(:active),
+  .platform-option:hover:not(:active),.idea-chip:hover:not(:active) {
+    transform:scale(1.015);
     z-index:2;
   }
-  :where(.choice.selected,.platform-option.selected,.idea-chip[aria-pressed="true"]):hover:not(:active) {
-    transform:scale(1.035) !important;
+  .choice.selected:hover:not(:active),.platform-option.selected:hover:not(:active),
+  .idea-chip[aria-pressed="true"]:hover:not(:active) {
+    transform:scale(1.035);
     z-index:3;
   }
 }
-:where(.entry-choice,.choice,.platform-option,.idea-chip):active {
+.entry-choice:active,.choice:active,.platform-option:active,.idea-chip:active {
   transform:scale(1.05) !important;
   z-index:4;
 }
 :where(.choice.selected,.platform-option.selected,.idea-chip[aria-pressed="true"]) {
   transform:scale(1.025);
   z-index:3;
-  animation:tactile-selection-pop 230ms cubic-bezier(.2,.72,.24,1) both;
+  animation:tactile-selection-pop 230ms cubic-bezier(.2,.72,.24,1);
 }
 @keyframes tactile-selection-pop {
   0% {transform:scale(.985);}
