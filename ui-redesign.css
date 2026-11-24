@@ -342,3 +342,59 @@ body{background:#e9ebe6!important;color:var(--night)!important}
     will-change:auto !important;
   }
 }
+
+
+/* FINAL STUDIO CARD HIERARCHY v0.5.3 — English-first, prominent CTA; layout unchanged */
+.rail-lime {
+  min-height:320px;
+  padding:27px 23px!important;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:stretch;
+  gap:20px;
+}
+.rail-lime .rail-studio-content {
+  min-width:0;
+}
+.rail-lime .rail-studio-kicker {
+  margin:0 0 16px;
+  font-size:calc(12px * var(--readability-scale));
+  line-height:1.35;
+  font-weight:850;
+  letter-spacing:.06em;
+  color:#364321;
+}
+.rail-lime .rail-studio-title {
+  margin:0 0 5px!important;
+  color:var(--night)!important;
+  font-size:calc(27px * var(--readability-scale))!important;
+  line-height:1.11;
+  font-weight:900;
+  letter-spacing:-.04em;
+  overflow-wrap:normal;
+  word-break:normal;
+}
+.rail-lime .rail-studio-subtitle {
+  margin:0 0 13px!important;
+  font-size:calc(19px * var(--readability-scale))!important;
+  line-height:1.35!important;
+  font-weight:850;
+  color:var(--night)!important;
+}
+.rail-lime .rail-studio-description {
+  margin:0!important;
+  font-size:calc(14px * var(--readability-scale))!important;
+  line-height:1.7!important;
+  color:#35402b!important;
+}
+.rail-lime .rail-link {
+  margin-top:auto;
+  min-height:49px;
+  font-size:calc(14px * var(--readability-scale))!important;
+  justify-content:space-between;
+}
+@media(max-width:760px) {
+  .rail-lime{min-height:270px;padding:24px 21px!important}
+  .rail-lime .rail-studio-title{font-size:calc(26px * var(--readability-scale))!important}
+}
