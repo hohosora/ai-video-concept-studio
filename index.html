@@ -425,8 +425,62 @@
     if(phase==='questions'||phase==='result')renderIdeaReviews();
   }
   function activeIdea(){const seed=(state.ideaSeed||'').trim(), refined=(state.ideaRefined||'').trim();return (refined||seed).slice(0,5000)}
-  function parseIdeaEnglish(s){let match=s.match(/【英文(?:鏡頭|畫面)描述】\s*([\s\S]*?)(?=【[^】]+】|$)/);return match?match[1].trim():''}
-  function renderIdeaReviews(){const text=activeIdea();for(const [id,textId] of [['ideaReview','ideaReviewText'],['resultIdeaReview','resultIdeaText']]){$(id).hidden=!(state.ideaMode==='assisted'&&text);$(textId).textContent=text||'';}}
+  // Read sections in both the short new GPT reply and older multi-section responses.
+  function gptReplySections(text){
+    const src=String(text||'').replace(/\r\n?/g,'\n').replace(/^\s*\x60{3}[^\n]*\n|^\s*\x60{3}\s*$/gm,'');
+    const re=/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:\*\*)?(?:【([^】\n]{1,36})】|(中文故事摘要|故事摘要|英文畫面描述|英文鏡頭描述|畫面重點)(?=[：:]|[ \t]*\n))(?:\*\*)?[ \t]*[:：]?[ \t]*/g;
+    const headings=[...src.matchAll(re)],parts={};
+    for(let i=0;i<headings.length;i++){
+      const item=headings[i],key=(item[1]||item[2]).trim();
+      const start=item.index+item[0].length;
+      const end=i+1<headings.length?headings[i+1].index:src.length;
+      const value=src.slice(start,end).trim().replace(/\*\*\s*$/,'').trim();
+      if(value&&!Object.prototype.hasOwnProperty.call(parts,key))parts[key]=value;
+    }
+    return parts;
+  }
+  function readStoryParts(raw){
+    const parts=gptReplySections(raw);
+    const chinese=parts['中文故事摘要']||parts['故事摘要']||parts['中文故事構思']||'';
+    const english=parts['英文畫面描述']||parts['英文鏡頭描述']||'';
+    const focus=parts['畫面重點']||'';
+    return {chinese,english,focus,matched:Boolean(chinese||english)};
+  }
+  function parseIdeaEnglish(s){return readStoryParts(s).english;}
+  function parseIdeaChinese(s){
+    const raw=String(s||'').trim(),parts=readStoryParts(raw);
+    return parts.chinese||(!parts.matched?raw:'');
+  }
+  function parseGPTReply(raw){
+    const parts=readStoryParts(raw),source=String(raw||'').trim();
+    // Unknown formats remain editable and their contents are not silently discarded.
+    const story=(parts.chinese||(!parts.matched?source:state.ideaSeed||'')).slice(0,3000).trim();
+    const english=parts.english.slice(0,1400).trim();
+    const focus=parts.focus.slice(0,340).trim();
+    const content=[story?'【中文故事摘要】\n'+story:'',english?'【英文畫面描述】\n'+english:'',focus?'【畫面重點】\n'+focus:''].filter(Boolean).join('\n\n').slice(0,5000);
+    return {content,chinese:story,english,focus,matched:parts.matched,truncated:source.length>20000||parts.chinese.length>3000||parts.english.length>1400||(!parts.matched&&source.length>3000)};
+  }
+  function renderIdeaReviews(){
+    const text=parseIdeaChinese(activeIdea());
+    for(const [id,textId] of [['ideaReview','ideaReviewText'],['resultIdeaReview','resultIdeaText']]){
+      $(id).hidden=!(state.ideaMode==='assisted'&&text);
+      $(textId).textContent=text||'';
+    }
+  }
+  function renderExtractedPreview(message){
+    const raw=(state.ideaRefined||'').trim(),parts=readStoryParts(raw);
+    const chinese=parts.chinese||(!parts.matched?raw:'');
+    const preview=$('gptExtractPreview'),englishWrap=$('gptEnglishPreviewWrap');
+    preview.hidden=!raw;
+    $('gptStoryPreview').textContent=chinese||'尚未辨識到中文故事，請展開下方欄位補上。';
+    englishWrap.hidden=!parts.english;
+    $('gptEnglishPreview').textContent=parts.english||'';
+    $('gptExtractStatus').textContent=message||(
+      !raw?'貼上 ChatGPT 的完整回答後會自動整理；也可以直接使用最初的想法。':
+      parts.matched?(parts.english?'✓ 已整理中文故事與英文畫面描述。':'✓ 已整理故事；沒有找到英文描述，可手動補上。'):
+      '已保留文字，但沒有找到固定段落標記；請展開下方欄位確認內容。'
+    );
+  }
   function makeGPTBrief(){
     const safe=(value,max)=>String(value||'').trim().slice(0,max)||'尚未提供';
     return [
