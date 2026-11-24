@@ -211,7 +211,7 @@
       .stepname{overflow-wrap:anywhere}
     }
 </style>
-  <link rel="stylesheet" href="./ui-redesign.css?v=0.8">
+  <link rel="stylesheet" href="./ui-redesign.css?v=0.9">
 </head>
 <body>
 <div class="page">
@@ -480,7 +480,7 @@ ${safe(state.ideaSeed,1400)}
     $('sceneNumber').textContent=`STEP 01 · 第 ${state.scenes.length+1} 個片段`;$('questionTitle').textContent=question.title;$('questionHint').textContent=question.hint;
     $('choices').classList.toggle('style-gallery',key==='style');
     $('choices').replaceChildren();for(const item of optionsFor(key)){const button=document.createElement('button');button.type='button';button.className='choice'+(key==='style'?' style-card':'')+(state.answers[key]===item.id?' selected':'');button.setAttribute('aria-pressed',state.answers[key]===item.id?'true':'false');button.setAttribute('aria-label',item.label+'，'+item.sub);button.innerHTML=key==='style'?`<img src="${styleThumbs[item.id]}" alt="相同雨天街景的${escapeHTML(item.label)}範例圖" loading="lazy"><span class="style-caption"><span><span class="ct">${escapeHTML(item.label)}</span><span class="cd">${escapeHTML(item.sub)}</span></span></span><span class="check" aria-hidden="true">✓</span>`:`<span class="emoji">${item.emoji}</span><span><span class="ct">${escapeHTML(item.label)}</span><span class="cd">${escapeHTML(item.sub)}</span></span><span class="check" aria-hidden="true">✓</span>`;button.addEventListener('click',()=>{if(key==='subject'&&state.answers.subject!==item.id){delete state.answers.action;delete state.answers.actionCustom;}state.answers[key]=item.id;persist();renderQuestion();});$('choices').append(button)}
-    $('extraFields').replaceChildren();if(key==='style'){const note=document.createElement('p');note.className='help';note.textContent='這些圖片只幫你選擇畫風，不會變成影片主角，也不會自動傳送到生成平台。';$('extraFields').append(note);}if((key==='subject'||key==='setting'||key==='action')&&state.answers[key]==='custom'){
+    $('extraFields').replaceChildren();if(key==='style'){const note=document.createElement('p');note.className='help';note.textContent='圖片只用來選畫風，不會自動傳送到生成平台。';$('extraFields').append(note);}if((key==='subject'||key==='setting'||key==='action')&&state.answers[key]==='custom'){
       const field=document.createElement('div');field.className='field';let label={subject:'你想拍的主角是什麼？',setting:'請描述畫面所在的地方',action:'主角會做什麼？'}[key];field.innerHTML=`<label for="customAnswer">${label}</label><input class="input" id="customAnswer" maxlength="140" placeholder="${key==='action'?'例如：開門後向朋友微笑':key==='setting'?'例如：傍晚的海邊木棧道':'例如：一隻戴紅色圍巾的小白貓'}"><p class="help">可以用中文輸入，提示詞也會保留你的描述。</p>`;$('extraFields').append(field);$('customAnswer').value=state.answers[key+'Custom']||'';$('customAnswer').addEventListener('input',e=>{state.answers[key+'Custom']=e.target.value;persist()});}
     if(key==='format'){const div=document.createElement('div');div.className='inline-settings';div.innerHTML='<label for="duration">單段片長</label><select class="input" id="duration"><option value="4">4 秒</option><option value="6">6 秒</option><option value="8">8 秒</option><option value="10">10 秒</option></select>';$('extraFields').append(div);$('duration').value=state.answers.duration||'6';$('duration').addEventListener('change',e=>{state.answers.duration=e.target.value;persist()});}
     $('validation').hidden=true;$('prevQuestion').disabled=index===0&&state.ideaMode!=='assisted';$('prevQuestion').textContent=state.ideaMode==='assisted'&&index===4?'← 修改我的想法':'← 上一題';$('nextQuestion').textContent=index===keys.length-1?'產生我的提示詞 ✨':'下一題 →';
@@ -541,7 +541,7 @@ ${safe(state.ideaSeed,1400)}
     if(missing.length){
       $('resultError').textContent='尚缺少：'+missing.map(x=>x.label).join('、')+'。補上後就能繼續，不必重新開始。';
     }else{
-      $('resultCompletion').textContent=state.ideaMode==='assisted'?'✓ 故事、畫風與比例已確認。右側可略過；儲存提示詞後，前往 STEP 02 生成影片。':'✓ 六題必要設定已完成。右側可略過；儲存文字提示詞後，前往 STEP 02 生成影片。';
+      $('resultCompletion').textContent=state.ideaMode==='assisted'?'✓ 故事、畫風與比例已確認。右側可略過；儲存提示詞後，前往 STEP 02 生成影片。':'✓ 選擇完成！可直接儲存提示詞。';
     }
   }
   function jumpToMissing(){
@@ -555,7 +555,38 @@ ${safe(state.ideaSeed,1400)}
   }
   $('fixMissing').addEventListener('click',jumpToMissing);
   function renderResult(){previewSaved=false;showPhase('result');$('questionCounter').textContent='完成選擇';$('progressbar').style.width='100%';$('detailsText').value=state.detail||'';$('soundChoice').value=state.sound||'ambient';$('dialogueText').value=state.dialogue||'';$('dialogueField').hidden=state.sound!=='dialogue';$('shotFocusField').hidden=false;$('shotFocus').value=state.shotFocus||'';$('moodChoice').value=state.answers.mood||'warm';$('cameraChoice').value=state.answers.camera||'fixed';updatePrompt();updateCompletionStatus();}
-  function updatePrompt(){let p=currentPrompt();$('promptEnglish').textContent=p.en;$('promptChinese').textContent=p.zh;persist()}
+  function summaryChoice(key){
+    const selected=state.answers[key];
+    if(selected==='custom')return (state.answers[key+'Custom']||'').trim()||'自訂內容';
+    return getOption(key,selected)?.label||'待確認';
+  }
+  // Use only user-selected values or a short excerpt of the supplied story.
+  function renderCreativeSummary(){
+    const grid=$('creativeSummaryGrid');
+    if(!grid)return;
+    const story=activeIdea().replace(/\s+/g,' ').trim();
+    const storyShort=story.length>104?story.slice(0,104)+'…':story;
+    const assisted=state.ideaMode==='assisted'&&Boolean(story);
+    const items=assisted?[
+      ['故事方向',storyShort],
+      ['畫面風格',summaryChoice('style')],
+      ['影片比例',summaryChoice('format')],
+      ['這段重點',(state.shotFocus||'').trim()||'從故事中選一個主要畫面']
+    ]:[
+      ['主角',summaryChoice('subject')],
+      ['場景',summaryChoice('setting')],
+      ['主要動作',summaryChoice('action')],
+      ['畫面風格',summaryChoice('style')]
+    ];
+    grid.replaceChildren();
+    for(const [name,value] of items){
+      const card=document.createElement('div');card.className='creative-summary-item';
+      const label=document.createElement('span');label.className='creative-summary-label';label.textContent=name;
+      const detail=document.createElement('strong');detail.className='creative-summary-value';detail.textContent=value;
+      card.append(label,detail);grid.append(card);
+    }
+  }
+  function updatePrompt(){let p=currentPrompt();$('promptEnglish').textContent=p.en;$('promptChinese').textContent=p.zh;renderCreativeSummary();persist()}
   // Progress is based on completed milestones, NOT which step is currently displayed.
   function completionPercent(){
     if(!state.scenes.length)return 0;
@@ -564,7 +595,7 @@ ${safe(state.ideaSeed,1400)}
   }
   function updateDesignRail(){
     const names=['','01 · 釐清想法','02 · 生成影片','03 · 完成作品'];
-    const hints=['','先選最接近的方向。故事、人物與畫面都能在產生提示詞前調整。','提示詞已整理好，複製到 Google Flow 或 Kling 生成並下載。','將下載的片段匯入剪輯工作室，排好順序並輸出影片。'];
+    const hints=['','先選方向，之後都能修改。','複製提示詞，前往平台生成。','匯入影片，剪輯並輸出。'];
     const name=$('railStepName'),count=$('railSceneCount'),progress=$('railProgress'),tip=$('railTip');
     if(name)name.textContent=names[step];
     if(count)count.textContent=String(state.scenes.length);
