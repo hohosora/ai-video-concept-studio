@@ -207,14 +207,14 @@
       .stepname{overflow-wrap:anywhere}
     }
 </style>
-  <link rel="stylesheet" href="./ui-redesign.css?v=0.6.1">
+  <link rel="stylesheet" href="./ui-redesign.css?v=0.6.2">
 </head>
 <body>
 <div class="page">
   <section class="rail-card rail-dark progress-overview" aria-label="整體創作進度">
     <div class="progress-meta"><span class="rail-overline">CREATIVE PROGRESS</span><h2>創作進度</h2></div>
     <div class="rail-step-name" id="railStepName">01 · 釐清想法</div>
-    <span class="rail-mobile-step" id="railMobileStep" aria-hidden="true">STEP 01</span>
+    <span class="rail-mobile-step" id="railMobileStep" aria-hidden="true">步驟1</span>
     <div class="rail-progress-track" id="railProgressTrack" role="progressbar" aria-label="整體創作進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33" aria-valuetext="第 1 步，共 3 步">
       <div id="railProgress" class="rail-progress-fill"></div>
     </div>
@@ -537,7 +537,7 @@ ${safe(state.ideaSeed,1400)}
     if(progress){progress.style.width=percent+'%';progress.style.setProperty('--rail-progress',percent+'%');}
     const track=$('railProgressTrack');
     if(track){track.setAttribute('aria-valuenow',String(Math.round(percent)));track.setAttribute('aria-valuetext',`第 ${step} 步，共 3 步`);}
-    const mobileStep=$('railMobileStep');if(mobileStep)mobileStep.textContent='STEP '+String(step).padStart(2,'0');
+    const mobileStep=$('railMobileStep');if(mobileStep)mobileStep.textContent='步驟'+String(step);
     if(tip)tip.textContent=hints[step];
   }
   function switchStep(to){if(to>1&&!state.scenes.length){toast('請先完成並儲存至少一個影片片段');return}step=to;[1,2,3].forEach(n=>{$('panel'+n).hidden=n!==to;const tab=document.querySelector(`[data-step="${n}"]`);tab.classList.toggle('current',n===to);tab.classList.toggle('done',state.scenes.length>0&&n<to);tab.classList.toggle('available',n===1||!!state.scenes.length);tab.setAttribute('aria-current',n===to?'step':'false');});if(to===2)renderFlow();if(to===3)renderClipSummary();window.scrollTo({top:0,behavior:'smooth'});updateDesignRail();}
