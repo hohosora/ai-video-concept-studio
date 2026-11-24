@@ -211,7 +211,7 @@
       .stepname{overflow-wrap:anywhere}
     }
 </style>
-  <link rel="stylesheet" href="./ui-redesign.css?v=1.0">
+  <link rel="stylesheet" href="./ui-redesign.css?v=1.1">
 </head>
 <body>
 <div class="page">
@@ -270,7 +270,7 @@
           <div class="idea-card soft">
             <div class="assistant-label">CHATGPT · AI 創作整理</div>
             <h3>讓 ChatGPT 幫你整理（選用）</h3>
-            <p>複製指令到 ChatGPT，產生草案後直接複製整份回答貼回本頁。</p>
+            <p>把指令貼到 ChatGPT，等它整理好後，<strong>整份回答直接複製貼回</strong>，不用找出哪一段。</p>
             <details class="gpt-preview"><summary>查看 GPT 指令預覽</summary><div class="idea-copy" id="ideaGPTPreview" aria-label="ChatGPT 協作指令預覽"></div></details>
             <div class="compact-controls" style="margin-top:14px"><button type="button" class="btn btn-primary btn-small" id="copyGPTInstruction">① 複製指令</button><a class="btn btn-small" id="openChatGPT" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">② 開啟 ChatGPT ↗</a></div>
             <details class="inline-help"><summary>關於 GPT 協作</summary><p>指令需貼到 ChatGPT，滿意的故事再貼回本頁。本站不直接呼叫 GPT API，也不收取 API 費用。</p></details>
@@ -279,18 +279,20 @@
         <div class="idea-card gpt-return-card" style="margin-top:19px">
           <div class="assistant-label">PASTE GPT REPLY · 貼回整理</div>
           <h3>把 ChatGPT 的回答貼回來</h3>
-          <p>直接貼上<strong>整份回答</strong>，小幫手會自動擷取故事與英文畫面描述。沒有使用 GPT，也可以直接繼續。</p>
-          <div class="field"><label for="gptReplyInput">貼上 ChatGPT 的完整回答（選用）</label><textarea class="input textarea" id="gptReplyInput" rows="5" maxlength="20000" placeholder="整份複製貼在這裡，不必自己挑段落。"></textarea></div>
+          <p><strong>直接貼上 ChatGPT 的整份回答。</strong> 開頭有建議、結尾有標記都沒關係，小幫手會自動找故事及英文描述。確認結果後再選畫風；沒用 ChatGPT 也能直接繼續。</p>
+          <div class="field"><label for="gptReplyInput">③ 貼上 ChatGPT 的整份回答（選填）</label><textarea class="input textarea" id="gptReplyInput" rows="5" maxlength="20000" placeholder="直接貼上整份 ChatGPT 回答，不需要挑選特定文字。"></textarea></div>
           <div class="gpt-extract-status" id="gptExtractStatus" role="status" aria-live="polite">貼上後會自動整理；也可以直接使用最初的想法。</div>
           <div class="gpt-extract-preview" id="gptExtractPreview" hidden>
-            <strong class="gpt-extract-heading">已整理好，請確認以下內容</strong>
+            <strong class="gpt-extract-heading">已找到以下內容，請先確認對不對</strong>
             <div class="gpt-extract-section"><b>中文故事摘要</b><p id="gptStoryPreview"></p></div>
             <div class="gpt-extract-section" id="gptEnglishPreviewWrap" hidden><b>英文畫面描述</b><p id="gptEnglishPreview"></p></div>
+            <button type="button" class="btn btn-small gpt-review-edit" id="editExtracted">需要調整？修改故事或英文描述</button>
           </div>
           <details class="inline-help manual-story-editor" id="manualStoryEditor">
             <summary>修改整理內容／自行輸入故事</summary>
-            <div class="field"><label for="ideaRefined">整理後的故事（可自行修改）</label><textarea class="input textarea" id="ideaRefined" rows="6" maxlength="5000" placeholder="可自行輸入故事；有從 GPT 擷取內容時，也能在這裡修改。"></textarea></div>
-            <p>可編輯故事或英文描述，修改後的內容會用於生成影片提示詞。</p>
+            <div class="field"><label for="ideaRefined">中文故事摘要（可自行修改）</label><textarea class="input textarea" id="ideaRefined" rows="5" maxlength="3200" placeholder="修改 ChatGPT 整理的故事，也可以自行輸入。"></textarea></div>
+            <div class="field"><label for="ideaEnglish">英文畫面描述（選填、可自行修改）</label><textarea class="input textarea" id="ideaEnglish" rows="4" maxlength="1600" placeholder="可修改系統擷取的英文描述，或自行輸入英文。"></textarea></div>
+            <p>修改後會即時更新上方摘要，也會套用到後續影片提示詞。沒有英文時也能用中文故事繼續。</p>
           </details>
           <div class="idea-status" id="ideaStatus" role="status">尚未貼入故事整理稿，可直接使用最初的想法。</div>
           <div class="controls"><button type="button" class="btn btn-plain" id="backToEntry">← 更換開始方式</button><button type="button" class="btn btn-primary" id="ideaToQuestions">確認故事，選擇畫風 →</button></div>
@@ -406,7 +408,7 @@
   const sceneryActions=[opt('advance','鏡頭緩緩向前','帶領觀眾進入畫面','➡️','gradually opens up as the camera glides forward'),opt('sun','陽光逐漸灑進來','溫暖有層次','🌞','is gradually illuminated by warm sunlight'),opt('wind','微風帶動環境','自然、有生命力','🍃','comes alive with a gentle breeze and subtle natural movement'),opt('cloud','雲霧慢慢飄過','有空間與氣氛','☁️','is enveloped in slowly drifting mist and clouds')];
   const customActions=[opt('reveal','慢慢呈現主體細節','安全、容易掌握','✨','is gradually revealed with natural subtle movement'),opt('move','主體自然移動','單一清楚的動作','➡️','moves smoothly through the scene'),opt('turn','主體緩緩轉向鏡頭','有明確視覺重點','🔄','slowly turns toward the camera'),opt('custom','我指定動作','自行輸入希望的動作','✍️','')];
   const keys=['purpose','subject','setting','action','style','format'];
-  const initial={scenes:[],answers:{},detail:'',sound:'ambient',dialogue:'',questionIndex:0,shotFocus:'',platform:'flow',ideaMode:'',ideaSeed:'',ideaRefined:'',ideaAudience:'',ideaGoal:'',ideaFocus:'故事發展與轉折',gptReplyRaw:'',projectCompleted:false};
+  const initial={scenes:[],answers:{},detail:'',sound:'ambient',dialogue:'',questionIndex:0,shotFocus:'',platform:'flow',ideaMode:'',ideaSeed:'',ideaRefined:'',ideaEnglish:'',ideaAudience:'',ideaGoal:'',ideaFocus:'故事發展與轉折',gptReplyRaw:'',projectCompleted:false};
   let state={...initial};let step=1;let previewSaved=false;let toastTimer;
   // Avoid browser scroll restoration dropping a fresh page load into the middle of the workflow.
   try{if('scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}
@@ -424,42 +426,66 @@
     $('questionCounter').textContent=phase==='entry'?'選擇開始方式':phase==='idea'?'先釐清想法':$('questionCounter').textContent;
     if(phase==='questions'||phase==='result')renderIdeaReviews();
   }
-  function activeIdea(){const seed=(state.ideaSeed||'').trim(), refined=(state.ideaRefined||'').trim();return (refined||seed).slice(0,5000)}
-  // Read sections in both the short new GPT reply and older multi-section responses.
-  function gptReplySections(text){
-    const src=String(text||'').replace(/\r\n?/g,'\n').replace(/^\s*\x60{3}[^\n]*\n|^\s*\x60{3}\s*$/gm,'');
-    const re=/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:\*\*)?(?:【([^】\n]{1,36})】|(中文故事摘要|故事摘要|英文畫面描述|英文鏡頭描述|畫面重點)(?=[：:]|[ \t]*\n))(?:\*\*)?[ \t]*[:：]?[ \t]*/g;
+  // Separate editable content, compatible with the existing prompt builder.
+  function activeIdea(){
+    const story=((state.ideaRefined||'').trim()||(state.ideaSeed||'').trim()).slice(0,3200);
+    const english=(state.ideaEnglish||'').trim().slice(0,1600);
+    return [story?'【中文故事摘要】\n'+story:'',english?'【英文畫面描述】\n'+english:''].filter(Boolean).join('\n\n').slice(0,5000);
+  }
+  // Parse the final marked section of the complete GPT answer, or legacy headings.
+  function gptReplySections(raw){
+    let src=String(raw||'').replace(/\r\n?/g,'\n').replace(/^\s*\x60{3}[^\n]*\n|^\s*\x60{3}\s*$/gm,'');
+    const starts=[...src.matchAll(/【貼回小幫手[｜|]\s*開始】|(?:^|\n)[ \t]*(?:={3,}|-{3,})[ \t]*貼回小幫手[^\n]*開始[^\n]*/gm)];
+    if(starts.length){
+      src=src.slice(starts[starts.length-1].index);
+      const end=src.search(/【貼回小幫手[｜|]\s*結束】|(?:^|\n)[ \t]*(?:={3,}|-{3,})[ \t]*貼回小幫手[^\n]*結束[^\n]*/m);
+      if(end>=0)src=src.slice(0,end);
+    }
+    const re=/(?:^|\n)[ \t]*(?:#{1,6}[ \t]*)?(?:(?:[-*•]|\d+[.、)）])[ \t]*)?(?:\*\*[ \t]*)?(?:【([^】\n]{1,60})】|(中文故事摘要|中文故事構思|故事摘要|故事構想|故事方向|完整故事|影片故事|故事版本|英文畫面描述|英文鏡頭描述|英文場景描述|英文影片描述|英文提示詞|English Visual Description|Visual Prompt|畫面重點)(?=(?:\*\*)?[ \t]*[:：]|[ \t]*\n))(?:[ \t]*\*\*)?[ \t]*[:：]?[ \t]*/gim;
     const headings=[...src.matchAll(re)],parts={};
+    const normalize=label=>{
+      const key=String(label||'').replace(/[\s：:]+/g,'').toLowerCase();
+      if(/^(中文故事摘要|中文故事構思|故事摘要|故事構想|故事方向|完整故事|影片故事|故事版本)$/.test(key))return 'chinese';
+      if(/^(英文畫面描述|英文鏡頭描述|英文場景描述|英文影片描述|英文提示詞|englishvisualdescription|visualprompt)$/.test(key))return 'english';
+      return key==='畫面重點'?'focus':'';
+    };
     for(let i=0;i<headings.length;i++){
-      const item=headings[i],key=(item[1]||item[2]).trim();
-      const start=item.index+item[0].length;
-      const end=i+1<headings.length?headings[i+1].index:src.length;
+      const hit=headings[i],key=normalize(hit[1]||hit[2]);
+      const start=hit.index+hit[0].length,end=i+1<headings.length?headings[i+1].index:src.length;
       const value=src.slice(start,end).trim().replace(/\*\*\s*$/,'').trim();
-      if(value&&!Object.prototype.hasOwnProperty.call(parts,key))parts[key]=value;
+      if(key&&value&&!parts[key])parts[key]=value;
     }
     return parts;
   }
   function readStoryParts(raw){
     const parts=gptReplySections(raw);
-    const chinese=parts['中文故事摘要']||parts['故事摘要']||parts['中文故事構思']||'';
-    const english=parts['英文畫面描述']||parts['英文鏡頭描述']||'';
-    const focus=parts['畫面重點']||'';
-    return {chinese,english,focus,matched:Boolean(chinese||english)};
+    return {chinese:parts.chinese||'',english:parts.english||'',focus:parts.focus||'',matched:!!(parts.chinese||parts.english)};
   }
-  function parseIdeaEnglish(s){return readStoryParts(s).english;}
-  function parseIdeaChinese(s){
-    const raw=String(s||'').trim(),parts=readStoryParts(raw);
-    return parts.chinese||(!parts.matched?raw:'');
+  function parseIdeaEnglish(raw){return readStoryParts(raw).english;}
+  function parseIdeaChinese(raw){
+    const source=String(raw||'').trim(),parts=readStoryParts(source);
+    return parts.chinese||(!parts.matched?source:'');
   }
   function parseGPTReply(raw){
-    const parts=readStoryParts(raw),source=String(raw||'').trim();
-    // Unknown formats remain editable and their contents are not silently discarded.
-    const story=(parts.chinese||(!parts.matched?source:state.ideaSeed||'')).slice(0,3000).trim();
-    const english=parts.english.slice(0,1400).trim();
-    const focus=parts.focus.slice(0,340).trim();
-    const content=[story?'【中文故事摘要】\n'+story:'',english?'【英文畫面描述】\n'+english:'',focus?'【畫面重點】\n'+focus:''].filter(Boolean).join('\n\n').slice(0,5000);
-    return {content,chinese:story,english,focus,matched:parts.matched,truncated:source.length>20000||parts.chinese.length>3000||parts.english.length>1400||(!parts.matched&&source.length>3000)};
+    const source=String(raw||'').trim(),parts=readStoryParts(source);
+    const chinese=(parts.chinese||(!parts.matched?source:(state.ideaRefined||state.ideaSeed||''))).slice(0,3200).trim();
+    const english=parts.english.slice(0,1600).trim();
+    return {chinese,english,focus:parts.focus.slice(0,340).trim(),matched:parts.matched,
+      truncated:source.length>20000||parts.chinese.length>3200||parts.english.length>1600||(!parts.matched&&source.length>3200)};
   }
+  // Migrate previously saved combined bracket sections to two editable fields.
+  function migrateLegacyIdea(){
+    const old=(state.ideaRefined||'').trim();
+    if(!old||(state.ideaEnglish||'').trim())return;
+    const parts=readStoryParts(old);
+    if(parts.matched){
+      state.ideaRefined=(parts.chinese||state.ideaSeed||'').slice(0,3200);
+      state.ideaEnglish=parts.english.slice(0,1600);
+      if(parts.focus&&!(state.shotFocus||'').trim())state.shotFocus=parts.focus.slice(0,340);
+      persist();
+    }
+  }
+  migrateLegacyIdea();
   function renderIdeaReviews(){
     const text=parseIdeaChinese(activeIdea());
     for(const [id,textId] of [['ideaReview','ideaReviewText'],['resultIdeaReview','resultIdeaText']]){
@@ -468,44 +494,46 @@
     }
   }
   function renderExtractedPreview(message){
-    const raw=(state.ideaRefined||'').trim(),parts=readStoryParts(raw);
-    const chinese=parts.chinese||(!parts.matched?raw:'');
-    const preview=$('gptExtractPreview'),englishWrap=$('gptEnglishPreviewWrap');
-    preview.hidden=!raw;
-    $('gptStoryPreview').textContent=chinese||'尚未辨識到中文故事，請展開下方欄位補上。';
-    englishWrap.hidden=!parts.english;
-    $('gptEnglishPreview').textContent=parts.english||'';
+    const chinese=(state.ideaRefined||state.ideaSeed||'').trim();
+    const english=(state.ideaEnglish||'').trim(),pasted=(state.gptReplyRaw||'').trim();
+    const edited=(state.ideaRefined||'').trim()||english;
+    $('gptExtractPreview').hidden=!(pasted||edited);
+    $('gptStoryPreview').textContent=chinese||'尚未有中文故事，請在下方補上。';
+    $('gptEnglishPreviewWrap').hidden=!(pasted||english);
+    $('gptEnglishPreview').textContent=english||'尚未找到英文描述。可以手動補上，也能先用中文故事繼續。';
     $('gptExtractStatus').textContent=message||(
-      !raw?'貼上 ChatGPT 的完整回答後會自動整理；也可以直接使用最初的想法。':
-      parts.matched?(parts.english?'✓ 已整理中文故事與英文畫面描述。':'✓ 已整理故事；沒有找到英文描述，可手動補上。'):
-      (state.gptReplyRaw||'').trim()?'已保留貼上的文字，沒有找到固定段落標記；請展開下方欄位確認內容。':'已保留你手動輸入的故事，可以直接繼續或編輯。'
+      pasted?(english?'✓ 已整理中文故事與英文描述，請確認後選畫風。':'已取得內容，請確認故事；英文可自行補上。'):
+      edited?'✓ 已保留你手動修改的內容，可以繼續。':
+      '貼上 ChatGPT 的完整回答就會自動整理；也能直接使用最初想法。'
     );
   }
   function makeGPTBrief(){
-    const safe=(value,max)=>String(value||'').trim().slice(0,max)||'尚未提供';
+    const safe=(value,max)=>String(value||'').trim().slice(0,max)||'未提供';
     return [
-      '你是協助新手構思 AI 影片的創意導演。請用繁體中文，直接提出一版清楚、可拍攝、可修改的故事。不要先問一長串問題。',
-      '尊重使用者已確認的內容；未確認的細節可建議，但不要當成既定事實。每個短影片片段只聚焦一個主要動作。',
+      '你是協助新手構思 AI 影片的創意導演。請使用繁體中文，直接給可修改的故事草案，不要先問一連串問題。',
+      '尊重已確定的人物、情節和情緒；未確認的細節只能提議。每個短影片鏡頭只安排一個主要動作。',
       '',
-      '【初步想法】',safe(state.ideaSeed,1400),
-      '【優先釐清方向】'+state.ideaFocus,
-      '【預計觀眾】'+safe(state.ideaAudience,120),
-      '【希望觀眾感受】'+safe(state.ideaGoal,120),
+      '【初步想法】'+safe(state.ideaSeed,1400),
+      '【最想釐清的部分】'+safe(state.ideaFocus,70),
+      '【觀眾】'+safe(state.ideaAudience,120),
+      '【希望感受】'+safe(state.ideaGoal,120),
       '',
-      '請先以最多兩句提出修改建議，然後在最後用以下標記輸出一段方便貼回的內容。回覆保持簡短，不要把格式說明當作故事。',
+      '請簡短回答：先用 1～2 句提供修改建議，再把以下「貼回小幫手」區塊放在回覆最後。',
       '【貼回小幫手｜開始】',
       '【中文故事摘要】',
-      '用 100～180 字描述主角、場景、事件、關鍵動作與情緒轉折，形成完整易懂的故事。',
+      '請填 80～150 字，包含主角、場景、事件及轉折，不要照抄本句指示。',
       '【英文畫面描述】',
-      '用 1～3 句自然英文描述同一故事與重要畫面，保留已知細節。',
-      '【畫面重點】',
-      '用一句中文概述最值得拍攝的畫面。',
+      '請填 2～3 句自然英文描述故事與關鍵畫面，保留已知細節，不要照抄本句指示。',
       '【貼回小幫手｜結束】',
-      '',
-      '最後提醒：「可直接複製整份回答，貼回 AI 影片創作小幫手。」不要再加長篇解說。'
+      '回覆到結束標記就停止，不要再加說明、長篇大綱或程式碼區塊。整則回答應可直接複製貼回網站。'
     ].join('\n');
   }
-  function renderGPTPreview(){ $('ideaGPTPreview').textContent=makeGPTBrief().slice(0,480)+'\n……（完整指令請點「複製」）'; const status=$('ideaStatus');const r=(state.ideaRefined||'').trim(),s=(state.ideaSeed||'').trim();status.textContent=r?'✓ 已貼入故事整理稿。後續提示詞會優先使用這份內容。':s?'已有初步想法，可以先去 ChatGPT 深化，也可以直接繼續。':'請至少寫下一些關鍵字，才能協助保留你的想法。';status.classList.toggle('ready',!!(r||s));}
+  function renderGPTPreview(){
+    $('ideaGPTPreview').textContent=makeGPTBrief().slice(0,480)+'\n……（完整指令請點「複製」）';
+    const status=$('ideaStatus'),refined=(state.ideaRefined||'').trim(),seed=(state.ideaSeed||'').trim();
+    status.textContent=refined?'✓ 已整理好故事。後續提示詞會優先使用這份內容。':seed?'已有初步想法，可先讓 ChatGPT 整理，也能直接繼續。':'請先寫下一些想法，才能開始整理故事。';
+    status.classList.toggle('ready',!!(refined||seed));
+  }
   const ideaFocusExamples={
     "故事發展與轉折": "例如：一位疲憊的上班族收到朋友的邀請，原本猶豫要不要赴約，最後決定前往。我還不確定故事中間要怎麼轉折。",
     "主角與角色設定": "例如：主角是一位剛下班的年輕上班族，個性比較內向，穿著簡單、表情疲憊。我想讓他的外貌與個性更鮮明。",
@@ -517,7 +545,7 @@
     const field=$('ideaSeed');
     if(field)field.placeholder=ideaFocusExamples[state.ideaFocus]||ideaFocusExamples['故事發展與轉折'];
   }
-  function renderIdea(){showPhase('idea');$('ideaSeed').value=state.ideaSeed||'';$('ideaRefined').value=state.ideaRefined||'';$('gptReplyInput').value=state.gptReplyRaw||'';$('ideaAudience').value=state.ideaAudience||'';$('ideaGoal').value=state.ideaGoal||'';document.querySelectorAll('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.focus===state.ideaFocus)));updateIdeaExample();renderGPTPreview();renderExtractedPreview();}
+  function renderIdea(){showPhase('idea');$('ideaSeed').value=state.ideaSeed||'';$('ideaRefined').value=state.ideaRefined||'';$('ideaEnglish').value=state.ideaEnglish||'';$('gptReplyInput').value=state.gptReplyRaw||'';$('ideaAudience').value=state.ideaAudience||'';$('ideaGoal').value=state.ideaGoal||'';document.querySelectorAll('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.focus===state.ideaFocus)));updateIdeaExample();renderGPTPreview();renderExtractedPreview();}
   function renderEntry(){showPhase('entry');$('sceneNumber').textContent=`STEP 01 · 第 ${state.scenes.length+1} 個片段`;}
 
   // Accessibility: remember the reader's preferred text size.
@@ -541,32 +569,37 @@
   $('backToIdea').addEventListener('click',renderIdea);
   $('editResultIdea').addEventListener('click',renderIdea);
   document.querySelectorAll('[data-focus]').forEach(b=>b.addEventListener('click',()=>{state.ideaFocus=b.dataset.focus;persist();document.querySelectorAll('[data-focus]').forEach(chip=>chip.setAttribute('aria-pressed',String(chip.dataset.focus===state.ideaFocus)));updateIdeaExample();renderGPTPreview()}));
-  for(const [id,key] of [['ideaSeed','ideaSeed'],['ideaAudience','ideaAudience'],['ideaGoal','ideaGoal'],['ideaRefined','ideaRefined']]){
+  for(const [id,key] of [['ideaSeed','ideaSeed'],['ideaAudience','ideaAudience'],['ideaGoal','ideaGoal'],['ideaRefined','ideaRefined'],['ideaEnglish','ideaEnglish']]){
     $(id).addEventListener('input',e=>{
       state[key]=e.target.value;persist();renderGPTPreview();
-      if(id==='ideaRefined')renderExtractedPreview();
+      if(id==='ideaRefined'||id==='ideaEnglish')renderExtractedPreview('✓ 已更新內容，請看上方確認結果。');
     });
   }
-  // Paste a complete GPT answer; preserve the original separately for re-checking.
+  // Accept the complete GPT reply and retain the original for another inspection.
   $('gptReplyInput').addEventListener('input',e=>{
     state.gptReplyRaw=e.target.value;
     if(state.gptReplyRaw.trim()){
       const parsed=parseGPTReply(state.gptReplyRaw);
-      state.ideaRefined=parsed.content;
-      $('ideaRefined').value=parsed.content;
+      state.ideaRefined=parsed.chinese;
+      state.ideaEnglish=parsed.english;
+      $('ideaRefined').value=parsed.chinese;
+      $('ideaEnglish').value=parsed.english;
       const notice=parsed.matched?
-        (parsed.english?'✓ 已自動擷取故事與英文描述，請確認下方摘要。':'✓ 已擷取故事；英文描述可自行補上。'):
-        '找不到固定標記，已保留文字。請展開下方「修改整理內容」確認。';
-      renderExtractedPreview(notice+(parsed.truncated?' 貼回內容較長，部分文字已截取，請檢查。':''));
+        (parsed.english?'✓ 已擷取故事與英文畫面描述，請確認以下結果。':'✓ 已擷取故事；英文描述可自行補上。'):
+        '沒找到固定段落標記，已保留原文；請展開「修改整理內容」確認。';
+      renderExtractedPreview(notice+(parsed.truncated?' 內容較長，部分文字已截取，請檢查。':''));
     }else{
-      // Clearing pasted text never erases previously edited story content.
-      renderExtractedPreview();
+      renderExtractedPreview('貼回文字已清空；之前整理或手動修改的內容仍保留。');
     }
     persist();renderGPTPreview();
   });
+  $('editExtracted').addEventListener('click',()=>{
+    $('manualStoryEditor').open=true;
+    $('ideaRefined').focus();
+  });
   $('copyGPTInstruction').addEventListener('click',()=>{if(!(state.ideaSeed||'').trim()){toast('先寫下至少一點想法，GPT 才能幫你整理');$('ideaSeed').focus();return}copyText(makeGPTBrief(),'已複製 GPT 指令，貼到 ChatGPT 即可')});
   $('openChatGPT').addEventListener('click',e=>{if(!(state.ideaSeed||'').trim()){e.preventDefault();toast('先描述一點想法，再開啟 ChatGPT');$('ideaSeed').focus();return}});
-  $('ideaToQuestions').addEventListener('click',()=>{if(!activeIdea()){toast('先寫下一點你有的想法即可');$('ideaSeed').focus();return}state.ideaMode='assisted';state.questionIndex=4;persist();renderQuestion()});
+  $('ideaToQuestions').addEventListener('click',()=>{if(!parseIdeaChinese(activeIdea()).trim()){toast('先寫下一點你有的想法即可');$('ideaSeed').focus();return}state.ideaMode='assisted';state.questionIndex=4;persist();renderQuestion()});
   function renderQuestion(){showPhase('questions');const index=state.questionIndex,key=keys[index],question=key==='action'?{title:'主角會做什麼事情？',hint:'建議只選一個明確動作，短片比較容易生成成功。'}:content[key];
     $('questionView').hidden=false;$('resultView').classList.remove('active');$('questionCounter').textContent=state.ideaMode==='assisted'?`視覺確認 ${index-3} / 2`:`第 ${index+1} / ${keys.length} 題`;$('progressbar').style.width=state.ideaMode==='assisted'?`${(index-3)/2*100}%`:`${(index+1)/keys.length*100}%`;
     $('sceneNumber').textContent=`STEP 01 · 第 ${state.scenes.length+1} 個片段`;$('questionTitle').textContent=question.title;$('questionHint').textContent=question.hint;
