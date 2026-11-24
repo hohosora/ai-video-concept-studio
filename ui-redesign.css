@@ -1432,3 +1432,84 @@ body{background:#e9ebe6!important;color:var(--night)!important}
   text-shadow:0 1px 1px rgba(0,0,0,.35);
   border:1px solid #495742;
 }
+
+
+/* GPT COMPLETE-REPLY PASTE FLOW v1.0 — visible extraction, editable fallback */
+.gpt-return-card > p{
+  margin-bottom:12px!important;
+}
+.gpt-return-card .field textarea{
+  max-width:100%;
+  min-height:110px;
+}
+.gpt-extract-status{
+  margin:13px 0 9px;
+  padding:10px 13px;
+  border:1px solid #d4dfc0;
+  border-radius:12px;
+  background:#eaf1dc;
+  color:#365129;
+  font-weight:750;
+  font-size:calc(13px * var(--readability-scale));
+  line-height:1.55;
+}
+.gpt-extract-preview{
+  display:grid;
+  gap:11px;
+  padding:16px;
+  margin:12px 0;
+  border:1px solid #c6d6b2;
+  border-radius:18px;
+  background:linear-gradient(150deg,#f6faed,#e9f3dd);
+  box-shadow:inset 0 1px 0 #fff,0 4px 10px rgba(28,48,20,.07);
+}
+.gpt-extract-preview[hidden],
+.gpt-extract-section[hidden]{
+  display:none!important;
+}
+.gpt-extract-heading{
+  font-size:calc(15px * var(--readability-scale));
+  color:#263925;
+  line-height:1.45;
+}
+.gpt-extract-section{
+  padding:12px 13px;
+  border:1px solid #dce6d3;
+  border-radius:12px;
+  background:rgba(255,255,255,.87);
+  min-width:0;
+}
+.gpt-extract-section b{
+  display:block;
+  margin-bottom:6px;
+  color:#3d542e;
+  font-size:calc(12px * var(--readability-scale));
+}
+.gpt-extract-section p{
+  margin:0!important;
+  color:#313d2a!important;
+  font-size:calc(14px * var(--readability-scale))!important;
+  line-height:1.65!important;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  max-height:190px;
+  overflow:auto;
+}
+.manual-story-editor{
+  margin:13px 0;
+}
+.manual-story-editor .field{
+  margin-top:12px;
+}
+.manual-story-editor textarea{
+  min-height:140px;
+}
+.manual-story-editor p{
+  font-size:calc(12px * var(--readability-scale))!important;
+  line-height:1.6!important;
+}
+@media(max-width:760px){
+  .gpt-extract-preview{padding:12px;gap:8px;}
+  .gpt-extract-section{padding:10px 11px;}
+  .gpt-extract-status{padding:10px 11px;}
+}
