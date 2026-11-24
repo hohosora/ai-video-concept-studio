@@ -783,3 +783,73 @@ body{background:#e9ebe6!important;color:var(--night)!important}
 @media(prefers-reduced-motion:reduce){
   .progress-overview .rail-progress-fill{transition:none!important}
 }
+
+
+/* MOBILE OVERLAY PROGRESS v0.6.1 — translucent, no reserved gutter, top-to-bottom */
+@media(max-width:760px){
+  /* Float above the existing one-column page rather than reserving left-side space. */
+  .page{
+    padding:10px!important;
+  }
+  .progress-overview{
+    position:fixed!important;
+    top:50%!important;
+    left:3px!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:62px!important;
+    height:218px!important;
+    padding:12px 6px!important;
+    background:rgba(16,18,15,.58)!important;
+    border:1px solid rgba(255,255,255,.19)!important;
+    border-radius:23px!important;
+    transform:translateY(-50%);
+    -webkit-backdrop-filter:blur(7px);
+    backdrop-filter:blur(7px);
+    box-shadow:0 5px 13px rgba(12,16,12,.16),inset 0 1px 0 rgba(255,255,255,.17)!important;
+    pointer-events:none!important;
+  }
+  .progress-overview .rail-mobile-step{
+    display:block!important;
+    width:100%;
+    white-space:nowrap;
+    font-size:calc(10px * var(--readability-scale))!important;
+    font-weight:900!important;
+    letter-spacing:-.055em;
+    text-align:center;
+    color:#eafa9c!important;
+    text-shadow:0 1px 3px rgba(0,0,0,.42);
+  }
+  .progress-overview .rail-progress-track{
+    height:154px!important;
+    width:8px!important;
+    max-height:154px!important;
+    flex:1 1 auto;
+    margin:0 auto!important;
+  }
+  /* The lime segment grows DOWN, matching vertical page scrolling. */
+  .progress-overview .rail-progress-fill{
+    top:0!important;
+    bottom:auto!important;
+    left:0!important;
+    right:0!important;
+    width:100%!important;
+    height:var(--rail-progress,33.333%)!important;
+    background:linear-gradient(90deg,#edfab6,var(--lime))!important;
+    transform:none!important;
+    transition:height .28s ease!important;
+  }
+}
+@media(max-width:390px){
+  .page{padding:8px!important}
+  .progress-overview{
+    left:2px!important;
+    width:59px!important;
+    height:202px!important;
+    padding:10px 5px!important;
+  }
+  .progress-overview .rail-progress-track{height:143px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .progress-overview .rail-progress-fill{transition:none!important}
+}
