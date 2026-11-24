@@ -207,7 +207,7 @@
       .stepname{overflow-wrap:anywhere}
     }
 </style>
-  <link rel="stylesheet" href="./ui-redesign.css?v=0.6.3">
+  <link rel="stylesheet" href="./ui-redesign.css?v=0.7">
 </head>
 <body>
 <div class="page">
@@ -218,7 +218,7 @@
     <div class="rail-progress-track" id="railProgressTrack" role="progressbar" aria-label="整體創作進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33" aria-valuetext="第 1 步，共 3 步">
       <div id="railProgress" class="rail-progress-fill"></div>
     </div>
-    <div class="rail-counter"><span>已規劃片段</span><strong id="railSceneCount">0</strong></div>
+    <div class="rail-counter"><span>已儲存提示詞</span><strong id="railSceneCount">0</strong></div>
   </section>
   <header class="topbar">
     <a class="brand" href="#" id="homeLink" aria-label="返回首頁，保留目前填寫內容" title="返回首頁（保留已填內容）"><span class="brand-icon">▶</span><span>AI 影片創作構思工作室</span></a>
@@ -529,7 +529,7 @@ ${safe(state.ideaSeed,1400)}
     if(missing.length){
       $('resultError').textContent='尚缺少：'+missing.map(x=>x.label).join('、')+'。補上後就能繼續，不必重新開始。';
     }else{
-      $('resultCompletion').textContent=state.ideaMode==='assisted'?'✓ 已有故事、畫面風格與影片比例。右側全是選填，現在可以直接進入第 2 步。':'✓ 六題必要設定已完成。右側全是選填，現在可以直接進入第 2 步。';
+      $('resultCompletion').textContent=state.ideaMode==='assisted'?'✓ 故事、畫風與比例已確認。右側可略過；儲存提示詞後，前往 STEP 02 生成影片。':'✓ 六題必要設定已完成。右側可略過；儲存文字提示詞後，前往 STEP 02 生成影片。';
     }
   }
   function jumpToMissing(){
