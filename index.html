@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#dcdfd6">
   <meta name="description" content="AI 影片創作小幫手：協助新手釐清故事、場景、動作與畫風，產出清楚可用的 AI 影片生成提示詞。">
+  <!-- GA4: page views and fixed UI actions only; never send story or prompt text. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NS0DQELX5F"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){window.dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NS0DQELX5F');
+  </script>
   <title>AI 影片創作小幫手</title>
   <script>
     // Apply this before layout: browsers may otherwise restore an old scroll position after load.
@@ -395,7 +403,7 @@
     <h3>創意，不必一次到位。</h3>
     <p id="railTip">先選最接近的方向。故事、人物與畫面都能在產生提示詞前調整。</p>
   </section>
-  <footer class="footer"><div>不需登入本工具 · 想法與提示詞儲存在目前瀏覽器 · 與 GPT 對話需至 ChatGPT 頁面 · 影片檔不會上傳到本工具</div><div><a href="https://support.google.com/flow/answer/16353334" target="_blank" rel="noopener noreferrer">Google Flow 官方教學 ↗</a> · <a href="https://bkj888.github.io/motion-creator-studio/" target="_blank" rel="noopener noreferrer">Motion Creator Studio ↗</a></div></footer>
+  <footer class="footer"><div>不需登入本工具 · 想法與提示詞儲存在目前瀏覽器 · 與 GPT 對話需至 ChatGPT 頁面 · 影片檔不會上傳到本工具 · 使用 Google Analytics 統計頁面瀏覽及功能點擊，不傳送故事或提示詞內容</div><div><a href="https://support.google.com/flow/answer/16353334" target="_blank" rel="noopener noreferrer">Google Flow 官方教學 ↗</a> · <a href="https://bkj888.github.io/motion-creator-studio/" target="_blank" rel="noopener noreferrer">Motion Creator Studio ↗</a></div></footer>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
@@ -429,6 +437,12 @@
   const persist=()=>{try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){ /* still functional */ }};
   const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2400)}
+  // Only send fixed UI event names and categorical parameters; never user-generated content.
+  function trackAnalyticsEvent(eventName,parameters={}){
+    try{
+      if(typeof window.gtag==='function')window.gtag('event',eventName,parameters);
+    }catch(error){ /* Analytics blockers must not interrupt the app. */ }
+  }
   const optionsFor=key=>key==='action' ? ({person:peopleActions,friends:friendActions,animal:animalActions,object:objectActions,scenery:sceneryActions,custom:customActions}[state.answers.subject]||customActions):content[key].items;
   const getOption=(key,value,answers=state.answers)=>{let arr=key==='action'?({person:peopleActions,friends:friendActions,animal:animalActions,object:objectActions,scenery:sceneryActions,custom:customActions}[answers.subject]||customActions):content[key].items;return arr.find(x=>x.id===value)};
   // Story discovery is deliberately usable without an API or account credentials.
@@ -576,8 +590,8 @@
   document.querySelectorAll('[data-font-size-choice]').forEach(button=>{
     button.addEventListener('click',()=>applyFontSize(button.dataset.fontSizeChoice));
   });
-  $('chooseGuided').addEventListener('click',()=>{state.ideaMode='guided';state.questionIndex=0;persist();renderQuestion()});
-  $('chooseAssist').addEventListener('click',()=>{state.ideaMode='assisted';persist();renderIdea()});
+  $('chooseGuided').addEventListener('click',()=>{state.ideaMode='guided';state.questionIndex=0;persist();trackAnalyticsEvent('creation_mode_selected',{mode:'guided'});renderQuestion()});
+  $('chooseAssist').addEventListener('click',()=>{state.ideaMode='assisted';persist();trackAnalyticsEvent('creation_mode_selected',{mode:'assisted'});renderIdea()});
   $('backToEntry').addEventListener('click',renderEntry);
   $('backToIdea').addEventListener('click',renderIdea);
   $('editResultIdea').addEventListener('click',renderIdea);
@@ -601,6 +615,9 @@
         (parsed.english?'✓ 已擷取故事與英文畫面描述，請確認以下結果。':'✓ 已擷取故事；英文描述可自行補上。'):
         '沒找到固定段落標記，已保留原文；請展開「修改整理內容」確認。';
       renderExtractedPreview(notice+(parsed.truncated?' 內容較長，部分文字已截取，請檢查。':''));
+      if(e.inputType==='insertFromPaste'){
+        trackAnalyticsEvent('gpt_reply_imported',{format_recognized:parsed.matched?'yes':'no',has_english:parsed.english?'yes':'no'});
+      }
     }else{
       renderExtractedPreview('貼回文字已清空；之前整理或手動修改的內容仍保留。');
     }
@@ -610,14 +627,14 @@
     $('manualStoryEditor').open=true;
     $('ideaRefined').focus();
   });
-  $('copyGPTInstruction').addEventListener('click',()=>{if(!(state.ideaSeed||'').trim()){toast('先寫下至少一點想法，GPT 才能幫你整理');$('ideaSeed').focus();return}copyText(makeGPTBrief(),'已複製 GPT 指令，貼到 ChatGPT 即可')});
-  $('openChatGPT').addEventListener('click',e=>{if(!(state.ideaSeed||'').trim()){e.preventDefault();toast('先描述一點想法，再開啟 ChatGPT');$('ideaSeed').focus();return}});
+  $('copyGPTInstruction').addEventListener('click',()=>{if(!(state.ideaSeed||'').trim()){toast('先寫下至少一點想法，GPT 才能幫你整理');$('ideaSeed').focus();return}copyText(makeGPTBrief(),'已複製 GPT 指令，貼到 ChatGPT 即可','gpt_instruction_copied')});
+  $('openChatGPT').addEventListener('click',e=>{if(!(state.ideaSeed||'').trim()){e.preventDefault();toast('先描述一點想法，再開啟 ChatGPT');$('ideaSeed').focus();return}trackAnalyticsEvent('chatgpt_opened')});
   $('ideaToQuestions').addEventListener('click',()=>{if(!parseIdeaChinese(activeIdea()).trim()){toast('先寫下一點你有的想法即可');$('ideaSeed').focus();return}state.ideaMode='assisted';state.questionIndex=4;persist();renderQuestion()});
   function renderQuestion(){showPhase('questions');const index=state.questionIndex,key=keys[index],question=key==='action'?{title:'主角會做什麼事情？',hint:'建議只選一個明確動作，短片比較容易生成成功。'}:content[key];
     $('questionView').hidden=false;$('resultView').classList.remove('active');$('questionCounter').textContent=state.ideaMode==='assisted'?`視覺確認 ${index-3} / 2`:`第 ${index+1} / ${keys.length} 題`;$('progressbar').style.width=state.ideaMode==='assisted'?`${(index-3)/2*100}%`:`${(index+1)/keys.length*100}%`;
     $('sceneNumber').textContent=`STEP 01 · 第 ${state.scenes.length+1} 個片段`;$('questionTitle').textContent=question.title;$('questionHint').textContent=question.hint;
     $('choices').classList.toggle('style-gallery',key==='style');
-    $('choices').replaceChildren();for(const item of optionsFor(key)){const button=document.createElement('button');button.type='button';button.className='choice'+(key==='style'?' style-card':'')+(state.answers[key]===item.id?' selected':'');button.setAttribute('aria-pressed',state.answers[key]===item.id?'true':'false');button.setAttribute('aria-label',item.label+'，'+item.sub);button.innerHTML=key==='style'?`<img src="${styleThumbs[item.id]}" alt="相同雨天街景的${escapeHTML(item.label)}範例圖" loading="lazy"><span class="style-caption"><span><span class="ct">${escapeHTML(item.label)}</span><span class="cd">${escapeHTML(item.sub)}</span></span></span><span class="check" aria-hidden="true">✓</span>`:`<span class="emoji">${item.emoji}</span><span><span class="ct">${escapeHTML(item.label)}</span><span class="cd">${escapeHTML(item.sub)}</span></span><span class="check" aria-hidden="true">✓</span>`;button.addEventListener('click',()=>{if(key==='subject'&&state.answers.subject!==item.id){delete state.answers.action;delete state.answers.actionCustom;}state.answers[key]=item.id;persist();renderQuestion();});$('choices').append(button)}
+    $('choices').replaceChildren();for(const item of optionsFor(key)){const button=document.createElement('button');button.type='button';button.className='choice'+(key==='style'?' style-card':'')+(state.answers[key]===item.id?' selected':'');button.setAttribute('aria-pressed',state.answers[key]===item.id?'true':'false');button.setAttribute('aria-label',item.label+'，'+item.sub);button.innerHTML=key==='style'?`<img src="${styleThumbs[item.id]}" alt="相同雨天街景的${escapeHTML(item.label)}範例圖" loading="lazy"><span class="style-caption"><span><span class="ct">${escapeHTML(item.label)}</span><span class="cd">${escapeHTML(item.sub)}</span></span></span><span class="check" aria-hidden="true">✓</span>`:`<span class="emoji">${item.emoji}</span><span><span class="ct">${escapeHTML(item.label)}</span><span class="cd">${escapeHTML(item.sub)}</span></span><span class="check" aria-hidden="true">✓</span>`;button.addEventListener('click',()=>{if(key==='subject'&&state.answers.subject!==item.id){delete state.answers.action;delete state.answers.actionCustom;}state.answers[key]=item.id;persist();if(key==='style')trackAnalyticsEvent('video_style_selected',{style_id:item.id});renderQuestion();});$('choices').append(button)}
     $('extraFields').replaceChildren();if(key==='style'){const note=document.createElement('p');note.className='help';note.textContent='圖片只用來選畫風，不會自動傳送到生成平台。';$('extraFields').append(note);}if((key==='subject'||key==='setting'||key==='action')&&state.answers[key]==='custom'){
       const field=document.createElement('div');field.className='field';let label={subject:'你想拍的主角是什麼？',setting:'請描述畫面所在的地方',action:'主角會做什麼？'}[key];field.innerHTML=`<label for="customAnswer">${label}</label><input class="input" id="customAnswer" maxlength="140" placeholder="${key==='action'?'例如：開門後向朋友微笑':key==='setting'?'例如：傍晚的海邊木棧道':'例如：一隻戴紅色圍巾的小白貓'}"><p class="help">可以用中文輸入，提示詞也會保留你的描述。</p>`;$('extraFields').append(field);$('customAnswer').value=state.answers[key+'Custom']||'';$('customAnswer').addEventListener('input',e=>{state.answers[key+'Custom']=e.target.value;persist()});}
     if(key==='format'){const div=document.createElement('div');div.className='inline-settings';div.innerHTML='<label for="duration">單段片長</label><select class="input" id="duration"><option value="4">4 秒</option><option value="6">6 秒</option><option value="8">8 秒</option><option value="10">10 秒</option></select>';$('extraFields').append(div);$('duration').value=state.answers.duration||'6';$('duration').addEventListener('change',e=>{state.answers.duration=e.target.value;persist()});}
@@ -753,16 +770,16 @@
     if(hint)hint.textContent=completed?'✓ 你已手動確認最終影片完成，創作進度達到 100%。如果還想修改，可取消完成確認。':'本站無法偵測 Motion Creator Studio 是否已輸出影片。請完成剪輯、實際下載最終影片後，再手動確認完成。';
   }
   function switchStep(to,instant=false){if(to>1&&!state.scenes.length){toast('請先完成並儲存至少一份影片提示詞');return}if(to===3&&!state.scenes.some(scene=>scene.downloaded)){toast('請先在影片平台下載影片，並標記「我已在平台下載影片」');if(step===2)$('clipPromptCount')?.scrollIntoView({behavior:'smooth',block:'center'});return;}step=to;[1,2,3].forEach(n=>{$('panel'+n).hidden=n!==to;const tab=document.querySelector(`[data-step="${n}"]`);tab.classList.toggle('current',n===to);tab.classList.toggle('done',state.scenes.length>0&&n<to);tab.classList.toggle('available',n===1||!!state.scenes.length);tab.setAttribute('aria-current',n===to?'step':'false');});if(to===2)renderFlow();if(to===3){renderClipSummary();renderFinishStatus();}if(instant)window.scrollTo(0,0);else window.scrollTo({top:0,behavior:'smooth'});updateDesignRail();}
-  async function copyText(t,message='已複製提示詞！'){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t)}else{const area=document.createElement('textarea');area.value=t;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('Copy failed')}toast(message)}catch(e){toast('複製未成功，可以直接選取文字複製')}}
+  async function copyText(t,message='已複製提示詞！',eventName='',eventParameters={}){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t)}else{const area=document.createElement('textarea');area.value=t;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('Copy failed')}toast(message);if(eventName)trackAnalyticsEvent(eventName,eventParameters)}catch(e){toast('複製未成功，可以直接選取文字複製')}}
   function downloadText(filename,content){const blob=new Blob([content],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-  function createScene(){if(previewSaved)return;const missing=missingRequired();if(missing.length){updateCompletionStatus();toast('請先確認提示詞下方的缺少設定');$('resultError').scrollIntoView({behavior:'smooth',block:'center'});return}previewSaved=true;const p=currentPrompt();state.projectCompleted=false;state.scenes.push({id:Date.now().toString(36)+'-'+Math.floor(Math.random()*1e6).toString(36),summary:p.summary,title:p.title,ratio:p.ratio,time:p.time,en:p.en,zh:p.zh,downloaded:false});persist();toast('文字提示詞已儲存，請到平台生成影片');switchStep(2)}
+  function createScene(){if(previewSaved)return;const missing=missingRequired();if(missing.length){updateCompletionStatus();toast('請先確認提示詞下方的缺少設定');$('resultError').scrollIntoView({behavior:'smooth',block:'center'});return}previewSaved=true;const p=currentPrompt();state.projectCompleted=false;state.scenes.push({id:Date.now().toString(36)+'-'+Math.floor(Math.random()*1e6).toString(36),summary:p.summary,title:p.title,ratio:p.ratio,time:p.time,en:p.en,zh:p.zh,downloaded:false});persist();trackAnalyticsEvent('video_prompt_saved',{creation_mode:state.ideaMode==='assisted'?'assisted':'guided',video_format:state.answers.format||'unknown',style_id:state.answers.style||'unknown'});toast('文字提示詞已儲存，請到平台生成影片');switchStep(2)}
   function renderFlow(){renderPlatform();const list=$('sceneList');list.replaceChildren();
     const ready=state.scenes.filter(scene=>scene.downloaded).length;
     $('clipCount').textContent=`${state.scenes.length} 份提示詞`;
     $('clipPromptCount').textContent=`已儲存 ${state.scenes.length} 份影片提示詞`;
     $('clipDownloadCount').textContent=`已標記下載 ${ready} 段影片`;
     $('clipNextHint').textContent=ready>0?'已標記下載的片段可進入 STEP 03；請確認影片檔已實際儲存在你的裝置中。':'請在生成平台下載至少一段影片，並在上方標記已下載，才能進入第三步。';state.scenes.forEach((scene,i)=>{const card=document.createElement('article');card.className='scene-card';const done=scene.downloaded;card.innerHTML=`<div class="scene-top"><div><div class="scene-index">CLIP ${String(i+1).padStart(2,'0')} · 文字提示詞</div><h3>${escapeHTML(scene.title)}的影片提示詞</h3><p>${escapeHTML(scene.summary)}</p></div><span class="clip-stage ${done?'is-downloaded':''}">${done?'✓ 已標記下載':'尚未標記下載'}</span></div><div class="btn-wrap"><button type="button" class="btn btn-primary btn-small" data-copy="${i}">複製英文提示詞</button><button type="button" class="btn btn-small ${done?'btn-green':''}" data-check="${i}">${done?'✓ 已標記下載（可取消）':'我已在平台下載影片'}</button><button type="button" class="btn btn-plain btn-small" data-delete="${i}">移除此段</button></div><details><summary>展開查看這段的英文提示詞</summary><pre>${escapeHTML(scene.en)}</pre></details>`;
-      card.querySelector('[data-copy]').addEventListener('click',()=>copyText(scene.en));card.querySelector('[data-check]').addEventListener('click',()=>{scene.downloaded=!scene.downloaded;state.projectCompleted=false;persist();renderFlow()});card.querySelector('[data-delete]').addEventListener('click',()=>{if(!confirm(`確定移除第 ${i+1} 個片段嗎？`))return;state.scenes.splice(i,1);state.projectCompleted=false;persist();if(state.scenes.length)renderFlow();else{switchStep(1);if(state.ideaMode==='assisted')renderIdea();else renderEntry()}});list.append(card)});updateDesignRail();}
+      card.querySelector('[data-copy]').addEventListener('click',()=>copyText(scene.en,'已複製提示詞！','video_prompt_copied',{source:'saved_clip',language:'en'}));card.querySelector('[data-check]').addEventListener('click',()=>{scene.downloaded=!scene.downloaded;state.projectCompleted=false;persist();if(scene.downloaded)trackAnalyticsEvent('video_download_marked',{platform:state.platform==='kling'?'kling':'flow'});renderFlow()});card.querySelector('[data-delete]').addEventListener('click',()=>{if(!confirm(`確定移除第 ${i+1} 個片段嗎？`))return;state.scenes.splice(i,1);state.projectCompleted=false;persist();if(state.scenes.length)renderFlow();else{switchStep(1);if(state.ideaMode==='assisted')renderIdea();else renderEntry()}});list.append(card)});updateDesignRail();}
   function renderClipSummary(){const total=state.scenes.length;const ready=state.scenes.filter(s=>s.downloaded).length;$('clipSummary').textContent=`你已儲存 ${total} 份影片提示詞，其中 ${ready} 段標記為已下載。請在剪輯工作室匯入裝置中實際下載的影片；本站的標記不代表影片已傳送。`;}
   function renderPlatform(){
     const which=state.platform==='kling'?'kling':'flow';
@@ -806,20 +823,23 @@
       $('platformInstructions').append(li);
     }
   }
-  document.querySelectorAll('[data-platform]').forEach(btn=>btn.addEventListener('click',()=>{state.platform=btn.dataset.platform;persist();renderPlatform()}));
+  document.querySelectorAll('[data-platform]').forEach(btn=>btn.addEventListener('click',()=>{state.platform=btn.dataset.platform;persist();trackAnalyticsEvent('video_platform_selected',{platform:state.platform});renderPlatform()}));
+  $('platformLink').addEventListener('click',()=>trackAnalyticsEvent('generation_platform_opened',{platform:state.platform==='kling'?'kling':'flow'}));
+  document.querySelectorAll('a[href*="motion-creator-studio/"]').forEach(link=>link.addEventListener('click',()=>trackAnalyticsEvent('editor_studio_opened')));
 
   $('nextQuestion').addEventListener('click',()=>{if(!isValid())return;if(state.questionIndex<keys.length-1){state.questionIndex++;persist();renderQuestion()}else{renderResult()}});
   $('prevQuestion').addEventListener('click',()=>{if(state.ideaMode==='assisted'&&state.questionIndex<=4){renderIdea();return}if(state.questionIndex){state.questionIndex--;persist();renderQuestion()}});
   $('restartQuestions').addEventListener('click',()=>{state.questionIndex=state.ideaMode==='assisted'?4:0;persist();renderQuestion()});
   $('shotFocus').addEventListener('input',e=>{state.shotFocus=e.target.value;updatePrompt()});$('detailsText').addEventListener('input',e=>{state.detail=e.target.value;updatePrompt()});$('soundChoice').addEventListener('change',e=>{state.sound=e.target.value;$('dialogueField').hidden=e.target.value!=='dialogue';updatePrompt()});$('dialogueText').addEventListener('input',e=>{state.dialogue=e.target.value;updatePrompt()});
   for(const [id,key] of [['moodChoice','mood'],['cameraChoice','camera']]){$(id).addEventListener('change',e=>{state.answers[key]=e.target.value;updatePrompt()});}
-  $('copyEnglish').addEventListener('click',()=>copyText(currentPrompt().en));$('copyChinese').addEventListener('click',()=>copyText(currentPrompt().zh));$('downloadPrompt').addEventListener('click',()=>{const p=currentPrompt();downloadText('AI影片提示詞.txt','【英文提示詞 / Flow 或 Kling】\n\n'+p.en+'\n\n【中文參考】\n\n'+p.zh)});
+  $('copyEnglish').addEventListener('click',()=>copyText(currentPrompt().en,'已複製提示詞！','video_prompt_copied',{source:'preview',language:'en'}));$('copyChinese').addEventListener('click',()=>copyText(currentPrompt().zh,'已複製提示詞！','video_prompt_copied',{source:'preview',language:'zh'}));$('downloadPrompt').addEventListener('click',()=>{const p=currentPrompt();downloadText('AI影片提示詞.txt','【英文提示詞 / Flow 或 Kling】\n\n'+p.en+'\n\n【中文參考】\n\n'+p.zh)});
   $('saveScene').addEventListener('click',createScene);$('addScene').addEventListener('click',()=>{state.questionIndex=0;state.detail='';state.dialogue='';state.shotFocus='';persist();switchStep(1);renderResult();toast('已保留主角與風格。直接描述下一段鏡頭，或返回修改選擇題。')});
   $('toStep3').addEventListener('click',()=>switchStep(3));
   $('confirmVideoComplete').addEventListener('click',()=>{
     if(!state.scenes.some(scene=>scene.downloaded)){toast('請先在生成平台下載影片，並在 STEP 02 標記下載');return;}
     state.projectCompleted=!state.projectCompleted;
     persist();updateDesignRail();renderFinishStatus();
+    if(state.projectCompleted)trackAnalyticsEvent('project_completed',{completion_type:'user_confirmed'});
     toast(state.projectCompleted?'已確認影片完成，進度 100%':'已撤銷完成確認，進度 67%');
   });
   $('retryStep1').addEventListener('click',()=>{if(state.ideaMode==='assisted'){switchStep(1);renderIdea();}else{state.ideaMode='guided';state.questionIndex=0;persist();switchStep(1);renderQuestion();}});$('backToFlow').addEventListener('click',()=>switchStep(2));
