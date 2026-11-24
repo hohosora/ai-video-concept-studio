@@ -1513,3 +1513,10 @@ body{background:#e9ebe6!important;color:var(--night)!important}
   .gpt-extract-section{padding:10px 11px;}
   .gpt-extract-status{padding:10px 11px;}
 }
+
+/* GPT copy-back v1.1 — matches existing theme and fits narrow devices */
+.gpt-review-edit{justify-self:start;max-width:100%;white-space:normal;text-align:center;overflow-wrap:anywhere}
+.manual-story-editor .field + .field{margin-top:14px}
+.manual-story-editor label{display:block;margin-bottom:6px}
+.gpt-extract-preview,.gpt-extract-section{min-width:0}
+@media(max-width:760px){.gpt-review-edit{width:100%;min-height:44px}.manual-story-editor textarea{width:100%;max-width:100%}}
