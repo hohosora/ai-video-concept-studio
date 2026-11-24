@@ -6,6 +6,10 @@
   <meta name="theme-color" content="#dcdfd6">
   <meta name="description" content="把創作者的影片構思 know-how 變成新手友善的互動工具：故事釐清、視覺風格參考、分鏡提示詞，銜接 Google Flow、Kling 與剪輯工作室。">
   <title>AI 影片創作小幫手</title>
+  <script>
+    // Apply this before layout: browsers may otherwise restore an old scroll position after load.
+    try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (error) {}
+  </script>
   <style>
     :root{font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;color:#172641;background:#f7f9fc;font-synthesis:none}
     *{box-sizing:border-box}body{margin:0;line-height:1.6}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.45}a{color:inherit}::selection{background:#d8e2ff}
@@ -578,7 +582,7 @@ ${safe(state.ideaSeed,1400)}
     const hint=$('finishConfirmHint');
     if(hint)hint.textContent=completed?'✓ 你已手動確認最終影片完成，創作進度達到 100%。如果還想修改，可取消完成確認。':'本站無法偵測 Motion Creator Studio 是否已輸出影片。請完成剪輯、實際下載最終影片後，再手動確認完成。';
   }
-  function switchStep(to){if(to>1&&!state.scenes.length){toast('請先完成並儲存至少一份影片提示詞');return}if(to===3&&!state.scenes.some(scene=>scene.downloaded)){toast('請先在影片平台下載影片，並標記「我已在平台下載影片」');if(step===2)$('clipPromptCount')?.scrollIntoView({behavior:'smooth',block:'center'});return;}step=to;[1,2,3].forEach(n=>{$('panel'+n).hidden=n!==to;const tab=document.querySelector(`[data-step="${n}"]`);tab.classList.toggle('current',n===to);tab.classList.toggle('done',state.scenes.length>0&&n<to);tab.classList.toggle('available',n===1||!!state.scenes.length);tab.setAttribute('aria-current',n===to?'step':'false');});if(to===2)renderFlow();if(to===3){renderClipSummary();renderFinishStatus();}window.scrollTo({top:0,behavior:'smooth'});updateDesignRail();}
+  function switchStep(to,instant=false){if(to>1&&!state.scenes.length){toast('請先完成並儲存至少一份影片提示詞');return}if(to===3&&!state.scenes.some(scene=>scene.downloaded)){toast('請先在影片平台下載影片，並標記「我已在平台下載影片」');if(step===2)$('clipPromptCount')?.scrollIntoView({behavior:'smooth',block:'center'});return;}step=to;[1,2,3].forEach(n=>{$('panel'+n).hidden=n!==to;const tab=document.querySelector(`[data-step="${n}"]`);tab.classList.toggle('current',n===to);tab.classList.toggle('done',state.scenes.length>0&&n<to);tab.classList.toggle('available',n===1||!!state.scenes.length);tab.setAttribute('aria-current',n===to?'step':'false');});if(to===2)renderFlow();if(to===3){renderClipSummary();renderFinishStatus();}if(instant)window.scrollTo(0,0);else window.scrollTo({top:0,behavior:'smooth'});updateDesignRail();}
   async function copyText(t,message='已複製提示詞！'){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t)}else{const area=document.createElement('textarea');area.value=t;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('Copy failed')}toast(message)}catch(e){toast('複製未成功，可以直接選取文字複製')}}
   function downloadText(filename,content){const blob=new Blob([content],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
   function createScene(){if(previewSaved)return;const missing=missingRequired();if(missing.length){updateCompletionStatus();toast('請先確認提示詞下方的缺少設定');$('resultError').scrollIntoView({behavior:'smooth',block:'center'});return}previewSaved=true;const p=currentPrompt();state.projectCompleted=false;state.scenes.push({id:Date.now().toString(36)+'-'+Math.floor(Math.random()*1e6).toString(36),summary:p.summary,title:p.title,ratio:p.ratio,time:p.time,en:p.en,zh:p.zh,downloaded:false});persist();toast('文字提示詞已儲存，請到平台生成影片');switchStep(2)}
@@ -609,11 +613,21 @@ ${safe(state.ideaSeed,1400)}
   });
   $('retryStep1').addEventListener('click',()=>{if(state.ideaMode==='assisted'){switchStep(1);renderIdea();}else{state.ideaMode='guided';state.questionIndex=0;persist();switchStep(1);renderQuestion();}});$('backToFlow').addEventListener('click',()=>switchStep(2));
   $('newProject').addEventListener('click',()=>{if(!confirm('要清除目前儲存的片段與答案，重新開始嗎？'))return;state={...initial,scenes:[],answers:{},projectCompleted:false};persist();switchStep(1);renderEntry();toast('已開始全新作品')});
-  document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.step);switchStep(n);if(n===1){if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry()}}));$('homeLink').addEventListener('click',e=>{e.preventDefault();switchStep(1);renderEntry()});
-  // Always open on the welcome screen; saved answers and clips remain available when the user chooses a path.
-  switchStep(1);
-  renderEntry();
-  window.scrollTo(0,0);
+  document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.step);switchStep(n);if(n===1){if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry()}}));
+  // A direct URL/open/refresh must always start at the two-choice welcome screen.
+  // Keep localStorage intact so users can still resume their saved ideas after choosing a path.
+  function showWelcomeScreen(){
+    switchStep(1,true);
+    renderEntry();
+    window.scrollTo(0,0);
+  }
+  $('homeLink').addEventListener('click',e=>{e.preventDefault();showWelcomeScreen()});
+  showWelcomeScreen();
+  // Also handle the browser's page cache and late scroll restoration, which happen after inline scripts.
+  window.addEventListener('pageshow',()=>{
+    showWelcomeScreen();
+    requestAnimationFrame(()=>window.scrollTo(0,0));
+  });
 })();
 </script>
 </body>
