@@ -1520,3 +1520,79 @@ body{background:#e9ebe6!important;color:var(--night)!important}
 .manual-story-editor label{display:block;margin-bottom:6px}
 .gpt-extract-preview,.gpt-extract-section{min-width:0}
 @media(max-width:760px){.gpt-review-edit{width:100%;min-height:44px}.manual-story-editor textarea{width:100%;max-width:100%}}
+
+/* STEP 02: clearly show where to paste the prompt in Flow/Kling (v1.2) */
+.roadmap .platform-paste-guide{
+  background:#2e3829;
+  border:1px solid #708863;
+  border-radius:17px;
+  padding:15px 14px;
+  margin:10px 0 17px;
+  min-width:0;
+}
+.roadmap .platform-paste-title{
+  display:block;
+  color:var(--lime)!important;
+  font-size:calc(16px * var(--readability-scale));
+  line-height:1.5;
+  margin-bottom:9px;
+}
+.roadmap .platform-paste-message{
+  color:#f2f5e8!important;
+  font-size:calc(14px * var(--readability-scale))!important;
+  line-height:1.75!important;
+  margin:0 0 12px;
+}
+.roadmap .platform-paste-message strong{color:#eaff94!important}
+.roadmap .platform-paste-location{
+  border:1px solid #819879;
+  background:#f5f8ee;
+  border-radius:12px;
+  padding:10px;
+  color:#28382a;
+  min-width:0;
+}
+.roadmap .platform-paste-location-caption{
+  display:block;
+  color:#465a42;
+  font-size:calc(12px * var(--readability-scale));
+  font-weight:800;
+  line-height:1.5;
+  margin-bottom:7px;
+}
+.roadmap .platform-paste-placeholder{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  gap:9px;
+  min-height:62px;
+  border:2px dashed #719c40;
+  background:#e9f7c7;
+  border-radius:10px;
+  padding:12px;
+  color:#263722;
+  overflow-wrap:anywhere;
+  font-size:calc(14px * var(--readability-scale));
+}
+.roadmap .platform-paste-placeholder strong{color:#263722!important;line-height:1.55}
+.roadmap .platform-paste-location small{
+  display:block;
+  color:#536450;
+  font-size:calc(11px * var(--readability-scale));
+  line-height:1.55;
+  margin-top:7px;
+}
+.roadmap .platform-paste-tip{
+  font-size:calc(13px * var(--readability-scale))!important;
+  line-height:1.7!important;
+  color:#f2f5df!important;
+  margin:11px 0 0;
+}
+.roadmap .platform-paste-tip strong{color:#eaff94!important}
+.roadmap .platform-instructions{margin-bottom:15px!important}
+.roadmap .platform-instructions li{padding:2px 0 9px;overflow-wrap:anywhere}
+.roadmap .platform-instructions li b{display:block;line-height:1.6;margin-bottom:3px}
+@media(max-width:760px){
+ .roadmap .platform-paste-guide{padding:13px 12px}
+ .roadmap .platform-paste-placeholder{min-height:56px}
+}
