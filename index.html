@@ -256,7 +256,7 @@
           <div class="idea-card">
             <div class="assistant-label">MY IDEA · 自由描述</div>
             <h3>說說你的影片想法</h3><p>一句話就能開始。</p>
-            <div class="field"><label for="ideaSeed">現在想到的片段或故事</label><textarea class="input textarea" id="ideaSeed" rows="5" maxlength="1400" placeholder="例如：想做一段溫暖的邀請短片；一個疲累的上班族收到朋友訊息，最後帶著笑容前往聚會。我還不知道用什麼畫面表現。"></textarea></div>
+            <div class="field"><label for="ideaSeed">現在想到的片段或故事</label><textarea class="input textarea" id="ideaSeed" rows="5" maxlength="1400" placeholder="例如：一位疲憊的上班族收到朋友的邀請，原本猶豫要不要赴約，最後決定前往。我還不確定故事中間要怎麼轉折。"></textarea></div>
             <label class="smalllabel" style="font-weight:800;display:block;margin-top:14px">最希望 GPT 幫你釐清哪個部分？</label>
             <div class="idea-chip-list" id="ideaFocusChoices" role="group" aria-label="選擇需要協助的方向">
               <button type="button" class="idea-chip" data-focus="故事發展與轉折" aria-pressed="true">📖 故事怎麼發展</button>
@@ -445,7 +445,18 @@ ${safe(state.ideaSeed,1400)}
 
 現在就先給出一版可以拿來修改的提案，不要先提問。`}
   function renderGPTPreview(){ $('ideaGPTPreview').textContent=makeGPTBrief().slice(0,480)+'\n……（完整指令請點「複製」）'; const status=$('ideaStatus');const r=(state.ideaRefined||'').trim(),s=(state.ideaSeed||'').trim();status.textContent=r?'✓ 已貼入故事整理稿。後續提示詞會優先使用這份內容。':s?'已有初步想法，可以先去 ChatGPT 深化，也可以直接繼續。':'請至少寫下一些關鍵字，才能協助保留你的想法。';status.classList.toggle('ready',!!(r||s));}
-  function renderIdea(){showPhase('idea');$('ideaSeed').value=state.ideaSeed||'';$('ideaRefined').value=state.ideaRefined||'';$('ideaAudience').value=state.ideaAudience||'';$('ideaGoal').value=state.ideaGoal||'';document.querySelectorAll('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.focus===state.ideaFocus)));renderGPTPreview();}
+  const ideaFocusExamples={
+    "故事發展與轉折": "例如：一位疲憊的上班族收到朋友的邀請，原本猶豫要不要赴約，最後決定前往。我還不確定故事中間要怎麼轉折。",
+    "主角與角色設定": "例如：主角是一位剛下班的年輕上班族，個性比較內向，穿著簡單、表情疲憊。我想讓他的外貌與個性更鮮明。",
+    "畫面和場景描寫": "例如：傍晚的辦公大樓外，主角低頭看著手機裡的邀請訊息，停下腳步，抬頭露出微笑。我想知道鏡頭要怎麼呈現。",
+    "情緒與視覺風格": "例如：一開始是灰藍色、略顯孤單的下班氛圍，收到邀請後逐漸變得溫暖明亮。我希望畫面有療癒、充滿希望的感覺。"
+};
+  function updateIdeaExample(){
+    // Only change the placeholder: never overwrite what the visitor has typed.
+    const field=$('ideaSeed');
+    if(field)field.placeholder=ideaFocusExamples[state.ideaFocus]||ideaFocusExamples['故事發展與轉折'];
+  }
+  function renderIdea(){showPhase('idea');$('ideaSeed').value=state.ideaSeed||'';$('ideaRefined').value=state.ideaRefined||'';$('ideaAudience').value=state.ideaAudience||'';$('ideaGoal').value=state.ideaGoal||'';document.querySelectorAll('[data-focus]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.focus===state.ideaFocus)));updateIdeaExample();renderGPTPreview();}
   function renderEntry(){showPhase('entry');$('sceneNumber').textContent=`STEP 01 · 第 ${state.scenes.length+1} 個片段`;}
 
   // Accessibility: remember the reader's preferred text size.
@@ -468,7 +479,7 @@ ${safe(state.ideaSeed,1400)}
   $('backToEntry').addEventListener('click',renderEntry);
   $('backToIdea').addEventListener('click',renderIdea);
   $('editResultIdea').addEventListener('click',renderIdea);
-  document.querySelectorAll('[data-focus]').forEach(b=>b.addEventListener('click',()=>{state.ideaFocus=b.dataset.focus;persist();renderIdea()}));
+  document.querySelectorAll('[data-focus]').forEach(b=>b.addEventListener('click',()=>{state.ideaFocus=b.dataset.focus;persist();document.querySelectorAll('[data-focus]').forEach(chip=>chip.setAttribute('aria-pressed',String(chip.dataset.focus===state.ideaFocus)));updateIdeaExample();renderGPTPreview()}));
   for(const [id,key] of [['ideaSeed','ideaSeed'],['ideaAudience','ideaAudience'],['ideaGoal','ideaGoal'],['ideaRefined','ideaRefined']]){
     $(id).addEventListener('input',e=>{state[key]=e.target.value;persist();renderGPTPreview()});
   }
