@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#dcdfd6">
-  <meta name="description" content="把創作者的影片構思 know-how 變成新手友善的互動工具：故事釐清、視覺風格參考、分鏡提示詞，銜接 Google Flow、Kling 與剪輯工作室。">
+  <meta name="description" content="AI 影片創作小幫手：協助新手釐清故事、場景、動作與畫風，產出清楚可用的 AI 影片生成提示詞。">
   <title>AI 影片創作小幫手</title>
   <script>
     // Apply this before layout: browsers may otherwise restore an old scroll position after load.
@@ -226,11 +226,10 @@
   </section>
   <header class="topbar">
     <a class="brand" href="#" id="homeLink" aria-label="返回首頁，保留目前填寫內容" title="返回首頁（保留已填內容）"><span class="brand-icon">▶</span><span>AI 影片創作小幫手</span></a>
-    <div class="top-actions"><span class="tagline">不會寫提示詞，也能開始創作</span><div class="font-controls" role="group" aria-label="調整文字大小"><span class="font-controls-label">文字大小</span><button type="button" data-font-size-choice="standard" aria-pressed="true">一般</button><button type="button" data-font-size-choice="large" aria-pressed="false">大字 A+</button></div><a class="text-link" target="_blank" rel="noopener noreferrer" href="https://bkj888.github.io/motion-creator-studio/">剪輯工作室 ↗</a></div>
+    <div class="top-actions"><span class="tagline">釐清想法，做出清楚的提示詞</span><div class="font-controls" role="group" aria-label="調整文字大小"><span class="font-controls-label">文字大小</span><button type="button" data-font-size-choice="standard" aria-pressed="true">一般</button><button type="button" data-font-size-choice="large" aria-pressed="false">大字 A+</button></div><a class="text-link" target="_blank" rel="noopener noreferrer" href="https://bkj888.github.io/motion-creator-studio/">剪輯工作室 ↗</a></div>
   </header>
   <section class="hero">
-    <div><div class="eyebrow"><span class="small-dot"></span> FROM IDEA TO VIDEO · 3 STEPS</div><h1>從一個想法，<br><span>開始你的創作。</span></h1><p>本站先協助你把想法整理成影片提示詞；真正的影片會在 Google Flow 或 Kling 生成，最後到 Motion Creator Studio 剪輯完成。</p></div>
-    <div class="hero-note"><div class="mini">START SIMPLE · 輕鬆上手</div><strong>先釐清想法，再建立畫面</strong><p>沒想法時用簡單問答起步；已有方向時由 GPT 先整理草案，再用圖片確認風格。</p><span class="pill">✓ 不必懂專業術語</span></div>
+    <div><div class="eyebrow"><span class="small-dot"></span> AI PROMPT HELPER · 新手也能用</div><h1>把想法變成<br><span>AI 影片提示詞。</span></h1><p>選好故事、畫面與風格，整理成更清楚的生成指令。</p><p class="hero-scope">這裡不直接生成影片；完成後可帶到 Flow／Kling 使用。</p></div>
   </section>
   <nav class="stepnav" aria-label="影片創作三步驟">
     <button type="button" class="stepbtn current" data-step="1"><span class="stepbadge">1</span><span><span class="stepname">釐清想法與畫面</span><span class="stepsub">取得影片提示詞</span></span></button>
@@ -239,24 +238,24 @@
   </nav>
   <main class="workspace">
     <section class="panel" id="panel1" aria-labelledby="title1">
-      <div class="paneltop"><div><div class="sectioneyebrow step-heading" id="sceneNumber">STEP 01 · 第 1 個片段</div><h2 class="sectiontitle" id="title1">把你的想法變成畫面</h2></div><div class="smalllabel" id="questionCounter">第 1 / 6 題</div></div>
+      <div class="paneltop"><div><div class="sectioneyebrow step-heading" id="sceneNumber">STEP 01 · 第 1 個片段</div><h2 class="sectiontitle" id="title1">整理你的影片想法</h2></div><div class="smalllabel" id="questionCounter">第 1 / 6 題</div></div>
       <div class="progress" aria-label="問答完成進度"><div id="progressbar" style="width:12.5%"></div></div>
       <div id="entryView">
         <div class="sectioneyebrow">START HERE · 從適合你的方式開始</div>
-        <h2 class="sectiontitle" style="margin:9px 0 5px">你目前對這支影片有多少想法？</h2>
-        <p class="hint">有一兩個畫面就夠了，不用先想好完整故事。</p>
+        <h2 class="sectiontitle" style="margin:9px 0 5px">你現在有想法嗎？</h2>
+        <p class="hint">選一個方式，馬上開始。</p>
         <div class="entry-options">
-          <button type="button" class="entry-choice" id="chooseAssist"><span class="entry-emoji">💭</span><b>我有一些方向，還不太完整</b><small>先自由描述，由 GPT 主動提出一版可修改的創作方案，再確認畫風與比例。</small></button>
-          <button type="button" class="entry-choice" id="chooseGuided"><span class="entry-emoji">🧭</span><b>我完全沒有想法</b><small>直接用簡單選擇題找方向。不需要先學習提示詞術語。</small></button>
+          <button type="button" class="entry-choice" id="chooseAssist"><span class="entry-emoji">💭</span><b>我有想法</b><small>先寫幾句，再整理畫面</small></button>
+          <button type="button" class="entry-choice" id="chooseGuided"><span class="entry-emoji">🧭</span><b>還沒想法</b><small>用簡單選擇題開始</small></button>
         </div>
-        <p class="idea-disclaimer">這個網站會整理提示詞，不會直接產生影片。需要與 GPT 討論時，可複製指令並開啟 ChatGPT；你可以自行決定是否貼回內容。</p>
+        <details class="inline-help"><summary>這個網站怎麼用？</summary><p>本站整理提示詞，不直接產生影片。已有想法時，可選擇將指令複製到 ChatGPT 幫忙整理，也能自行完成。</p></details>
       </div>
       <div id="ideaView" hidden>
-        <div class="idea-steps"><span>① 說出零碎想法</span><span>② GPT 先提出構思草案</span><span>③ 選畫風後產生提示詞</span></div>
+        
         <div class="idea-layout">
           <div class="idea-card">
             <div class="assistant-label">MY IDEA · 自由描述</div>
-            <h3>你腦中已經出現什麼？</h3><p>一句話或幾個關鍵字都可以。沒有的資訊不用硬寫。</p>
+            <h3>說說你的影片想法</h3><p>一句話就能開始。</p>
             <div class="field"><label for="ideaSeed">現在想到的片段或故事</label><textarea class="input textarea" id="ideaSeed" rows="5" maxlength="1400" placeholder="例如：想做一段溫暖的邀請短片；一個疲累的上班族收到朋友訊息，最後帶著笑容前往聚會。我還不知道用什麼畫面表現。"></textarea></div>
             <label class="smalllabel" style="font-weight:800;display:block;margin-top:14px">最希望 GPT 幫你釐清哪個部分？</label>
             <div class="idea-chip-list" id="ideaFocusChoices" role="group" aria-label="選擇需要協助的方向">
@@ -265,22 +264,22 @@
               <button type="button" class="idea-chip" data-focus="畫面和場景描寫" aria-pressed="false">🎥 畫面更具體</button>
               <button type="button" class="idea-chip" data-focus="情緒與視覺風格" aria-pressed="false">✨ 氛圍與風格</button>
             </div>
-            <div class="idea-field-row"><div class="field"><label for="ideaAudience">影片要給誰看？（選填）</label><input class="input" id="ideaAudience" maxlength="120" placeholder="例如：第一次參加活動的新朋友"></div><div class="field"><label for="ideaGoal">希望看完有什麼感受？（選填）</label><input class="input" id="ideaGoal" maxlength="120" placeholder="例如：覺得被歡迎、想參加"></div></div>
-            <p class="idea-note">💡 就算只填上面的自由描述，也能使用。下面的 AI 協作不是必填。</p>
+            <details class="inline-help idea-extra"><summary>補充對象與感受（選填）</summary><div class="idea-field-row"><div class="field"><label for="ideaAudience">影片要給誰看？</label><input class="input" id="ideaAudience" maxlength="120" placeholder="例如：第一次參加活動的新朋友"></div><div class="field"><label for="ideaGoal">希望看完有什麼感受？</label><input class="input" id="ideaGoal" maxlength="120" placeholder="例如：覺得被歡迎、想參加"></div></div></details>
+            <p class="idea-note">💡 可以直接繼續，使用 GPT 不是必填。</p>
           </div>
           <div class="idea-card soft">
             <div class="assistant-label">CHATGPT · AI 創作整理</div>
-            <h3>讓 GPT 先幫你完成一版草案</h3>
-            <p>GPT 會先根據已有想法整理故事與鏡頭草案；不是反覆發選擇題。只有關鍵資訊真的不足時，才會問至多一個問題。</p>
-            <div class="idea-copy" id="ideaGPTPreview" aria-label="ChatGPT 協作指令預覽"></div>
+            <h3>用 GPT 整理草案（選用）</h3>
+            <p>複製指令、開啟 GPT，再貼回你喜歡的版本。</p>
+            <details class="gpt-preview"><summary>查看 GPT 指令預覽</summary><div class="idea-copy" id="ideaGPTPreview" aria-label="ChatGPT 協作指令預覽"></div></details>
             <div class="compact-controls" style="margin-top:14px"><button type="button" class="btn btn-primary btn-small" id="copyGPTInstruction">① 複製 GPT 創作指令</button><a class="btn btn-small" id="openChatGPT" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">② 開啟 ChatGPT ↗</a></div>
-            <p class="idea-disclaimer">在 ChatGPT 貼上指令，它會先產出可修改的草案。覺得方向接近就複製貼回；想修改，再用自己的話告訴 GPT。<strong>本頁沒有直接呼叫 GPT API，也不會收取 API 費用。</strong></p>
+            <details class="inline-help"><summary>關於 GPT 協作</summary><p>指令需貼到 ChatGPT，滿意的故事再貼回本頁。本站不直接呼叫 GPT API，也不收取 API 費用。</p></details>
           </div>
         </div>
         <div class="idea-card" style="margin-top:19px">
           <div class="assistant-label">STORY BRIEF · 經確認的故事</div>
-          <h3>把整理好的想法帶回來</h3>
-          <p>這是提示詞最重要的依據。請貼上 GPT 整理的故事，或直接自己修改。不用透過 GPT 也可以繼續。</p>
+          <h3>確認你的故事</h3>
+          <p>貼上 GPT 草案，或用自己的想法繼續。</p>
           <div class="field"><label for="ideaRefined">完成版故事描述（可自行修改）</label><textarea class="input textarea" id="ideaRefined" rows="5" maxlength="5000" placeholder="把 GPT 的故事整理稿貼在這裡；沒有也可以保持空白，直接用上方的初步想法繼續。"></textarea></div>
           <div class="idea-status" id="ideaStatus" role="status">目前還沒有貼入整理稿，可以先使用初步想法。</div>
           <div class="controls"><button type="button" class="btn btn-plain" id="backToEntry">← 更換開始方式</button><button type="button" class="btn btn-primary" id="ideaToQuestions">確認視覺風格與比例 →</button></div>
@@ -289,16 +288,17 @@
       <div id="questionView" hidden>
         <div class="idea-review" id="ideaReview" hidden><strong style="font-size:calc(14px * var(--readability-scale));color:#4967a2">✓ 已有故事方向</strong><p id="ideaReviewText"></p><button type="button" class="btn btn-plain btn-small" id="backToIdea">← 回去調整故事</button></div>
         <div class="question-layout"><div class="question"><h2 id="questionTitle"></h2><p class="hint" id="questionHint"></p><div id="choices" class="choices"></div><div id="extraFields"></div><p class="is-error" id="validation" role="alert" hidden></p></div>
-          <aside class="sidebar"><div class="circle">💡</div><strong>不知道選哪個？</strong><p>選最接近想法的一項就好。影片生成是先試試看，再微調，不需要第一次就完美。</p><div class="minicheck"><b>✓</b> 不用自己寫英文</div><div class="minicheck"><b>✓</b> 選完就能取得提示詞</div><div class="minicheck"><b>✓</b> 可以重新調整</div></aside></div>
+          <aside class="sidebar"><div class="circle">💡</div><strong>選最接近的就好</strong><p>隨時都能回來修改，不需要第一次就選對。</p></aside></div>
         <div class="controls"><button class="btn btn-plain" id="prevQuestion" type="button">← 上一題</button><button class="btn btn-primary" id="nextQuestion" type="button">下一題 →</button></div>
       </div>
       <div class="result" id="resultView">
-        <div class="idea-review" id="resultIdeaReview" hidden><strong style="font-size:calc(14px * var(--readability-scale));color:#4967a2">📝 這段影片會參考你釐清的故事</strong><p id="resultIdeaText"></p><button type="button" class="btn btn-plain btn-small" id="editResultIdea">修改故事內容</button></div>
-        <div class="result-header"><span class="result-icon">✨</span><div><h2>你的文字提示詞準備好了！</h2><p>這裡產生的是提示詞，<strong>不是影片檔</strong>。儲存後請前往 STEP 02，到 Google Flow 或 Kling 生成並下載影片。若英文提示詞內仍有中文，可先透過 GPT 補上英文畫面描述。</p></div></div>
+        <details class="result-story-review" id="resultIdeaReview" hidden><summary>查看或修改原始故事</summary><p id="resultIdeaText"></p><button type="button" class="btn btn-plain btn-small" id="editResultIdea">修改故事內容</button></details>
+        <div class="result-header"><span class="result-icon">✨</span><div><h2>你的提示詞準備好了！</h2><p>先看看創作摘要；這裡產出的是文字提示詞，不是影片檔。</p></div></div>
+        <section class="creative-summary" aria-labelledby="creativeSummaryTitle"><div class="creative-summary-head"><h3 id="creativeSummaryTitle">這次要拍的畫面</h3><span>構思摘要 · 非影片預覽</span></div><div class="creative-summary-grid" id="creativeSummaryGrid" aria-live="polite"></div></section>
         <div class="result-content">
-          <div><div class="prompt-card"><div class="prompt-title"><b>英文影片提示詞</b><span>Google Flow／Kling 通用版本</span></div><pre class="prompt-box en-prompt" id="promptEnglish" aria-live="polite"></pre><div class="btn-wrap" style="margin-top:13px"><button class="btn btn-primary btn-small" id="copyEnglish" type="button">複製英文提示詞</button><button class="btn btn-small" id="downloadPrompt" type="button">下載文字檔</button></div></div>
+          <div><div class="prompt-card"><div class="prompt-title"><b>可直接複製的提示詞</b><span>Flow／Kling</span></div><p class="prompt-quick-tip">不用逐字閱讀，直接複製即可。</p><details class="prompt-expand"><summary>查看完整英文提示詞</summary><pre class="prompt-box en-prompt" id="promptEnglish" aria-live="polite"></pre></details><div class="btn-wrap" style="margin-top:13px"><button class="btn btn-primary btn-small" id="copyEnglish" type="button">複製英文提示詞</button><button class="btn btn-small" id="downloadPrompt" type="button">下載文字檔</button></div></div>
             <details class="translation"><summary>想看看中文版本？展開預覽</summary><pre class="prompt-box" id="promptChinese"></pre><div style="margin-top:9px"><button class="btn btn-small" id="copyChinese" type="button">複製中文版</button></div></details></div>
-          <div class="result-settings"><h3>想再調整鏡頭嗎？（全部選填）</h3><div class="field" id="shotFocusField" hidden><label for="shotFocus">這一段只拍故事中的哪一幕？（選填）</label><textarea id="shotFocus" class="input textarea" maxlength="600" placeholder="例如：主角剛走出辦公大樓，看見手機裡的邀請訊息，停下腳步露出微笑。"></textarea><p class="help">若故事包含多個場景，建議每個生成片段只指定一個重要動作。</p></div><div class="field"><label for="detailsText">希望畫面出現什麼特別細節？</label><textarea id="detailsText" class="input textarea" placeholder="例如：主角穿著黃色外套，手裡拿著邀請卡。" maxlength="400"></textarea></div><details class="more-settings"><summary>更多調整：氣氛、鏡頭（可略過）</summary><div class="field"><label for="moodChoice">畫面氣氛</label><select class="input" id="moodChoice"><option value="warm">溫暖療癒</option><option value="happy">明亮活潑</option><option value="calm">安靜放鬆</option><option value="mystery">神秘懸疑</option><option value="epic">震撼壯觀</option></select></div><div class="field"><label for="cameraChoice">鏡頭怎麼移動</label><select class="input" id="cameraChoice"><option value="fixed">鏡頭固定（新手推薦）</option><option value="push">緩緩推近主角</option><option value="follow">跟拍主角</option><option value="orbit">輕輕環繞主角</option></select></div></details><div class="field"><label for="soundChoice">希望有什麼聲音？</label><select id="soundChoice" class="input"><option value="ambient">自然環境音</option><option value="silent">不需要聲音</option><option value="music">柔和背景音樂</option><option value="dialogue">人物說一句話</option></select></div><div class="field" id="dialogueField" hidden><label for="dialogueText">想讓人物說什麼？（簡短一句）</label><input id="dialogueText" class="input" maxlength="100" placeholder="例如：今天下班後，一起來吧！"></div><p class="help">文字及聲音生成效果依 Google Flow 所選模型而異。正確的活動文字建議後製再加入。</p></div>
+          <details class="result-settings result-settings-collapsed"><summary>進階調整畫面與聲音（選填）</summary><div class="result-settings-content"><div class="field" id="shotFocusField" hidden><label for="shotFocus">這一段只拍故事中的哪一幕？（選填）</label><textarea id="shotFocus" class="input textarea" maxlength="600" placeholder="例如：主角剛走出辦公大樓，看見手機裡的邀請訊息，停下腳步露出微笑。"></textarea><p class="help">若故事包含多個場景，建議每個生成片段只指定一個重要動作。</p></div><div class="field"><label for="detailsText">希望畫面出現什麼特別細節？</label><textarea id="detailsText" class="input textarea" placeholder="例如：主角穿著黃色外套，手裡拿著邀請卡。" maxlength="400"></textarea></div><details class="more-settings"><summary>更多調整：氣氛、鏡頭（可略過）</summary><div class="field"><label for="moodChoice">畫面氣氛</label><select class="input" id="moodChoice"><option value="warm">溫暖療癒</option><option value="happy">明亮活潑</option><option value="calm">安靜放鬆</option><option value="mystery">神秘懸疑</option><option value="epic">震撼壯觀</option></select></div><div class="field"><label for="cameraChoice">鏡頭怎麼移動</label><select class="input" id="cameraChoice"><option value="fixed">鏡頭固定（新手推薦）</option><option value="push">緩緩推近主角</option><option value="follow">跟拍主角</option><option value="orbit">輕輕環繞主角</option></select></div></details><div class="field"><label for="soundChoice">希望有什麼聲音？</label><select id="soundChoice" class="input"><option value="ambient">自然環境音</option><option value="silent">不需要聲音</option><option value="music">柔和背景音樂</option><option value="dialogue">人物說一句話</option></select></div><div class="field" id="dialogueField" hidden><label for="dialogueText">想讓人物說什麼？（簡短一句）</label><input id="dialogueText" class="input" maxlength="100" placeholder="例如：今天下班後，一起來吧！"></div><p class="help">聲音與字幕效果依平台模型而異；精確文字建議後製再加入。</p></div></details>
         </div>
         <div class="completion-notice" id="resultCompletion" role="status" aria-live="polite">✓ 必要設定已完成。右側細節皆可略過，現在就能進入第二步。</div>
         <div class="completion-warning" id="resultError" role="alert" hidden></div>
@@ -307,12 +307,13 @@
     </section>
     <section class="panel" id="panel2" aria-labelledby="title2" hidden>
       <div class="paneltop"><div><div class="sectioneyebrow step-heading">STEP 02 · MAKE YOUR CLIPS</div><h2 class="sectiontitle" id="title2">選一個平台，把提示詞變成影片</h2></div><span class="smalllabel" id="clipCount">0 個片段</span></div>
-      <p class="hint">你已完成文字提示詞，還沒有在本站生成影片。請選擇外部平台，把提示詞貼上、生成影片，再將影片檔下載到自己的裝置。</p>
-      <div class="clip-state-overview" role="status" aria-live="polite"><strong id="clipPromptCount">已儲存 0 份影片提示詞</strong><span class="clip-status-divider" aria-hidden="true">·</span><strong id="clipDownloadCount">已標記下載 0 段影片</strong><p>本站只儲存提示詞和你勾選的下載狀態，<b>不會自動生成、上傳或儲存影片檔。</b>請在 Flow／Kling 實際下載後，再按「我已在平台下載影片」。</p></div>
+      <p class="hint">選一個平台，貼上提示詞，生成並下載影片。</p>
+      <div class="clip-state-overview" role="status" aria-live="polite"><strong id="clipPromptCount">已儲存 0 份影片提示詞</strong><span class="clip-status-divider" aria-hidden="true">·</span><strong id="clipDownloadCount">已標記下載 0 段影片</strong><details class="inline-help clip-help"><summary>影片下載狀態怎麼記錄？</summary><p>本站只儲存提示詞和勾選狀態，不會自動生成或傳送影片。請在平台下載影片後，再標記已下載。</p></details></div>
       <div class="platform-grid" role="group" aria-label="選擇影片生成平台">
-        <button type="button" class="platform-option selected" id="platformFlow" data-platform="flow" aria-pressed="true"><span class="platform-icon">🌿</span><span><b>Google Flow</b><small>建議初學者先試，支援文字、參考圖與影片生成。費用與額度依帳號及模型而定。</small></span></button>
-        <button type="button" class="platform-option" id="platformKling" data-platform="kling" aria-pressed="false"><span class="platform-icon">🎞️</span><span><b>Kling AI</b><small>其他生成選擇，可試不同影片模型與運鏡效果。額度與付費方案請以官方網站為準。</small></span></button>
+        <button type="button" class="platform-option selected" id="platformFlow" data-platform="flow" aria-pressed="true"><span class="platform-icon">🌿</span><span><b>Google Flow</b><small>初學者可先試</small></span></button>
+        <button type="button" class="platform-option" id="platformKling" data-platform="kling" aria-pressed="false"><span class="platform-icon">🎞️</span><span><b>Kling AI</b><small>另一種生成選擇</small></span></button>
       </div>
+      <details class="inline-help platform-help"><summary>關於平台費用與額度</summary><p>Flow 與 Kling 的模型、免費額度及收費依平台公告為準；本站不代扣點數。</p></details>
       <div class="flowgrid"><div><div class="blockhead">已儲存的影片提示詞</div><div id="sceneList"></div>
         <details class="beginner-retry" id="generationHelp">
           <summary>生成影片不如預期？這裡教你調整</summary>
@@ -330,12 +331,12 @@
         <div class="btn-wrap" style="margin-top:17px"><button type="button" class="btn" id="addScene">＋ 我還想做下一個鏡頭</button><button type="button" class="btn btn-primary" id="toStep3">已下載影片，前往 STEP 03 →</button></div>
         <p class="clip-next-hint" id="clipNextHint">請在生成平台下載至少一段影片，並在上方標記已下載，才能進入第三步。</p>
       </div>
-        <aside class="roadmap"><div class="blockhead" id="platformTitle">在 Google Flow 怎麼做？</div><ol id="platformInstructions"><li><b>登入並建立專案</b>進入 Google Flow 的影片生成畫面。</li><li><b>複製提示詞並貼上</b>從左邊選一段影片提示詞。</li><li><b>選擇影片設定並生成</b>依影片比例與目標秒數設定。</li><li><b>下載影片到自己的裝置</b>完成後使用 Download 下載影片檔。</li></ol><a class="btn btn-primary" id="platformLink" target="_blank" rel="noopener noreferrer" href="https://flow.google.com/">前往 Google Flow ↗</a><p class="card-note">本站只協助整理提示詞和步驟。生成、登入、點數及下載操作都在所選平台進行。</p></aside>
+        <aside class="roadmap"><div class="blockhead" id="platformTitle">在 Google Flow 怎麼做？</div><details class="platform-instructions"><summary>查看 4 步操作教學</summary><ol id="platformInstructions"><li><b>登入並建立專案</b>進入 Flow。</li><li><b>貼上提示詞</b>複製左側提示詞。</li><li><b>生成影片</b>選好模型與比例。</li><li><b>下載影片</b>將檔案存到裝置。</li></ol></details><a class="btn btn-primary" id="platformLink" target="_blank" rel="noopener noreferrer" href="https://flow.google.com/">前往 Google Flow ↗</a><p class="card-note">影片生成與下載都在所選平台進行。</p></aside>
       </div>
     </section>
     <section class="panel" id="panel3" aria-labelledby="title3" hidden>
       <div class="paneltop"><div><div class="sectioneyebrow step-heading">STEP 03 · FINISH YOUR VIDEO</div><h2 class="sectiontitle" id="title3">到剪輯工作室，完成你的作品</h2></div></div>
-      <div class="studio-primary"><h3>影片已下載？下一站就是 Motion Creator Studio。</h3><p>不用在這個介面再選一次影片。直接進入原本剪輯工作室，在那裡匯入、排序、加上字幕與配樂，最後輸出完整影片。</p><a class="btn btn-primary" target="_blank" rel="noopener noreferrer" href="https://bkj888.github.io/motion-creator-studio/">開啟 Motion Creator Studio，開始剪輯 ↗</a><div class="clip-download-status" id="clipSummary"></div></div>
+      <div class="studio-primary"><h3>到剪輯工作室，完成影片。</h3><p>匯入已下載的片段，加入字幕與音樂後輸出。</p><a class="btn btn-primary" target="_blank" rel="noopener noreferrer" href="https://bkj888.github.io/motion-creator-studio/">開啟 Motion Creator Studio，開始剪輯 ↗</a><div class="clip-download-status" id="clipSummary"></div></div>
       <div class="blockhead">進入剪輯工作室後，只需要這四件事</div>
       <div class="studio-steps">
         <div class="studio-mini"><b>① 選擇影片規格</b>選好直式或橫式，以及輸出尺寸。</div>
@@ -348,7 +349,7 @@
         <p id="finishConfirmHint">本站無法確認剪輯平台的輸出狀態。請在 Motion Creator Studio 完成剪輯並下載最終影片後，手動確認完成。</p>
         <button type="button" class="btn btn-primary" id="confirmVideoComplete" aria-pressed="false">✓ 我已完成並下載最終影片</button>
       </section>
-      <div class="info-banner"><strong>為什麼不在本頁上傳？</strong>因為本頁無法跨網站傳遞你選取的本機檔案。讓你直接在剪輯工作室上傳一次，反而比較省事、不會混淆。</div>
+      <details class="inline-help"><summary>為什麼要在剪輯工作室匯入影片？</summary><p>本站不能跨網站傳送你的本機影片檔，請直接在剪輯工作室選擇檔案。</p></details>
       <div class="controls"><button type="button" class="btn" id="backToFlow">← 返回影片生成引導</button><button type="button" class="btn" id="newProject">＋ 開始新的作品</button></div>
     </section>
   </main>
