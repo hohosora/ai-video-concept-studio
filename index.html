@@ -269,20 +269,31 @@
           </div>
           <div class="idea-card soft">
             <div class="assistant-label">CHATGPT · AI 創作整理</div>
-            <h3>用 GPT 整理草案（選用）</h3>
-            <p>複製指令、開啟 GPT，再貼回你喜歡的版本。</p>
+            <h3>讓 ChatGPT 幫你整理（選用）</h3>
+            <p>複製指令到 ChatGPT，產生草案後直接複製整份回答貼回本頁。</p>
             <details class="gpt-preview"><summary>查看 GPT 指令預覽</summary><div class="idea-copy" id="ideaGPTPreview" aria-label="ChatGPT 協作指令預覽"></div></details>
-            <div class="compact-controls" style="margin-top:14px"><button type="button" class="btn btn-primary btn-small" id="copyGPTInstruction">① 複製 GPT 創作指令</button><a class="btn btn-small" id="openChatGPT" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">② 開啟 ChatGPT ↗</a></div>
+            <div class="compact-controls" style="margin-top:14px"><button type="button" class="btn btn-primary btn-small" id="copyGPTInstruction">① 複製指令</button><a class="btn btn-small" id="openChatGPT" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">② 開啟 ChatGPT ↗</a></div>
             <details class="inline-help"><summary>關於 GPT 協作</summary><p>指令需貼到 ChatGPT，滿意的故事再貼回本頁。本站不直接呼叫 GPT API，也不收取 API 費用。</p></details>
           </div>
         </div>
-        <div class="idea-card" style="margin-top:19px">
-          <div class="assistant-label">STORY BRIEF · 經確認的故事</div>
-          <h3>確認你的故事</h3>
-          <p>貼上 GPT 草案，或用自己的想法繼續。</p>
-          <div class="field"><label for="ideaRefined">完成版故事描述（可自行修改）</label><textarea class="input textarea" id="ideaRefined" rows="5" maxlength="5000" placeholder="把 GPT 的故事整理稿貼在這裡；沒有也可以保持空白，直接用上方的初步想法繼續。"></textarea></div>
-          <div class="idea-status" id="ideaStatus" role="status">目前還沒有貼入整理稿，可以先使用初步想法。</div>
-          <div class="controls"><button type="button" class="btn btn-plain" id="backToEntry">← 更換開始方式</button><button type="button" class="btn btn-primary" id="ideaToQuestions">確認視覺風格與比例 →</button></div>
+        <div class="idea-card gpt-return-card" style="margin-top:19px">
+          <div class="assistant-label">PASTE GPT REPLY · 貼回整理</div>
+          <h3>把 ChatGPT 的回答貼回來</h3>
+          <p>直接貼上<strong>整份回答</strong>，小幫手會自動擷取故事與英文畫面描述。沒有使用 GPT，也可以直接繼續。</p>
+          <div class="field"><label for="gptReplyInput">貼上 ChatGPT 的完整回答（選用）</label><textarea class="input textarea" id="gptReplyInput" rows="5" maxlength="20000" placeholder="整份複製貼在這裡，不必自己挑段落。"></textarea></div>
+          <div class="gpt-extract-status" id="gptExtractStatus" role="status" aria-live="polite">貼上後會自動整理；也可以直接使用最初的想法。</div>
+          <div class="gpt-extract-preview" id="gptExtractPreview" hidden>
+            <strong class="gpt-extract-heading">已整理好，請確認以下內容</strong>
+            <div class="gpt-extract-section"><b>中文故事摘要</b><p id="gptStoryPreview"></p></div>
+            <div class="gpt-extract-section" id="gptEnglishPreviewWrap" hidden><b>英文畫面描述</b><p id="gptEnglishPreview"></p></div>
+          </div>
+          <details class="inline-help manual-story-editor" id="manualStoryEditor">
+            <summary>修改整理內容／自行輸入故事</summary>
+            <div class="field"><label for="ideaRefined">整理後的故事（可自行修改）</label><textarea class="input textarea" id="ideaRefined" rows="6" maxlength="5000" placeholder="可自行輸入故事；有從 GPT 擷取內容時，也能在這裡修改。"></textarea></div>
+            <p>可編輯故事或英文描述，修改後的內容會用於生成影片提示詞。</p>
+          </details>
+          <div class="idea-status" id="ideaStatus" role="status">尚未貼入故事整理稿，可直接使用最初的想法。</div>
+          <div class="controls"><button type="button" class="btn btn-plain" id="backToEntry">← 更換開始方式</button><button type="button" class="btn btn-primary" id="ideaToQuestions">確認故事，選擇畫風 →</button></div>
         </div>
       </div>
       <div id="questionView" hidden>
@@ -395,7 +406,7 @@
   const sceneryActions=[opt('advance','鏡頭緩緩向前','帶領觀眾進入畫面','➡️','gradually opens up as the camera glides forward'),opt('sun','陽光逐漸灑進來','溫暖有層次','🌞','is gradually illuminated by warm sunlight'),opt('wind','微風帶動環境','自然、有生命力','🍃','comes alive with a gentle breeze and subtle natural movement'),opt('cloud','雲霧慢慢飄過','有空間與氣氛','☁️','is enveloped in slowly drifting mist and clouds')];
   const customActions=[opt('reveal','慢慢呈現主體細節','安全、容易掌握','✨','is gradually revealed with natural subtle movement'),opt('move','主體自然移動','單一清楚的動作','➡️','moves smoothly through the scene'),opt('turn','主體緩緩轉向鏡頭','有明確視覺重點','🔄','slowly turns toward the camera'),opt('custom','我指定動作','自行輸入希望的動作','✍️','')];
   const keys=['purpose','subject','setting','action','style','format'];
-  const initial={scenes:[],answers:{},detail:'',sound:'ambient',dialogue:'',questionIndex:0,shotFocus:'',platform:'flow',ideaMode:'',ideaSeed:'',ideaRefined:'',ideaAudience:'',ideaGoal:'',ideaFocus:'故事發展與轉折',projectCompleted:false};
+  const initial={scenes:[],answers:{},detail:'',sound:'ambient',dialogue:'',questionIndex:0,shotFocus:'',platform:'flow',ideaMode:'',ideaSeed:'',ideaRefined:'',ideaAudience:'',ideaGoal:'',ideaFocus:'故事發展與轉折',gptReplyRaw:'',projectCompleted:false};
   let state={...initial};let step=1;let previewSaved=false;let toastTimer;
   // Avoid browser scroll restoration dropping a fresh page load into the middle of the workflow.
   try{if('scrollRestoration' in history)history.scrollRestoration='manual';}catch(e){}
@@ -416,34 +427,30 @@
   function activeIdea(){const seed=(state.ideaSeed||'').trim(), refined=(state.ideaRefined||'').trim();return (refined||seed).slice(0,5000)}
   function parseIdeaEnglish(s){let match=s.match(/【英文(?:鏡頭|畫面)描述】\s*([\s\S]*?)(?=【[^】]+】|$)/);return match?match[1].trim():''}
   function renderIdeaReviews(){const text=activeIdea();for(const [id,textId] of [['ideaReview','ideaReviewText'],['resultIdeaReview','resultIdeaText']]){$(id).hidden=!(state.ideaMode==='assisted'&&text);$(textId).textContent=text||'';}}
-  function makeGPTBrief(){const safe=(s,max)=>String(s||'').trim().slice(0,max)||'尚不清楚';return `你是一位能主動把初步想法轉成具體畫面的 AI 影片創意導演。請用繁體中文協助沒有影片製作經驗的使用者。這位使用者已經有部分方向，不需要再做一次選擇題。你的目標是讓他更快看見一個可以修改的創作方案，而不是收集所有資訊。
-
-【使用者已有的想法】
-${safe(state.ideaSeed,1400)}
-
-【希望優先補強】${state.ideaFocus}
-【預計觀眾】${safe(state.ideaAudience,120)}
-【希望觀眾看完的感受】${safe(state.ideaGoal,120)}
-
-【重要規則】
-1. 你的第一則回覆直接給出具體、可拍攝的故事提案。不要先丟問題、不要給選擇題，也不要先詢問完整背景。
-2. 將使用者已說明的內容視為「已確認」，保留原意；不明確的地方可主動補上合理的創意建議，但清楚標示「建議，可調整」，不能冒充使用者已決定。
-3. 如果有兩種都合理的故事呈現方式，可在完整提案之後補充最多 2 個短的替代方向，不要讓使用者必須先做選擇才能前進。
-4. 只有當某個未知資訊會讓故事走向截然相反、而你無法給出合宜的預設時，才在草案最後問最多 1 個白話問題；若可先用假設完成草案就不要問。往後也不要陷入連續追問模式。
-5. 不要列出一連串『你想要哪一種』的問卷。鼓勵使用者只需回覆「採用這版」或「把某一段改成……」。
-6. 構思故事時考慮 AI 影片的實際限制：一個短片段以一個主要動作為主、多場景拆開、避免太複雜的運鏡，並注意角色與風格連貫。
-7. 讓使用者不必懂提示詞、鏡頭術語。用日常語言呈現創意，提供可以直接帶回影片創作網站的內容。
-
-【第一則回覆請直接使用下列格式】
-【我理解的重點】用 1～2 句重述已有內容。
-【中文故事摘要】120～250 字，提供一版完整且具體的故事構思，不是問題清單。
-【英文畫面描述】用英文描述完整構思與主要視覺，保留原本已確定的元素；未確定的部分不要冒充已確定。
-【鏡頭建議】依序列出片段、主角、場景、主要動作與建議長度；一個片段只做一個主要動作。
-【已確定的設定】只列使用者真的說明過的事項。
-【建議、可調整的部分】簡短列出為使構思更完整而補上的細節。
-【下一步】告訴使用者：可以「直接採用」或「指出想修改的地方」。只有必要時附最多一題關鍵問題。
-
-現在就先給出一版可以拿來修改的提案，不要先提問。`}
+  function makeGPTBrief(){
+    const safe=(value,max)=>String(value||'').trim().slice(0,max)||'尚未提供';
+    return [
+      '你是協助新手構思 AI 影片的創意導演。請用繁體中文，直接提出一版清楚、可拍攝、可修改的故事。不要先問一長串問題。',
+      '尊重使用者已確認的內容；未確認的細節可建議，但不要當成既定事實。每個短影片片段只聚焦一個主要動作。',
+      '',
+      '【初步想法】',safe(state.ideaSeed,1400),
+      '【優先釐清方向】'+state.ideaFocus,
+      '【預計觀眾】'+safe(state.ideaAudience,120),
+      '【希望觀眾感受】'+safe(state.ideaGoal,120),
+      '',
+      '請先以最多兩句提出修改建議，然後在最後用以下標記輸出一段方便貼回的內容。回覆保持簡短，不要把格式說明當作故事。',
+      '【貼回小幫手｜開始】',
+      '【中文故事摘要】',
+      '用 100～180 字描述主角、場景、事件、關鍵動作與情緒轉折，形成完整易懂的故事。',
+      '【英文畫面描述】',
+      '用 1～3 句自然英文描述同一故事與重要畫面，保留已知細節。',
+      '【畫面重點】',
+      '用一句中文概述最值得拍攝的畫面。',
+      '【貼回小幫手｜結束】',
+      '',
+      '最後提醒：「可直接複製整份回答，貼回 AI 影片創作小幫手。」不要再加長篇解說。'
+    ].join('\n');
+  }
   function renderGPTPreview(){ $('ideaGPTPreview').textContent=makeGPTBrief().slice(0,480)+'\n……（完整指令請點「複製」）'; const status=$('ideaStatus');const r=(state.ideaRefined||'').trim(),s=(state.ideaSeed||'').trim();status.textContent=r?'✓ 已貼入故事整理稿。後續提示詞會優先使用這份內容。':s?'已有初步想法，可以先去 ChatGPT 深化，也可以直接繼續。':'請至少寫下一些關鍵字，才能協助保留你的想法。';status.classList.toggle('ready',!!(r||s));}
   const ideaFocusExamples={
     "故事發展與轉折": "例如：一位疲憊的上班族收到朋友的邀請，原本猶豫要不要赴約，最後決定前往。我還不確定故事中間要怎麼轉折。",
