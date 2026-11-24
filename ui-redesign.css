@@ -580,20 +580,6 @@ body{background:#e9ebe6!important;color:var(--night)!important}
   overflow:hidden;
   box-shadow:0 15px 24px #5b702b4a,inset 0 2px 0 #f2ffbe!important;
 }
-.design-rail .rail-lime::before{
-  content:"03";
-  position:absolute;
-  z-index:-1;
-  right:-12px;
-  top:7px;
-  font-weight:950;
-  font-size:110px;
-  line-height:1;
-  letter-spacing:-.08em;
-  color:#18230c;
-  opacity:.07;
-  pointer-events:none;
-}
 .design-rail .rail-lime .rail-studio-kicker {
   font-size:calc(17px * var(--readability-scale))!important;
   color:#202a13!important;
@@ -1373,8 +1359,6 @@ body{background:#e9ebe6!important;color:var(--night)!important}
   line-height:1!important;
   text-align:center!important;
 }
-/* The existing 03 watermark becomes a larger decorative figure in the
-   available space under the card description and above the studio link. */
 .design-rail .rail-lime{
   display:flex!important;
   flex-direction:column!important;
@@ -1382,42 +1366,17 @@ body{background:#e9ebe6!important;color:var(--night)!important}
 .design-rail .rail-lime .rail-studio-content{
   order:0;
 }
-.design-rail .rail-lime::before{
-  position:static!important;
-  inset:auto!important;
-  left:auto!important;
-  right:auto!important;
-  top:auto!important;
-  bottom:auto!important;
-  display:block!important;
-  order:1;
-  align-self:center;
-  flex:0 0 auto;
-  z-index:0!important;
-  margin:auto auto!important;
-  padding:10px 0;
-  text-align:center;
-  font-size:clamp(112px,11vw,168px)!important;
-  line-height:.80!important;
-  letter-spacing:-.075em;
-  color:#18230c;
-  opacity:.16;
-  pointer-events:none;
-}
 .design-rail .rail-lime .rail-link{
   order:2;
   position:relative;
   z-index:1;
   flex:none;
+  margin-top:auto;
 }
 @media(max-width:760px){
   .entry-options .entry-choice{
     min-height:180px!important;
     padding:16px 12px 13px!important;
-  }
-  .design-rail .rail-lime::before{
-    font-size:clamp(108px,28vw,150px)!important;
-    padding:12px 0;
   }
 }
 
