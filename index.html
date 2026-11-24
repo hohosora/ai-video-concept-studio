@@ -478,7 +478,7 @@
     $('gptExtractStatus').textContent=message||(
       !raw?'貼上 ChatGPT 的完整回答後會自動整理；也可以直接使用最初的想法。':
       parts.matched?(parts.english?'✓ 已整理中文故事與英文畫面描述。':'✓ 已整理故事；沒有找到英文描述，可手動補上。'):
-      '已保留文字，但沒有找到固定段落標記；請展開下方欄位確認內容。'
+      (state.gptReplyRaw||'').trim()?'已保留貼上的文字，沒有找到固定段落標記；請展開下方欄位確認內容。':'已保留你手動輸入的故事，可以直接繼續或編輯。'
     );
   }
   function makeGPTBrief(){
