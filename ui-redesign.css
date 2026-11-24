@@ -332,11 +332,13 @@ body{background:#e9ebe6!important;color:var(--night)!important}
 /* The whole card scales: labels, emoji and style preview pictures move together.
    Transforms do not consume layout space or move neighboring cards. */
 @media(prefers-reduced-motion:reduce) {
-  :where(.entry-choice,.choice,.platform-option,.idea-chip),
-  :where(.choice.selected,.platform-option.selected,.idea-chip[aria-pressed="true"]) {
+  .entry-choice,.choice,.platform-option,.idea-chip,
+  .entry-choice:hover,.choice:hover,.platform-option:hover,.idea-chip:hover,
+  .entry-choice:active,.choice:active,.platform-option:active,.idea-chip:active,
+  .choice.selected,.platform-option.selected,.idea-chip[aria-pressed="true"] {
     animation:none !important;
     transition:none !important;
     transform:none !important;
-    will-change:auto;
+    will-change:auto !important;
   }
 }
