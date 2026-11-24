@@ -1331,3 +1331,92 @@ body{background:#e9ebe6!important;color:var(--night)!important}
   .creative-summary-item{padding:10px}
   .result-settings-collapsed{padding:15px!important}
 }
+
+
+/* CARD ICON ALIGNMENT + FINAL STEP 03 PLACEMENT v0.9.1 */
+/* Both entry CTAs finish with a centered, bottom-aligned circular arrow.
+   Making the arrow a flex item avoids different text lengths moving it. */
+.entry-options .entry-choice{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  text-align:center!important;
+  gap:6px!important;
+  min-height:190px!important;
+  padding:18px 18px 15px!important;
+}
+.entry-options .entry-choice > .entry-emoji{
+  flex:none;
+}
+.entry-options .entry-choice > b,
+.entry-options .entry-choice > small{
+  display:block;
+  text-align:center!important;
+  max-width:100%;
+}
+.entry-options .entry-choice::after{
+  position:static!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  width:33px!important;
+  height:33px!important;
+  min-width:33px!important;
+  min-height:33px!important;
+  flex:0 0 33px;
+  align-self:center!important;
+  margin: auto auto 0!important;
+  line-height:1!important;
+  text-align:center!important;
+}
+/* The existing 03 watermark becomes a larger decorative figure in the
+   available space under the card description and above the studio link. */
+.design-rail .rail-lime{
+  display:flex!important;
+  flex-direction:column!important;
+}
+.design-rail .rail-lime .rail-studio-content{
+  order:0;
+}
+.design-rail .rail-lime::before{
+  position:static!important;
+  inset:auto!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  display:block!important;
+  order:1;
+  align-self:center;
+  flex:0 0 auto;
+  z-index:0!important;
+  margin:auto auto!important;
+  padding:10px 0;
+  text-align:center;
+  font-size:clamp(112px,11vw,168px)!important;
+  line-height:.80!important;
+  letter-spacing:-.075em;
+  color:#18230c;
+  opacity:.16;
+  pointer-events:none;
+}
+.design-rail .rail-lime .rail-link{
+  order:2;
+  position:relative;
+  z-index:1;
+  flex:none;
+}
+@media(max-width:760px){
+  .entry-options .entry-choice{
+    min-height:180px!important;
+    padding:16px 12px 13px!important;
+  }
+  .design-rail .rail-lime::before{
+    font-size:clamp(108px,28vw,150px)!important;
+    padding:12px 0;
+  }
+}
