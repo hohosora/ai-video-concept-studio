@@ -225,7 +225,7 @@
     <div class="top-actions"><span class="tagline">不會寫提示詞，也能開始創作</span><div class="font-controls" role="group" aria-label="調整文字大小"><span class="font-controls-label">文字大小</span><button type="button" data-font-size-choice="standard" aria-pressed="true">一般</button><button type="button" data-font-size-choice="large" aria-pressed="false">大字 A+</button></div><a class="text-link" target="_blank" rel="noopener noreferrer" href="https://bkj888.github.io/motion-creator-studio/">剪輯工作室 ↗</a></div>
   </header>
   <section class="hero">
-    <div><div class="eyebrow"><span class="small-dot"></span> FROM IDEA TO VIDEO · 3 STEPS</div><h1>從一個想法，<br><span>開始你的創作。</span></h1><p>先把零碎想法整理成畫面：沒方向就用簡單問答，已有方向就讓 GPT 先提出草案，搭配圖片選擇風格。等構思完整後，再轉換成 AI 影片提示詞，前往生成平台與剪輯工作室完成作品。</p></div>
+    <div><div class="eyebrow"><span class="small-dot"></span> FROM IDEA TO VIDEO · 3 STEPS</div><h1>從一個想法，<br><span>開始你的創作。</span></h1><p>本站先協助你把想法整理成影片提示詞；真正的影片會在 Google Flow 或 Kling 生成，最後到 Motion Creator Studio 剪輯完成。</p><div class="workflow-deliverables" aria-label="每個步驟會得到什麼"><span><b>STEP 01</b> 得到影片提示詞</span><span><b>STEP 02</b> 生成並下載影片</span><span><b>STEP 03</b> 剪輯並輸出作品</span></div></div>
     <div class="hero-note"><div class="mini">START SIMPLE · 輕鬆上手</div><strong>先釐清想法，再建立畫面</strong><p>沒想法時用簡單問答起步；已有方向時由 GPT 先整理草案，再用圖片確認風格。</p><span class="pill">✓ 不必懂專業術語</span></div>
   </section>
   <nav class="stepnav" aria-label="影片創作三步驟">
@@ -245,7 +245,7 @@
           <button type="button" class="entry-choice" id="chooseAssist"><span class="entry-emoji">💭</span><b>我有一些方向，還不太完整</b><small>先自由描述，由 GPT 主動提出一版可修改的創作方案，再確認畫風與比例。</small></button>
           <button type="button" class="entry-choice" id="chooseGuided"><span class="entry-emoji">🧭</span><b>我完全沒有想法</b><small>直接用簡單選擇題找方向。不需要先學習提示詞術語。</small></button>
         </div>
-        <p class="idea-disclaimer">此工具不會自動連動你的 ChatGPT 帳號。需要與 GPT 討論時，會協助複製專屬指令並開啟 ChatGPT；內容由你決定是否貼回。</p>
+        <p class="idea-disclaimer">這個網站會整理提示詞，不會直接產生影片。需要與 GPT 討論時，可複製指令並開啟 ChatGPT；你可以自行決定是否貼回內容。</p>
       </div>
       <div id="ideaView" hidden>
         <div class="idea-steps"><span>① 說出零碎想法</span><span>② GPT 先提出構思草案</span><span>③ 選畫風後產生提示詞</span></div>
@@ -290,7 +290,7 @@
       </div>
       <div class="result" id="resultView">
         <div class="idea-review" id="resultIdeaReview" hidden><strong style="font-size:calc(14px * var(--readability-scale));color:#4967a2">📝 這段影片會參考你釐清的故事</strong><p id="resultIdeaText"></p><button type="button" class="btn btn-plain btn-small" id="editResultIdea">修改故事內容</button></div>
-        <div class="result-header"><span class="result-icon">✨</span><div><h2>你的影片提示詞準備好了！</h2><p>右側可補充細節。將這份提示詞帶到 Google Flow 或 Kling 測試。若故事只用中文輸入，英文欄仍可能包含中文；可先透過 GPT 補上英文畫面描述。</p></div></div>
+        <div class="result-header"><span class="result-icon">✨</span><div><h2>你的文字提示詞準備好了！</h2><p>這裡產生的是提示詞，<strong>不是影片檔</strong>。儲存後請前往 STEP 02，到 Google Flow 或 Kling 生成並下載影片。若英文提示詞內仍有中文，可先透過 GPT 補上英文畫面描述。</p></div></div>
         <div class="result-content">
           <div><div class="prompt-card"><div class="prompt-title"><b>英文影片提示詞</b><span>Google Flow／Kling 通用版本</span></div><pre class="prompt-box en-prompt" id="promptEnglish" aria-live="polite"></pre><div class="btn-wrap" style="margin-top:13px"><button class="btn btn-primary btn-small" id="copyEnglish" type="button">複製英文提示詞</button><button class="btn btn-small" id="downloadPrompt" type="button">下載文字檔</button></div></div>
             <details class="translation"><summary>想看看中文版本？展開預覽</summary><pre class="prompt-box" id="promptChinese"></pre><div style="margin-top:9px"><button class="btn btn-small" id="copyChinese" type="button">複製中文版</button></div></details></div>
@@ -298,17 +298,34 @@
         </div>
         <div class="completion-notice" id="resultCompletion" role="status" aria-live="polite">✓ 必要設定已完成。右側細節皆可略過，現在就能進入第二步。</div>
         <div class="completion-warning" id="resultError" role="alert" hidden></div>
-        <div class="result-actions"><button type="button" class="btn btn-primary" id="saveScene">繼續第 2 步：生成影片 →</button><button type="button" class="btn" id="fixMissing" hidden>補上缺少的設定 →</button><button type="button" class="btn" id="restartQuestions">← 返回修改選擇</button></div>
+        <div class="result-actions"><button type="button" class="btn btn-primary" id="saveScene">儲存提示詞，前往 STEP 02 →</button><button type="button" class="btn" id="fixMissing" hidden>補上缺少的設定 →</button><button type="button" class="btn" id="restartQuestions">← 返回修改選擇</button></div>
       </div>
     </section>
     <section class="panel" id="panel2" aria-labelledby="title2" hidden>
       <div class="paneltop"><div><div class="sectioneyebrow step-heading">STEP 02 · MAKE YOUR CLIPS</div><h2 class="sectiontitle" id="title2">選一個平台，把提示詞變成影片</h2></div><span class="smalllabel" id="clipCount">0 個片段</span></div>
-      <p class="hint">你的提示詞已經準備好。挑選一個平台，複製提示詞貼上生成；兩者都不需要與本站綁定帳號。</p>
+      <p class="hint">你已完成文字提示詞，還沒有在本站生成影片。請選擇外部平台，把提示詞貼上、生成影片，再將影片檔下載到自己的裝置。</p>
+      <div class="clip-state-overview" role="status" aria-live="polite"><strong id="clipPromptCount">已儲存 0 份影片提示詞</strong><span class="clip-status-divider" aria-hidden="true">·</span><strong id="clipDownloadCount">已標記下載 0 段影片</strong><p>本站只儲存提示詞和你勾選的下載狀態，<b>不會自動生成、上傳或儲存影片檔。</b>請在 Flow／Kling 實際下載後，再按「我已在平台下載影片」。</p></div>
       <div class="platform-grid" role="group" aria-label="選擇影片生成平台">
         <button type="button" class="platform-option selected" id="platformFlow" data-platform="flow" aria-pressed="true"><span class="platform-icon">🌿</span><span><b>Google Flow</b><small>建議初學者先試，支援文字、參考圖與影片生成。費用與額度依帳號及模型而定。</small></span></button>
         <button type="button" class="platform-option" id="platformKling" data-platform="kling" aria-pressed="false"><span class="platform-icon">🎞️</span><span><b>Kling AI</b><small>其他生成選擇，可試不同影片模型與運鏡效果。額度與付費方案請以官方網站為準。</small></span></button>
       </div>
-      <div class="flowgrid"><div><div class="blockhead">你的影片片段</div><div id="sceneList"></div><div class="btn-wrap" style="margin-top:17px"><button type="button" class="btn" id="addScene">＋ 我還想做下一個鏡頭</button><button type="button" class="btn btn-primary" id="toStep3">影片下載好了，進入第三步 →</button></div></div>
+      <div class="flowgrid"><div><div class="blockhead">已儲存的影片提示詞</div><div id="sceneList"></div>
+        <details class="beginner-retry" id="generationHelp">
+          <summary>生成影片不如預期？這裡教你調整</summary>
+          <div class="beginner-retry-content">
+            <p>先不用重做整個作品。你可以在生成平台用同一份提示詞再試一次；如果仍不理想，嘗試只調整一個重點：</p>
+            <ul>
+              <li><b>人物或物件不對：</b>明確描述外觀、衣服、顏色，以及必須保留的細節。</li>
+              <li><b>動作混亂、場景跳來跳去：</b>一段影片先只保留一個場景、一個主要動作。</li>
+              <li><b>畫風不符合想像：</b>返回 STEP 01，更換風格圖片選項，再取得新的提示詞。</li>
+            </ul>
+            <button type="button" class="btn btn-small" id="retryStep1">← 回 STEP 01 調整提示詞</button>
+            <p class="beginner-retry-note">返回後會保留已填寫的內容與舊提示詞。重新儲存會新增一份新版提示詞，不會覆蓋原本片段；不需要的版本可在這一頁移除。</p>
+          </div>
+        </details>
+        <div class="btn-wrap" style="margin-top:17px"><button type="button" class="btn" id="addScene">＋ 我還想做下一個鏡頭</button><button type="button" class="btn btn-primary" id="toStep3">已下載影片，前往 STEP 03 →</button></div>
+        <p class="clip-next-hint" id="clipNextHint">請在生成平台下載至少一段影片，並在上方標記已下載，才能進入第三步。</p>
+      </div>
         <aside class="roadmap"><div class="blockhead" id="platformTitle">在 Google Flow 怎麼做？</div><ol id="platformInstructions"><li><b>登入並建立專案</b>進入 Google Flow 的影片生成畫面。</li><li><b>複製提示詞並貼上</b>從左邊選一段影片提示詞。</li><li><b>選擇影片設定並生成</b>依影片比例與目標秒數設定。</li><li><b>下載影片到自己的裝置</b>完成後使用 Download 下載影片檔。</li></ol><a class="btn btn-primary" id="platformLink" target="_blank" rel="noopener noreferrer" href="https://flow.google.com/">前往 Google Flow ↗</a><p class="card-note">本站只協助整理提示詞和步驟。生成、登入、點數及下載操作都在所選平台進行。</p></aside>
       </div>
     </section>
@@ -540,13 +557,18 @@ ${safe(state.ideaSeed,1400)}
     const mobileStep=$('railMobileStep');if(mobileStep)mobileStep.textContent='步驟'+String(step);
     if(tip)tip.textContent=hints[step];
   }
-  function switchStep(to){if(to>1&&!state.scenes.length){toast('請先完成並儲存至少一個影片片段');return}step=to;[1,2,3].forEach(n=>{$('panel'+n).hidden=n!==to;const tab=document.querySelector(`[data-step="${n}"]`);tab.classList.toggle('current',n===to);tab.classList.toggle('done',state.scenes.length>0&&n<to);tab.classList.toggle('available',n===1||!!state.scenes.length);tab.setAttribute('aria-current',n===to?'step':'false');});if(to===2)renderFlow();if(to===3)renderClipSummary();window.scrollTo({top:0,behavior:'smooth'});updateDesignRail();}
+  function switchStep(to){if(to>1&&!state.scenes.length){toast('請先完成並儲存至少一份影片提示詞');return}if(to===3&&!state.scenes.some(scene=>scene.downloaded)){toast('請先在影片平台下載影片，並標記「我已在平台下載影片」');if(step===2)$('clipPromptCount')?.scrollIntoView({behavior:'smooth',block:'center'});return;}step=to;[1,2,3].forEach(n=>{$('panel'+n).hidden=n!==to;const tab=document.querySelector(`[data-step="${n}"]`);tab.classList.toggle('current',n===to);tab.classList.toggle('done',state.scenes.length>0&&n<to);tab.classList.toggle('available',n===1||!!state.scenes.length);tab.setAttribute('aria-current',n===to?'step':'false');});if(to===2)renderFlow();if(to===3)renderClipSummary();window.scrollTo({top:0,behavior:'smooth'});updateDesignRail();}
   async function copyText(t,message='已複製提示詞！'){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t)}else{const area=document.createElement('textarea');area.value=t;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();if(!ok)throw new Error('Copy failed')}toast(message)}catch(e){toast('複製未成功，可以直接選取文字複製')}}
   function downloadText(filename,content){const blob=new Blob([content],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-  function createScene(){if(previewSaved)return;const missing=missingRequired();if(missing.length){updateCompletionStatus();toast('請先確認提示詞下方的缺少設定');$('resultError').scrollIntoView({behavior:'smooth',block:'center'});return}previewSaved=true;const p=currentPrompt();state.scenes.push({id:Date.now().toString(36)+'-'+Math.floor(Math.random()*1e6).toString(36),summary:p.summary,title:p.title,ratio:p.ratio,time:p.time,en:p.en,zh:p.zh,downloaded:false});persist();toast('影片片段已儲存');switchStep(2)}
-  function renderFlow(){renderPlatform();const list=$('sceneList');list.replaceChildren();$('clipCount').textContent=`${state.scenes.length} 個片段`;state.scenes.forEach((scene,i)=>{const card=document.createElement('article');card.className='scene-card';const done=scene.downloaded;card.innerHTML=`<div class="scene-top"><div><div class="scene-index">CLIP ${String(i+1).padStart(2,'0')}</div><h3>${escapeHTML(scene.title)}的影片片段</h3><p>${escapeHTML(scene.summary)}</p></div><span style="font-size:12px;font-weight:800;color:${done?'#168b71':'#7c8ca3'}">${done?'✓ 已下載':'待生成'}</span></div><div class="btn-wrap"><button type="button" class="btn btn-primary btn-small" data-copy="${i}">複製英文提示詞</button><button type="button" class="btn btn-small ${done?'btn-green':''}" data-check="${i}">${done?'✓ 已下載（可取消）':'標記：已下載影片'}</button><button type="button" class="btn btn-plain btn-small" data-delete="${i}">移除此段</button></div><details><summary>展開查看這段的英文提示詞</summary><pre>${escapeHTML(scene.en)}</pre></details>`;
+  function createScene(){if(previewSaved)return;const missing=missingRequired();if(missing.length){updateCompletionStatus();toast('請先確認提示詞下方的缺少設定');$('resultError').scrollIntoView({behavior:'smooth',block:'center'});return}previewSaved=true;const p=currentPrompt();state.scenes.push({id:Date.now().toString(36)+'-'+Math.floor(Math.random()*1e6).toString(36),summary:p.summary,title:p.title,ratio:p.ratio,time:p.time,en:p.en,zh:p.zh,downloaded:false});persist();toast('文字提示詞已儲存，請到平台生成影片');switchStep(2)}
+  function renderFlow(){renderPlatform();const list=$('sceneList');list.replaceChildren();
+    const ready=state.scenes.filter(scene=>scene.downloaded).length;
+    $('clipCount').textContent=`${state.scenes.length} 份提示詞`;
+    $('clipPromptCount').textContent=`已儲存 ${state.scenes.length} 份影片提示詞`;
+    $('clipDownloadCount').textContent=`已標記下載 ${ready} 段影片`;
+    $('clipNextHint').textContent=ready>0?'已標記下載的片段可進入 STEP 03；請確認影片檔已實際儲存在你的裝置中。':'請在生成平台下載至少一段影片，並在上方標記已下載，才能進入第三步。';state.scenes.forEach((scene,i)=>{const card=document.createElement('article');card.className='scene-card';const done=scene.downloaded;card.innerHTML=`<div class="scene-top"><div><div class="scene-index">CLIP ${String(i+1).padStart(2,'0')} · 文字提示詞</div><h3>${escapeHTML(scene.title)}的影片提示詞</h3><p>${escapeHTML(scene.summary)}</p></div><span class="clip-stage ${done?'is-downloaded':''}">${done?'✓ 已標記下載':'尚未標記下載'}</span></div><div class="btn-wrap"><button type="button" class="btn btn-primary btn-small" data-copy="${i}">複製英文提示詞</button><button type="button" class="btn btn-small ${done?'btn-green':''}" data-check="${i}">${done?'✓ 已標記下載（可取消）':'我已在平台下載影片'}</button><button type="button" class="btn btn-plain btn-small" data-delete="${i}">移除此段</button></div><details><summary>展開查看這段的英文提示詞</summary><pre>${escapeHTML(scene.en)}</pre></details>`;
       card.querySelector('[data-copy]').addEventListener('click',()=>copyText(scene.en));card.querySelector('[data-check]').addEventListener('click',()=>{scene.downloaded=!scene.downloaded;persist();renderFlow()});card.querySelector('[data-delete]').addEventListener('click',()=>{if(!confirm(`確定移除第 ${i+1} 個片段嗎？`))return;state.scenes.splice(i,1);persist();if(state.scenes.length)renderFlow();else{switchStep(1);renderQuestion()}});list.append(card)});}
-  function renderClipSummary(){const total=state.scenes.length;const ready=state.scenes.filter(s=>s.downloaded).length;$('clipSummary').textContent=`你已規劃 ${total} 個片段，其中 ${ready} 個標記為已下載。請直接在剪輯工作室選擇下載的影片檔案；這裡的標記不代表已傳送檔案。`;}
+  function renderClipSummary(){const total=state.scenes.length;const ready=state.scenes.filter(s=>s.downloaded).length;$('clipSummary').textContent=`你已儲存 ${total} 份影片提示詞，其中 ${ready} 段標記為已下載。請在剪輯工作室匯入裝置中實際下載的影片；本站的標記不代表影片已傳送。`;}
   function renderPlatform(){const which=state.platform==='kling'?'kling':'flow';document.querySelectorAll('[data-platform]').forEach(b=>{const selected=b.dataset.platform===which;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected))});const kling=which==='kling';$('platformTitle').textContent=kling?'在 Kling 怎麼做？':'在 Google Flow 怎麼做？';$('platformLink').textContent=kling?'前往 Kling AI ↗':'前往 Google Flow ↗';$('platformLink').href=kling?'https://kling.ai/app/ai-video':'https://flow.google.com/';const steps=kling?[['登入 Kling AI','進入影片生成頁面並選擇文字生成影片。'],['貼上本頁提供的提示詞','從左邊片段列表複製英文版本。'],['選擇模型與比例','依平台提供的長度與設定生成影片。'],['下載完成的影片','確認生成結果，將片段下載到自己的裝置。']]:[['登入並建立專案','進入 Google Flow 的影片生成畫面。'],['複製提示詞並貼上','從左邊選一段影片提示詞。'],['選擇影片設定並生成','依影片比例與目標秒數選擇支援的設定。'],['下載影片到自己的裝置','完成後在影片的更多選單選 Download。']];$('platformInstructions').replaceChildren();for(const [head,detail] of steps){const li=document.createElement('li');const b=document.createElement('b');b.textContent=head;li.append(b,document.createTextNode(detail));$('platformInstructions').append(li)}}
   document.querySelectorAll('[data-platform]').forEach(btn=>btn.addEventListener('click',()=>{state.platform=btn.dataset.platform;persist();renderPlatform()}));
 
@@ -557,7 +579,8 @@ ${safe(state.ideaSeed,1400)}
   for(const [id,key] of [['moodChoice','mood'],['cameraChoice','camera']]){$(id).addEventListener('change',e=>{state.answers[key]=e.target.value;updatePrompt()});}
   $('copyEnglish').addEventListener('click',()=>copyText(currentPrompt().en));$('copyChinese').addEventListener('click',()=>copyText(currentPrompt().zh));$('downloadPrompt').addEventListener('click',()=>{const p=currentPrompt();downloadText('AI影片提示詞.txt','【英文提示詞 / Flow 或 Kling】\n\n'+p.en+'\n\n【中文參考】\n\n'+p.zh)});
   $('saveScene').addEventListener('click',createScene);$('addScene').addEventListener('click',()=>{state.questionIndex=0;state.detail='';state.dialogue='';state.shotFocus='';persist();switchStep(1);renderResult();toast('已保留主角與風格。直接描述下一段鏡頭，或返回修改選擇題。')});
-  $('toStep3').addEventListener('click',()=>{if(state.scenes.every(x=>!x.downloaded)){toast('提醒：請先從生成平台下載影片，再前往剪輯工作室')}switchStep(3)});$('backToFlow').addEventListener('click',()=>switchStep(2));
+  $('toStep3').addEventListener('click',()=>switchStep(3));
+  $('retryStep1').addEventListener('click',()=>{if(state.ideaMode==='assisted'){switchStep(1);renderIdea();}else{state.ideaMode='guided';state.questionIndex=0;persist();switchStep(1);renderQuestion();}});$('backToFlow').addEventListener('click',()=>switchStep(2));
   $('newProject').addEventListener('click',()=>{if(!confirm('要清除目前儲存的片段與答案，重新開始嗎？'))return;state={...initial,scenes:[],answers:{}};persist();switchStep(1);renderEntry();toast('已開始全新作品')});
   document.querySelectorAll('[data-step]').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.step);switchStep(n);if(n===1){if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry()}}));$('homeLink').addEventListener('click',e=>{e.preventDefault();switchStep(1);renderEntry()});
   switchStep(1);if(state.ideaMode==='assisted')renderIdea();else if(state.ideaMode==='guided')renderQuestion();else renderEntry();
