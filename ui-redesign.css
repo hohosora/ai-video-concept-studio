@@ -898,3 +898,134 @@ body{background:#e9ebe6!important;color:var(--night)!important}
     text-align:center!important;
   }
 }
+
+
+
+/* BEGINNER GUIDANCE CLARITY v0.7 — stage deliverables, explicit video status, retry help */
+.workflow-deliverables {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  margin-top:16px;
+}
+.workflow-deliverables span {
+  display:inline-flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:5px;
+  padding:7px 11px;
+  border:1px solid #d4dacc;
+  border-radius:999px;
+  background:linear-gradient(150deg,#fdfef9,#e7ebdf);
+  color:#3f4a3b;
+  font-size:calc(13px * var(--readability-scale));
+  line-height:1.45;
+  box-shadow:0 3px 6px #27321b12,inset 0 1px 0 #fff;
+}
+.workflow-deliverables b {
+  color:#1f2b1d;
+  font-weight:900;
+  letter-spacing:.015em;
+}
+.clip-state-overview {
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px 11px;
+  padding:15px 17px;
+  margin:13px 0 18px;
+  border:1px solid #cbd5be;
+  border-left:5px solid var(--lime);
+  border-radius:18px;
+  background:linear-gradient(155deg,#f9faf5,#e8ecdf);
+  box-shadow:0 5px 10px #222b1b15,inset 0 1px 0 #ffffff;
+}
+.clip-state-overview strong {
+  font-size:calc(15px * var(--readability-scale));
+  color:#263121;
+  font-weight:850;
+}
+.clip-state-overview .clip-status-divider{color:#879178}
+.clip-state-overview p {
+  flex:0 0 100%;
+  margin:2px 0 0;
+  color:#506049;
+  font-size:calc(13px * var(--readability-scale));
+  line-height:1.65;
+}
+.clip-state-overview p b{color:#273a1d}
+.clip-stage{
+  display:inline-block;
+  max-width:100%;
+  border:1px solid #c7d2bd;
+  border-radius:999px;
+  padding:5px 10px;
+  background:#edf0e9;
+  color:#4b5849;
+  font-size:calc(12px * var(--readability-scale));
+  font-weight:850;
+  line-height:1.45;
+  text-wrap:balance;
+}
+.clip-stage.is-downloaded{
+  color:#273b18;
+  background:#e3f3b7;
+  border-color:#a2bc68;
+}
+.beginner-retry{
+  margin:16px 0 3px;
+  border:1px solid #bdcbb0;
+  border-radius:19px;
+  overflow:hidden;
+  background:linear-gradient(145deg,#f7f9f1,#e5ebde);
+  box-shadow:0 5px 11px #25311b17,inset 0 1px 0 #fff;
+}
+.beginner-retry summary {
+  padding:14px 17px;
+  cursor:pointer;
+  color:#293b24;
+  font-size:calc(15px * var(--readability-scale));
+  font-weight:850;
+  line-height:1.55;
+}
+.beginner-retry summary:hover{background:#eaf1dc}
+.beginner-retry[open] summary{
+  border-bottom:1px solid #cbd6bf;
+  background:#edf3e3;
+}
+.beginner-retry-content{
+  padding:12px 17px 18px;
+  color:#34432e;
+  font-size:calc(14px * var(--readability-scale));
+  line-height:1.75;
+}
+.beginner-retry-content p{margin:0 0 11px;color:#465441}
+.beginner-retry-content ul{padding-left:22px;margin:0 0 15px}
+.beginner-retry-content li{margin:6px 0}
+.beginner-retry-content li b{color:#283d21}
+.beginner-retry-content .btn{max-width:100%;white-space:normal;text-align:center}
+.beginner-retry-content .beginner-retry-note{
+  margin:12px 0 0;
+  color:#576451;
+  font-size:calc(12px * var(--readability-scale));
+  line-height:1.65;
+}
+.clip-next-hint {
+  margin:11px 0 0;
+  color:#53604d;
+  font-size:calc(13px * var(--readability-scale));
+  line-height:1.65;
+}
+@media(max-width:760px){
+  .workflow-deliverables{
+    align-items:stretch;
+    gap:6px;
+  }
+  .workflow-deliverables span{padding:7px 10px}
+  .clip-state-overview{padding:13px 14px;gap:5px 8px}
+  .clip-state-overview .clip-status-divider{display:none}
+  .clip-state-overview strong{flex:0 0 100%}
+  .beginner-retry summary{padding:13px 14px}
+  .beginner-retry-content{padding:12px 14px 16px}
+}
